@@ -1,6 +1,5 @@
-import React, {ComponentProps, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,9 +10,12 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {ScreenContainer} from 'components';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from './styles';
-import Icon from '@react-native-vector-icons/fontawesome6-pro';
 import {navigate} from 'routes/utils';
 import {useBackHandler} from '@react-native-community/hooks';
+import AddIcon from '../../assets/img/add.svg';
+import EditIcon from '../../assets/img/edit.svg';
+import ReRegisterIcon from '../../assets/img/re-register.svg';
+import CrevRight from '../../assets/img/chev-right.svg';
 
 interface IAssetInfoData {
   title: string;
@@ -21,30 +23,30 @@ interface IAssetInfoData {
   value: string;
 }
 interface IMenuItem {
-  icon: ({iconStyle?: never} & ComponentProps<typeof Icon>)['name'];
+  icon: any;
   title: string;
   route?: keyof RootParamList;
 }
 
 export const AssetDashboardScreen = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | undefined>('');
-  const [locationDropdownData, setlocationDropdownData] = useState({
-    buildingName: {
-      data: [{label: 'label', value: 'label'}],
-      labelField: 'label',
-      valueField: 'value',
-    },
-    room: {
-      data: [{label: 'label', value: 'label'}],
-      labelField: 'label',
-      valueField: 'value',
-    },
-    category: {
-      data: [{label: 'label', value: 'label'}],
-      labelField: 'label',
-      valueField: 'value',
-    },
-  });
+  // const [locationDropdownData, setlocationDropdownData] = useState({
+  //   buildingName: {
+  //     data: [{label: 'label', value: 'label'}],
+  //     labelField: 'label',
+  //     valueField: 'value',
+  //   },
+  //   room: {
+  //     data: [{label: 'label', value: 'label'}],
+  //     labelField: 'label',
+  //     valueField: 'value',
+  //   },
+  //   category: {
+  //     data: [{label: 'label', value: 'label'}],
+  //     labelField: 'label',
+  //     valueField: 'value',
+  //   },
+  // });
   const [selectedLocation, setSelectedLocation] = useState({
     buildingName: '',
     room: '',
@@ -57,10 +59,17 @@ export const AssetDashboardScreen = () => {
   ];
 
   const menuItemList: Array<IMenuItem> = [
-    {icon: 'circle-plus', title: 'Asset Registration', route: 'AssetList'},
-    {icon: 'grid-2-plus', title: 'Asset Re-Registration'},
     {
-      icon: 'pen-to-square',
+      icon: <AddIcon height={20} width={20} />,
+      title: 'Asset Registration',
+      route: 'AssetList',
+    },
+    {
+      icon: <ReRegisterIcon height={20} width={20} />,
+      title: 'Asset Re-Registration',
+    },
+    {
+      icon: <EditIcon height={20} width={20} />,
       title: 'Asset Activation/Deactivation',
     },
   ];
@@ -186,10 +195,10 @@ export const AssetDashboardScreen = () => {
                   key={i}
                   onPress={() => handleMenuClick(el)}>
                   <View style={styles.menuTitleContainer}>
-                    <Icon name={el.icon} color="#002B5C" size={wp(5)} />
+                    {el.icon}
                     <Text style={styles.menuTitle}>{el.title}</Text>
                   </View>
-                  <Icon name="chevron-right" color="#AAAFB4" size={wp(5)} />
+                  <CrevRight height={20} width={20} />
                 </TouchableOpacity>
               );
             })}

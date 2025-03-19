@@ -10,8 +10,9 @@ import {Divider, Progressbar, ScreenContainer} from 'components';
 import styles from './styles';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from '@react-native-vector-icons/fontawesome6-pro';
 import {navigate} from 'routes/utils';
+import Search from '../../assets/img/search.svg';
+import ChevronRight from '../../assets/img/chev-right.svg';
 
 type ISelectedTab = 'open_assets' | 'completed';
 
@@ -118,7 +119,7 @@ export const AssetListScreen = () => {
           paddingHorizontal: wp(3),
           gap: wp(3),
         }}>
-        <Icon name="magnifying-glass" size={wp(5)} color="#858C93" />
+        <Search width={16} height={16} />
         <TextInput
           style={{
             flex: 1,
@@ -141,7 +142,7 @@ export const AssetListScreen = () => {
             </Text>
             <Text style={styles.assetDataDesc}>DEL250300001</Text>
           </View>
-          <Icon name="chevron-right" size={wp(5)} color="#AAAFB4" />
+          <ChevronRight height={16} width={16} />
         </TouchableOpacity>
 
         <Divider orientation="horizontal" />
@@ -157,7 +158,7 @@ export const AssetListScreen = () => {
             </Text>
             <Text style={styles.assetDataDesc}>DEL250300001</Text>
           </View>
-          <Icon name="chevron-right" size={wp(5)} color="#AAAFB4" />
+          <ChevronRight height={16} width={16} />
         </TouchableOpacity>
 
         <Divider orientation="horizontal" />

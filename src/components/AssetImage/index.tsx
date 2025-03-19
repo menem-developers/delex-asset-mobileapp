@@ -8,16 +8,34 @@ import {
   home_bg,
   audit_asset_icon,
   register_asset_icon,
+  add,
+  back,
+  bell,
+  branchSvg,
+  edit,
+  re_register,
+  search,
+  menu,
+  chev_right,
 } from 'assets/img';
 
-type IAssets =
+export type IAssets =
   | 'logo'
   | 'paper_pad'
   | 'upload_asset_image'
   | 'login_bg'
   | 'audit_asset_icon'
   | 'register_asset_icon'
-  | 'home_bg';
+  | 'home_bg'
+  | 'branchSvg'
+  | 'add'
+  | 'back'
+  | 'bell'
+  | 'edit'
+  | 're_register'
+  | 'search'
+  | 'menu'
+  | 'chev_right';
 
 const assets: Record<IAssets, {height: number; width: number; image: any}> = {
   logo: {
@@ -54,6 +72,51 @@ const assets: Record<IAssets, {height: number; width: number; image: any}> = {
     height: 321,
     width: 352,
     image: register_asset_icon,
+  },
+  branchSvg: {
+    height: 321,
+    width: 352,
+    image: branchSvg,
+  },
+  add: {
+    height: 321,
+    width: 352,
+    image: add,
+  },
+  back: {
+    height: 321,
+    width: 352,
+    image: back,
+  },
+  bell: {
+    height: 321,
+    width: 352,
+    image: bell,
+  },
+  edit: {
+    height: 321,
+    width: 352,
+    image: edit,
+  },
+  re_register: {
+    height: 321,
+    width: 352,
+    image: re_register,
+  },
+  search: {
+    height: 321,
+    width: 352,
+    image: search,
+  },
+  menu: {
+    height: 321,
+    width: 352,
+    image: menu,
+  },
+  chev_right: {
+    height: 321,
+    width: 352,
+    image: chev_right,
   },
 };
 

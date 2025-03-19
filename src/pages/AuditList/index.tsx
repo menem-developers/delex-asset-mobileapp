@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import {Progressbar, ScreenContainer} from 'components';
 import {RouteProp} from '@react-navigation/native';
-import Icon from '@react-native-vector-icons/fontawesome6-pro';
+import Search from '../../assets/img/search.svg';
 
 type AuditListItemProps = {
   completed: number;
@@ -172,7 +172,7 @@ export const AuditListScreen = ({route}: Props) => {
         <View style={styles.assetListsTitle}>
           <Text style={styles.assetListTitleText}>Assets</Text>
           <View style={styles.searchbar}>
-            <Icon name="magnifying-glass" size={14} color={'#858C93'} />
+            <Search height={12} width={12} />
             <TextInput
               style={styles.search}
               placeholder="Search"
@@ -399,6 +399,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     padding: 0,
     gap: 8,
+    height: 24,
   },
   assetDetailItem: {
     display: 'flex',

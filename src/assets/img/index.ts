@@ -6,6 +6,14 @@ import home_bg from './home_bg.png';
 import audit_asset_icon from './audit_asset_icon.png';
 import register_asset_icon from './register_asset_icon.png';
 import branchSvg from './branch.svg';
+import add from './add.svg';
+import back from './back.svg';
+import bell from './bell.svg';
+import edit from './edit.svg';
+import re_register from './re-register.svg';
+import search from './search.svg';
+import menu from './menu.svg';
+import chev_right from './chev-right.svg';
 
 export {
   logo,
@@ -16,4 +24,12 @@ export {
   audit_asset_icon,
   register_asset_icon,
   branchSvg,
+  add,
+  back,
+  bell,
+  edit,
+  re_register,
+  search,
+  menu,
+  chev_right,
 };

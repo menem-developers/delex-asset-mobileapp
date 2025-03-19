@@ -2,9 +2,11 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import {back, toggleDrawer} from 'routes/utils';
+import {back} from 'routes/utils';
 import {AssetImage} from 'components/AssetImage';
-import Icon from '@react-native-vector-icons/fontawesome6-pro';
+import Menu from '../../assets/img/menu.svg';
+import Bell from '../../assets/img/bell.svg';
+import Back from '../../assets/img/back.svg';
 
 interface IHeaderProps {
   title?: string;
@@ -30,12 +32,13 @@ export const Header: React.FC<IHeaderProps> = props => {
   return (
     <View style={styles.container}>
       {showDrawer && (
-        <Icon
-          name="bars"
-          size={wp(7)}
-          color="#ffffff"
-          style={{marginLeft: wp(1)}}
-        />
+        // <Icon
+        //   name="bars"
+        //   size={wp(7)}
+        //   color="#ffffff"
+        //   style={{marginLeft: wp(1)}}
+        // />
+        <Menu width={16} height={16} />
       )}
 
       {showBack && (
@@ -44,7 +47,7 @@ export const Header: React.FC<IHeaderProps> = props => {
           onPress={() => {
             onBack ? onBack() : back();
           }}>
-          <Icon name="chevron-left" size={wp(6)} color="#ffffff" />
+          <Back width={20} height={20} />
         </TouchableOpacity>
       )}
 
@@ -58,7 +61,7 @@ export const Header: React.FC<IHeaderProps> = props => {
 
       {showNotify && (
         <TouchableOpacity style={styles.iconButton}>
-          <Icon name="bell" iconStyle="solid" size={wp(6)} color="#ffffff" />
+          <Bell width={20} height={20} />
         </TouchableOpacity>
       )}
       {/* // {showLogo ? (

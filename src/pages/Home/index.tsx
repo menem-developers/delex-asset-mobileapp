@@ -4,6 +4,8 @@ import {AssetImage, ScreenContainer} from 'components';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import {navigate} from 'routes/utils';
+import Simplification from '../../assets/img/simplification.svg';
+import Submitted from '../../assets/img/submitted.svg';
 
 type IMenuItem = {
   icon?: React.ReactNode;
@@ -85,6 +87,76 @@ export const HomeScreen = () => {
               </TouchableOpacity>
             );
           })}
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8,
+            flex: 1,
+            paddingTop: 24,
+            paddingHorizontal: 16,
+          }}>
+          <Text
+            style={{
+              color: '#002B5C',
+              fontFamily: 'Roboto',
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: 18.2,
+              letterSpacing: 0.7,
+            }}>
+            Recent Activites
+          </Text>
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: '#EAF1F7',
+              padding: 8,
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 16,
+                alignItems: 'center',
+                padding: 8,
+                borderBottomWidth: 1,
+                borderColor: '#EAF1F7',
+              }}>
+              <Simplification height={24} width={24} />
+              <Text
+                style={{
+                  color: '#3B475B',
+                  fontSize: 10,
+                  lineHeight: 13,
+                  letterSpacing: 0.5,
+                }}>
+                Asset Tag- 70 Assets has been registered on 14 Jan 2025
+              </Text>
+            </View>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 16,
+                alignItems: 'center',
+                padding: 8,
+              }}>
+              <Submitted height={24} width={24} />
+              <Text
+                style={{
+                  color: '#3B475B',
+                  fontSize: 10,
+                  lineHeight: 13,
+                  letterSpacing: 0.5,
+                }}>
+                Audit- Audit0724 is submitted on 17 Jan 2024.
+              </Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
 
