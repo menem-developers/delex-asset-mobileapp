@@ -1,0 +1,13 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      // This needs to be mirrored in babel.config.js
+      "components/*": ["components/*"],
+      "routes/*": ["routes/*"],
+      "assets/*": ["assets/*"],
+      "pages/*": ["pages/*"]
+    }
+  }
+}
