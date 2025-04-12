@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
 import {ScreenContainer} from 'components';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from './styles';
@@ -16,6 +15,7 @@ import AddIcon from '../../assets/img/add.svg';
 import EditIcon from '../../assets/img/edit.svg';
 import ReRegisterIcon from '../../assets/img/re-register.svg';
 import CrevRight from '../../assets/img/chev-right.svg';
+import LocationSelectView from './locationSelectView';
 
 interface IAssetInfoData {
   title: string;
@@ -30,27 +30,11 @@ interface IMenuItem {
 
 export const AssetDashboardScreen = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | undefined>('');
-  // const [locationDropdownData, setlocationDropdownData] = useState({
-  //   buildingName: {
-  //     data: [{label: 'label', value: 'label'}],
-  //     labelField: 'label',
-  //     valueField: 'value',
-  //   },
-  //   room: {
-  //     data: [{label: 'label', value: 'label'}],
-  //     labelField: 'label',
-  //     valueField: 'value',
-  //   },
-  //   category: {
-  //     data: [{label: 'label', value: 'label'}],
-  //     labelField: 'label',
-  //     valueField: 'value',
-  //   },
-  // });
   const [selectedLocation, setSelectedLocation] = useState({
-    buildingName: '',
-    room: '',
-    category: '',
+    location_name: '',
+    building_name: '',
+    floor_name: '',
+    room_name: '',
   });
 
   const assetInfoData: Array<IAssetInfoData> = [
@@ -87,50 +71,18 @@ export const AssetDashboardScreen = () => {
     setSelectedRoute(item.route);
   };
 
-  const renderLocationSelectView = () => {
-    return [
-      {key: 'buildingName', label: 'Building Name'},
-      {key: 'room', label: 'Room'},
-      {key: 'category', label: 'Category'},
-    ].map(el => {
-      return (
-        <View
-          key={el.key}
-          style={{
-            width: wp(90),
-            marginHorizontal: wp(5),
-          }}>
-          <Text
-            style={{
-              fontSize: wp(3.5),
-              fontWeight: '600',
-              letterSpacing: wp(0.15),
-            }}>
-            {el.label}
-          </Text>
-
-          <Dropdown
-            data={[{label: 'label', value: 'label'}]}
-            value={selectedLocation[el.key as keyof typeof selectedLocation]}
-            onChange={val =>
-              setSelectedLocation({...selectedLocation, [el.key]: val})
-            }
-            labelField={'label'}
-            valueField={'value'}
-            style={{
-              borderWidth: 1,
-              borderColor: '#E6E6E6',
-              borderRadius: 6,
-              padding: wp(3),
-              paddingRight: wp(4),
-              marginTop: wp(3),
-              marginBottom: wp(4),
-            }}
-          />
-        </View>
-      );
-    });
-  };
+  const renderLocationSelectView = () =>
+    [
+      {keys: 'location_name', label: 'Assets Location'},
+      {keys: 'building_name', label: 'Building Name'},
+      {keys: 'floor_name', label: 'Floor'},
+      {keys: 'room_name', label: 'Room'},
+    ].map(el => (
+      <LocationSelectView
+        key={el.keys}
+        {...{...el, selectedLocation, setSelectedLocation}}
+      />
+    ));
 
   return (
     <ScreenContainer
@@ -209,9 +161,10 @@ export const AssetDashboardScreen = () => {
           <TouchableOpacity
             style={StyleSheet.compose(styles.backButton, styles.submitButton)}
             onPress={() => {
-              selectedLocation.buildingName &&
-                selectedLocation.category &&
-                selectedLocation.room &&
+              selectedLocation.location_name &&
+                selectedLocation.building_name &&
+                selectedLocation.floor_name &&
+                selectedLocation.room_name &&
                 navigate('AssetList');
             }}>
             <Text style={styles.submitButtonText}>Submit</Text>
