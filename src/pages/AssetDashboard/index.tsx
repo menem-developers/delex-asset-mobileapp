@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -16,6 +16,7 @@ import EditIcon from '../../assets/img/edit.svg';
 import ReRegisterIcon from '../../assets/img/re-register.svg';
 import CrevRight from '../../assets/img/chev-right.svg';
 import LocationSelectView from './locationSelectView';
+import {useIsFocused} from '@react-navigation/native';
 
 interface IAssetInfoData {
   title: string;
@@ -29,12 +30,14 @@ interface IMenuItem {
 }
 
 export const AssetDashboardScreen = () => {
+  const isFocused = useIsFocused();
   const [selectedRoute, setSelectedRoute] = useState<string | undefined>('');
   const [selectedLocation, setSelectedLocation] = useState({
     location_name: '',
     building_name: '',
     floor_name: '',
     room_name: '',
+    subroom_name: '',
   });
 
   const assetInfoData: Array<IAssetInfoData> = [
@@ -77,12 +80,25 @@ export const AssetDashboardScreen = () => {
       {keys: 'building_name', label: 'Building Name'},
       {keys: 'floor_name', label: 'Floor'},
       {keys: 'room_name', label: 'Room'},
+      {keys: 'subroom_name', label: 'Sub Room'},
     ].map(el => (
       <LocationSelectView
         key={el.keys}
         {...{...el, selectedLocation, setSelectedLocation}}
       />
     ));
+
+  useEffect(() => {
+    if (isFocused) {
+      setSelectedLocation({
+        location_name: '',
+        building_name: '',
+        floor_name: '',
+        room_name: '',
+        subroom_name: '',
+      });
+    }
+  }, [isFocused]);
 
   return (
     <ScreenContainer
@@ -160,13 +176,7 @@ export const AssetDashboardScreen = () => {
         {selectedRoute ? (
           <TouchableOpacity
             style={StyleSheet.compose(styles.backButton, styles.submitButton)}
-            onPress={() => {
-              selectedLocation.location_name &&
-                selectedLocation.building_name &&
-                selectedLocation.floor_name &&
-                selectedLocation.room_name &&
-                navigate('AssetList');
-            }}>
+            onPress={() => navigate('AssetList', selectedLocation)}>
             <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
         ) : (

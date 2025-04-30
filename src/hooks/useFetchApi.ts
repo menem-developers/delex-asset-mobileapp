@@ -22,6 +22,7 @@ const useFetchApi = (options?: UseFetchApiOptions) => {
   const execute = async (url: string, config?: any) => {
     onLoading?.(true);
     setLoading(true);
+    console.log(BASE_URL + url, 'url');
     try {
       const res = await axios({
         url,
@@ -29,7 +30,7 @@ const useFetchApi = (options?: UseFetchApiOptions) => {
         method: config?.method ?? HTTP.GET,
         ...config,
       });
-      onSuccess?.({data: res.data, status: res?.status});
+      onSuccess?.({data: res.data, status: res?.status, url});
       onLoading?.(false);
       setLoading(false);
     } catch (error: any) {

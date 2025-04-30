@@ -1,11 +1,12 @@
+import dayjs from 'dayjs';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import React, {Fragment} from 'react';
 import {AssetImage, Divider, ScreenContainer} from 'components';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-export const AssetDetailsScreen = () => {
+export const AssetDetailsScreen = ({route}: any) => {
   return (
-    <ScreenContainer title="Asset Details">
+    <ScreenContainer title="Asset Details" showBack>
       <ScrollView>
         <View
           style={{
@@ -35,7 +36,7 @@ export const AssetDetailsScreen = () => {
                 fontSize: wp(3.5),
                 fontWeight: '600',
               }}>
-              LED Monitor 55”
+              {route?.params?.asset_description ?? ''}
             </Text>
             <Text
               style={{
@@ -43,7 +44,7 @@ export const AssetDetailsScreen = () => {
                 fontSize: wp(3.4),
                 fontWeight: '500',
               }}>
-              Monitor
+              {route?.params?.asset_type_name ?? ''}
             </Text>
             <View
               style={{
@@ -55,7 +56,8 @@ export const AssetDetailsScreen = () => {
                 style={{
                   height: wp(3),
                   width: wp(3),
-                  backgroundColor: 'green',
+                  backgroundColor:
+                    route?.params?.status_name === 'Active' ? 'green' : 'red',
                   borderRadius: wp(100),
                 }}
               />
@@ -66,7 +68,7 @@ export const AssetDetailsScreen = () => {
                   letterSpacing: wp(0.1),
                   fontSize: wp(3.2),
                 }}>
-                Available
+                {route?.params?.status_name ?? ''}
               </Text>
             </View>
           </View>
@@ -124,7 +126,21 @@ export const AssetDetailsScreen = () => {
                     letterSpacing: wp(0.2),
                     color: '#323B48',
                   }}>
-                  {el.value}
+                  {el.label === 'Brand'
+                    ? route?.params?.category_name ?? ''
+                    : el.label === 'Model'
+                    ? route?.params?.model_name ?? ''
+                    : el.label === 'Room'
+                    ? route?.params?.area_or_section_or_room ?? ''
+                    : el.label === 'Department'
+                    ? route?.params?.department_name ?? ''
+                    : el.label === 'Purchase Date'
+                    ? route?.params?.purchase_date
+                      ? dayjs(route?.params?.purchase_date).format(
+                          'DD MMM YYYY',
+                        )
+                      : ''
+                    : ''}
                 </Text>
               </View>
               <Divider orientation="horizontal" />

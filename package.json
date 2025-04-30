@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android-prod-debug": "react-native run-android --mode release",
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
@@ -19,6 +20,7 @@
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "axios": "^1.8.4",
+    "dayjs": "^1.11.13",
     "react": "18.3.1",
     "react-native": "0.76.6",
     "react-native-element-dropdown": "^2.12.4",

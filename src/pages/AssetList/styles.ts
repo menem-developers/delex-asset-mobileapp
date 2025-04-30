@@ -126,6 +126,12 @@ const styles = StyleSheet.create({
   },
   assetDataTitle: {fontSize: wp(4), fontWeight: '500', color: '#3B475B'},
   assetDataDesc: {fontSize: wp(3), fontWeight: '400', color: '#848B98'},
+  noRecord: {
+    fontSize: wp(3.5),
+    letterSpacing: wp(0.15),
+    padding: 12,
+    color: '#848B98',
+  },
 });
 
 export default styles;
