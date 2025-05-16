@@ -1,3 +1,4 @@
+import {useIsFocused} from '@react-navigation/native';
 import {
   ActivityIndicator,
   FlatList,
@@ -5,23 +6,25 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {Fragment, useEffect, useState} from 'react';
 import {Divider, Progressbar, ScreenContainer} from 'components';
-import styles from './styles';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import {navigate} from 'routes/utils';
-import Search from '../../assets/img/search.svg';
-import ChevronRight from '../../assets/img/chev-right.svg';
-import {ASSETS} from '../../utlis/endpoints';
-import {useDebounce, useFetchApi} from '../../hooks';
+import {useDebounce, useFetchApi} from 'hooks';
+import Search from 'assets/img/search.svg';
+import ChevronRight from 'assets/img/chev-right.svg';
+import {ASSETS} from 'utlis/endpoints';
+import styles from './styles';
 
 type ISelectedTab = 'open_assets' | 'completed';
 
 export const AssetListScreen = ({route}: any) => {
+  const isFocused = useIsFocused();
   const [selectedTab, setSelectedTab] = useState<ISelectedTab>('open_assets');
   const [searchText, setSearchText] = useState<string>('');
   const [assetData, setAssetData] = useState<any[]>([]);
@@ -44,7 +47,10 @@ export const AssetListScreen = ({route}: any) => {
         }
       }
     },
-    onError: err => console.log(err, 'err'),
+    onError: err => {
+      console.log(err, 'err');
+      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+    },
   });
 
   const fetchData = (
@@ -65,7 +71,7 @@ export const AssetListScreen = ({route}: any) => {
   };
 
   useEffect(() => {
-    if (route?.params) {
+    if (route?.params && isFocused) {
       setPageNo(1);
       if (!completeAssetDetails && !openAssetDetails) {
         fetchData(1, true);
@@ -75,7 +81,7 @@ export const AssetListScreen = ({route}: any) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route?.params, searchQuery]);
+  }, [route?.params, searchQuery, isFocused]);
 
   return (
     <ScreenContainer title="Asset List" showBack>
@@ -85,61 +91,40 @@ export const AssetListScreen = ({route}: any) => {
         colors={['rgba(73, 114, 156, 0.50)', '#E1EBF5', '#E8EFF6', '#94AEC8']}
         style={styles.statsCardBg}>
         <View style={styles.statsCard}>
-          <View style={styles.statsLocationDetailsConatiner}>
-            <View style={{flex: 1}}>
-              <Text style={styles.statsLocationTitle}>Building Name</Text>
-              <Text style={styles.statsLocationValue}>
-                {route?.params?.building_name?.building_name}
-              </Text>
-            </View>
+          {route?.params?.location_name?.location_name && (
+            <Text style={styles.statsLocationValue}>
+              {route?.params?.location_name?.location_name}
+            </Text>
+          )}
+          {route?.params?.building_name?.building_name && (
+            <Text style={styles.statsLocationTitle}>
+              {route?.params?.building_name?.building_name}
+            </Text>
+          )}
+          {route?.params?.room_name?.room_name && (
+            <Text style={styles.taggingText}>
+              {route?.params?.room_name?.room_name}
+            </Text>
+          )}
 
-            <Divider orientation="vertical" size={2} />
-
-            <View style={{flex: 1}}>
-              <Text
-                style={StyleSheet.compose(styles.statsLocationTitle, {
-                  textAlign: 'center',
-                })}>
-                Room
-              </Text>
-              <Text
-                style={StyleSheet.compose(styles.statsLocationValue, {
-                  textAlign: 'center',
-                })}>
-                {route?.params?.room_name?.room_name}
-              </Text>
-            </View>
-
-            <Divider orientation="vertical" size={2} />
-
-            <View style={{flex: 1}}>
-              <Text
-                style={StyleSheet.compose(styles.statsLocationTitle, {
-                  textAlign: 'right',
-                })}>
-                Sub Room
-              </Text>
-              <Text
-                style={StyleSheet.compose(styles.statsLocationValue, {
-                  textAlign: 'right',
-                })}>
-                {route?.params?.subroom_name?.subroom_name}
-              </Text>
-            </View>
-          </View>
-
-          <Divider orientation="horizontal" size={2} />
+          {(route?.params?.location_name?.location_name ||
+            route?.params?.building_name?.building_name ||
+            route?.params?.room_name?.room_name) && (
+            <Divider orientation="horizontal" size={2} />
+          )}
 
           <Text style={styles.taggingText}>Tagging progress</Text>
 
           <View style={{gap: wp(2)}}>
             <View style={styles.progressInfoContainer}>
               <Text style={styles.progressPercentageText}>
-                {Math.floor(
-                  ((completeAssetDetails?.total - openAssetDetails?.total) /
-                    completeAssetDetails?.total) *
-                    100,
-                )}
+                {completeAssetDetails?.total && openAssetDetails?.total
+                  ? Math.floor(
+                      ((completeAssetDetails?.total - openAssetDetails?.total) /
+                        completeAssetDetails?.total) *
+                        100,
+                    )
+                  : 0}
                 % Completed
               </Text>
               <Text style={styles.taggingCountText}>

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     padding: wp(5),
     borderRadius: 8,
     backgroundColor: '#fff',
-    gap: wp(3),
+    gap: wp(1),
   },
   statsLocationDetailsConatiner: {
     flexDirection: 'row',
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
   },
   statsLocationTitle: {
     color: '#848B98',
-    fontSize: wp(3),
+    fontSize: wp(3.5),
     fontWeight: '500',
     letterSpacing: wp(0.1),
   },
   statsLocationValue: {
     color: '#3B475B',
-    fontSize: wp(3.5),
+    fontSize: wp(4),
     fontWeight: '500',
     letterSpacing: wp(0.2),
   },

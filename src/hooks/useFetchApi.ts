@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {BASE_URL} from '../utlis/endpoints';
+import {BASE_URL} from 'utlis/endpoints';
 import {useState} from 'react';
 
 export enum HTTP {
@@ -22,7 +22,8 @@ const useFetchApi = (options?: UseFetchApiOptions) => {
   const execute = async (url: string, config?: any) => {
     onLoading?.(true);
     setLoading(true);
-    console.log(BASE_URL + url, 'url');
+    console.log('url:- ', BASE_URL + url);
+    console.log('config:- ', JSON.stringify(config));
     try {
       const res = await axios({
         url,

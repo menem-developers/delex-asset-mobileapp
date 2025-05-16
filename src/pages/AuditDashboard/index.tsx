@@ -9,8 +9,8 @@ import React, {useState} from 'react';
 import {ScreenContainer} from 'components';
 
 import styles from './styles';
-import Branch from '../../assets/img/branch.svg';
-import Auditor from '../../assets/img/auditor.svg';
+import Branch from 'assets/img/branch.svg';
+import Auditor from 'assets/img/auditor.svg';
 import {AssetCharts} from './AssetChart';
 import AuditListItem from './AuditListItem';
 

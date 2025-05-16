@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import {Progressbar, ScreenContainer} from 'components';
 import {RouteProp} from '@react-navigation/native';
-import Search from '../../assets/img/search.svg';
+import Search from 'assets/img/search.svg';
 
 type AuditListItemProps = {
   completed: number;

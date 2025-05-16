@@ -11,10 +11,10 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import styles from './styles';
 import {navigate} from 'routes/utils';
 import {useBackHandler} from '@react-native-community/hooks';
-import AddIcon from '../../assets/img/add.svg';
-import EditIcon from '../../assets/img/edit.svg';
-import ReRegisterIcon from '../../assets/img/re-register.svg';
-import CrevRight from '../../assets/img/chev-right.svg';
+import AddIcon from 'assets/img/add.svg';
+import EditIcon from 'assets/img/edit.svg';
+import ReRegisterIcon from 'assets/img/re-register.svg';
+import CrevRight from 'assets/img/chev-right.svg';
 import LocationSelectView from './locationSelectView';
 import {useIsFocused} from '@react-navigation/native';
 

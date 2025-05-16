@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import useFetchApi from '../../hooks/useFetchApi';
+import useFetchApi from 'hooks/useFetchApi';
 import {
   ASSET_LOCATIONS,
   BUILDINGS,
   FLOORS,
   ROOMS,
   SUBROOMS,
-} from '../../utlis/endpoints';
+} from 'utlis/endpoints';
 
 const LocationSelectView = ({
   keys,

@@ -15,9 +15,9 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? -hp(1) : 0,
-    marginBottom: Platform.OS === 'ios' ? -hp(2) : 0,
-    backgroundColor: '#ffffff',
+    paddingTop: Platform.OS === 'ios' ? -hp(1) : 0,
+    paddingBottom: Platform.OS === 'ios' ? -hp(2) : 0,
+    backgroundColor: '#002B5C',
   },
 });
 

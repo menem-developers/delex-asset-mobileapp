@@ -4,8 +4,8 @@ import {AssetImage, ScreenContainer} from 'components';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import {navigate} from 'routes/utils';
-import Simplification from '../../assets/img/simplification.svg';
-import Submitted from '../../assets/img/submitted.svg';
+import Simplification from 'assets/img/simplification.svg';
+import Submitted from 'assets/img/submitted.svg';
 
 type IMenuItem = {
   icon?: React.ReactNode;

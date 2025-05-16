@@ -14,6 +14,7 @@ import re_register from './re-register.svg';
 import search from './search.svg';
 import menu from './menu.svg';
 import chev_right from './chev-right.svg';
+import success_checked from './success_checked.png';
 
 export {
   logo,
@@ -32,4 +33,5 @@ export {
   search,
   menu,
   chev_right,
+  success_checked,
 };

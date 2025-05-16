@@ -17,6 +17,7 @@ import {
   search,
   menu,
   chev_right,
+  success_checked,
 } from 'assets/img';
 
 export type IAssets =
@@ -35,7 +36,8 @@ export type IAssets =
   | 're_register'
   | 'search'
   | 'menu'
-  | 'chev_right';
+  | 'chev_right'
+  | 'success_checked';
 
 const assets: Record<IAssets, {height: number; width: number; image: any}> = {
   logo: {
@@ -117,6 +119,11 @@ const assets: Record<IAssets, {height: number; width: number; image: any}> = {
     height: 321,
     width: 352,
     image: chev_right,
+  },
+  success_checked: {
+    height: 10,
+    width: 10,
+    image: success_checked,
   },
 };
 

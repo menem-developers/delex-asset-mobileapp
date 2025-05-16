@@ -4,9 +4,9 @@ import styles from './styles';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {back} from 'routes/utils';
 import {AssetImage} from 'components/AssetImage';
-import Menu from '../../assets/img/menu.svg';
-import Bell from '../../assets/img/bell.svg';
-import Back from '../../assets/img/back.svg';
+import Menu from 'assets/img/menu.svg';
+import Bell from 'assets/img/bell.svg';
+import Back from 'assets/img/back.svg';
 
 interface IHeaderProps {
   title?: string;
