@@ -51,6 +51,7 @@ export const AssetDetailsScreen = ({route}: any) => {
     try {
       await initializeReader();
       powerListener(eventListenerPower);
+      // @ts-ignore
       tagListener(eventListenerTag);
     } catch (error: any) {
       showAlert(error.message);

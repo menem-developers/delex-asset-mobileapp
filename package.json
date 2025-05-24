@@ -12,9 +12,6 @@
   },
   "dependencies": {
     "@react-native-community/hooks": "^3.0.0",
-    "@react-native-vector-icons/common": "^11.0.0",
-    "@react-native-vector-icons/fontawesome6": "^6.7.1",
-    "@react-native-vector-icons/fontawesome6-pro": "^6.7.1",
     "@react-navigation/drawer": "^7.1.1",
     "@react-navigation/elements": "^2.2.5",
     "@react-navigation/native": "^7.0.14",

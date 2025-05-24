@@ -2,54 +2,58 @@ import React from 'react';
 import {CircularProgress} from 'components/CircularProgress';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {navigate} from 'routes/utils';
+import dayjs from 'dayjs';
 
 type AuditListItemProps = {
-  completed: number;
-  total: number;
-  name: string;
-  branch: string;
-  status: string;
-  date: string;
+  item: any;
 };
 
 export default function AuditListItem(props: AuditListItemProps) {
+  const {
+    asset_location_name,
+    audit_name,
+    completed_assets,
+    due_date,
+    total_assets,
+    status_name,
+  } = props.item;
   return (
     <TouchableOpacity
       style={styles.container}
       activeOpacity={1}
-      onPress={() => navigate('AuditList', props)}>
+      onPress={() => navigate('AuditList', props.item)}>
       <CircularProgress
-        progress={props.completed}
-        total={props.total}
+        progress={completed_assets}
+        total={total_assets}
         strokeWidth={6}
         size={72}
       />
       <View style={styles.detailContents}>
         <View style={styles.auditDetail}>
-          <Text style={styles.auditName}>{props.name}</Text>
-          <Text style={styles.auditBranchName}>
-            <Text style={styles.branch}>Branch</Text> {props.branch}
-          </Text>
+          <Text style={styles.auditName}>{audit_name}</Text>
+          <Text style={styles.auditBranchName}>{asset_location_name}</Text>
         </View>
         <View style={styles.auditDateStatus}>
           <Text
             style={StyleSheet.compose(styles.auditStatus, {
               backgroundColor:
-                props.status === 'Open'
+                status_name === 'Active'
                   ? '#E8F4FF'
-                  : props.status === 'In Progress'
+                  : status_name === 'In Progress'
                   ? '#FFF9E6'
                   : '#FEEBEB',
               color:
-                props.status === 'Open'
+                status_name === 'Active'
                   ? '#1E90FF'
-                  : props.status === 'In Progress'
+                  : status_name === 'In Progress'
                   ? '#E7AD00'
                   : '#F43434',
             })}>
-            {props.status}
+            {status_name}
           </Text>
-          <Text style={styles.auditDate}>{props.date}</Text>
+          <Text style={styles.auditDate}>
+            {due_date ? dayjs(due_date).format('DD MMM YYYY') : ''}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

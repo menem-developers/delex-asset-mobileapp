@@ -82,6 +82,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#F1F1F1',
   },
+  noRecord: {
+    fontSize: wp(3.5),
+    letterSpacing: wp(0.15),
+    padding: 12,
+    color: '#848B98',
+  },
 });
 
 export default styles;

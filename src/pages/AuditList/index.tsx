@@ -3,21 +3,25 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Progressbar, ScreenContainer} from 'components';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useIsFocused} from '@react-navigation/native';
 import Search from 'assets/img/search.svg';
+import useFetchApi from 'hooks/useFetchApi';
+import {AUDIT_FORMS_ID} from 'utlis/endpoints';
+import dayjs from 'dayjs';
 
 type AuditListItemProps = {
-  completed: number;
-  total: number;
-  name: string;
-  branch: string;
+  completed_assets: number;
+  total_assets: number;
+  audit_name: string;
+  asset_location_name: string;
   status: string;
-  date: string;
+  start_date: string;
 };
 
 type RootStackParamList = {
@@ -30,6 +34,29 @@ type Props = {
 
 export const AuditListScreen = ({route}: Props) => {
   const data = route.params;
+  const isFocused = useIsFocused();
+  const [auditList, setAuditlist] = useState<any>();
+
+  const {execute} = useFetchApi({
+    onSuccess: res => {
+      if (res?.status === 200) {
+        console.log('res?.data', res?.data);
+        setAuditlist(res?.data);
+      }
+    },
+    onError: err => {
+      console.log('err', JSON.stringify(err?.data));
+      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+    },
+  });
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('data', data);
+      execute(AUDIT_FORMS_ID + 10);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused]);
 
   const dummyAssetList = [
     {
@@ -103,40 +130,31 @@ export const AuditListScreen = ({route}: Props) => {
     <ScreenContainer title="Audit List" showBack>
       <View style={styles.auditTitleContainer}>
         <View style={styles.titleTop}>
-          <Text style={styles.auditFieldName}>Audit Name</Text>
-          <Text style={styles.auditName}>{data.name}</Text>
-        </View>
-        <View style={styles.titleBottom}>
-          <View style={styles.auditDetail}>
-            <Text style={styles.auditField}>Branch</Text>
-            <Text style={styles.auditValue}>{data.branch}</Text>
-          </View>
-          <View style={styles.auditDetail}>
-            <Text style={styles.auditField}>Audit Method</Text>
-            <Text style={styles.auditValue}>RFID Scan</Text>
-          </View>
-          <View style={styles.auditDetail}>
-            <Text style={styles.auditField}>Start Date</Text>
-            <Text style={styles.auditValue}>{data.date}</Text>
-          </View>
+          <Text style={styles.auditName}>{data?.audit_name ?? ''}</Text>
+          <Text style={styles.auditValue}>{data.asset_location_name}</Text>
+          <Text style={styles.auditField}>
+            {data?.start_date
+              ? dayjs(data?.start_date).format('DD MMM YYYY')
+              : ''}
+          </Text>
         </View>
       </View>
       <View style={styles.progressContainer}>
         <Text style={styles.progressText}>Audit Progress</Text>
         <View style={styles.progressDisplay}>
           <Text style={styles.progressBlue}>
-            {(100 - (data.completed / data.total) * 100).toFixed(2)}% to
+            {((data.completed_assets / data.total_assets) * 100).toFixed(2)}% to
             complete
           </Text>
           <Text style={styles.progressBlue}>
-            {data.completed}
-            <Text style={styles.progressGray}>/{data.total}</Text>
+            {data.completed_assets}
+            <Text style={styles.progressGray}>/{data.total_assets}</Text>
           </Text>
         </View>
         <Progressbar
           color={'#1E90FF'}
           size={8}
-          progress={(data.completed / data.total) * 100}
+          progress={(data.completed_assets / data.total_assets) * 100}
         />
         <View style={styles.progressDataList}>
           <View style={styles.progressDataDisplay}>
@@ -181,7 +199,10 @@ export const AuditListScreen = ({route}: Props) => {
           </View>
         </View>
         <ScrollView style={styles.assetItemList}>
-          {dummyAssetList.map((asset, index) => {
+          {(auditList?.auditors?.length
+            ? auditList?.auditors
+            : dummyAssetList
+          )?.map((asset: any, index: number) => {
             return (
               <View key={index} style={styles.assetDetailItem}>
                 <View style={styles.assetItemDetail}>
@@ -233,14 +254,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
   },
   titleTop: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomColor: '#E6E6E6',
     borderBottomWidth: 1,
-    alignItems: 'center',
   },
   titleBottom: {
     display: 'flex',
