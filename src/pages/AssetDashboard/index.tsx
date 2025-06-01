@@ -12,16 +12,17 @@ import styles from './styles';
 import {navigate} from 'routes/utils';
 import {useBackHandler} from '@react-native-community/hooks';
 import AddIcon from 'assets/img/add.svg';
-import EditIcon from 'assets/img/edit.svg';
+// import EditIcon from 'assets/img/edit.svg';
 import ReRegisterIcon from 'assets/img/re-register.svg';
 import CrevRight from 'assets/img/chev-right.svg';
 import LocationSelectView from './locationSelectView';
 import {useIsFocused} from '@react-navigation/native';
+import useFetchApi from 'hooks/useFetchApi';
+import {REGISTRATION_STATS} from 'utlis/endpoints';
 
 interface IAssetInfoData {
   title: string;
   color: string;
-  value: string;
 }
 interface IMenuItem {
   icon: any;
@@ -31,6 +32,7 @@ interface IMenuItem {
 
 export const AssetDashboardScreen = () => {
   const isFocused = useIsFocused();
+  const [assetInfo, setAssetInfo] = useState<any>();
   const [selectedRoute, setSelectedRoute] = useState<string | undefined>('');
   const [selectedLocation, setSelectedLocation] = useState({
     location_name: '',
@@ -41,8 +43,8 @@ export const AssetDashboardScreen = () => {
   });
 
   const assetInfoData: Array<IAssetInfoData> = [
-    {value: '3500', title: 'Active Assets', color: '#1E90FF'},
-    {value: '145', title: 'Registered', color: '#28A745'},
+    {title: 'Active Assets', color: '#1E90FF'},
+    {title: 'Registered', color: '#28A745'},
   ];
 
   const menuItemList: Array<IMenuItem> = [
@@ -55,10 +57,10 @@ export const AssetDashboardScreen = () => {
       icon: <ReRegisterIcon height={20} width={20} />,
       title: 'Asset Re-Registration',
     },
-    {
-      icon: <EditIcon height={20} width={20} />,
-      title: 'Asset Activation/Deactivation',
-    },
+    // {
+    //   icon: <EditIcon height={20} width={20} />,
+    //   title: 'Asset Activation/Deactivation',
+    // },
   ];
 
   useBackHandler(() => {
@@ -76,17 +78,26 @@ export const AssetDashboardScreen = () => {
 
   const renderLocationSelectView = () =>
     [
-      {keys: 'location_name', label: 'Assets Location'},
-      {keys: 'building_name', label: 'Building Name'},
-      {keys: 'floor_name', label: 'Floor'},
-      {keys: 'room_name', label: 'Room'},
-      {keys: 'subroom_name', label: 'Sub Room'},
+      {keys: 'location_name', label: 'Main'},
+      {keys: 'building_name', label: 'Major'},
+      {keys: 'floor_name', label: 'Field/Coastal'},
+      {keys: 'room_name', label: 'Area/Section'},
+      {keys: 'subroom_name', label: 'Asset Grouping'},
     ].map(el => (
       <LocationSelectView
         key={el.keys}
         {...{...el, selectedLocation, setSelectedLocation}}
       />
     ));
+  const {execute} = useFetchApi({
+    onSuccess: res => {
+      if (res?.status === 200) {
+        console.log('res:- ', res?.data);
+        setAssetInfo(res?.data);
+      }
+    },
+    onError: err => console.log(err, 'err'),
+  });
 
   useEffect(() => {
     if (isFocused) {
@@ -97,7 +108,9 @@ export const AssetDashboardScreen = () => {
         room_name: '',
         subroom_name: '',
       });
+      execute(REGISTRATION_STATS);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
   return (
@@ -146,7 +159,16 @@ export const AssetDashboardScreen = () => {
                   />
                 </View>
                 <View style={{gap: wp(1)}}>
-                  <Text style={styles.assetInfoValue}>{el.value}</Text>
+                  <Text style={styles.assetInfoValue}>
+                    {el.title === 'Active Assets'
+                      ? (assetInfo?.completed_assets
+                          ? assetInfo?.completed_assets
+                          : 0) +
+                        (assetInfo?.open_assets ? assetInfo?.open_assets : 0)
+                      : assetInfo?.completed_assets
+                      ? assetInfo?.completed_assets
+                      : 0}
+                  </Text>
                   <Text style={styles.assetInfoTitle}>{el.title}</Text>
                 </View>
               </View>
@@ -175,9 +197,22 @@ export const AssetDashboardScreen = () => {
       <View style={styles.footer}>
         {selectedRoute ? (
           <TouchableOpacity
-            style={StyleSheet.compose(styles.backButton, styles.submitButton)}
+            style={StyleSheet.compose(
+              styles.backButton,
+              selectedLocation.location_name === ''
+                ? styles.disabled
+                : styles.submitButton,
+            )}
+            disabled={selectedLocation.location_name === ''}
             onPress={() => navigate('AssetList', selectedLocation)}>
-            <Text style={styles.submitButtonText}>Submit</Text>
+            <Text
+              style={
+                selectedLocation.location_name === ''
+                  ? {...styles.submitButtonText, color: '#6A6A6A'}
+                  : styles.submitButtonText
+              }>
+              Submit
+            </Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity

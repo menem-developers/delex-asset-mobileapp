@@ -16,7 +16,7 @@ import AuditListItem from './AuditListItem';
 import useFetchApi from 'hooks/useFetchApi';
 import {AUDIT_FORMS} from 'utlis/endpoints';
 import {useIsFocused} from '@react-navigation/native';
-// import AuditDashboardHeader from './AuditDashboardHeader';
+import AuditDashboardHeader from './AuditDashboardHeader';
 
 type ISelectedTab = 'Scheduled' | 'Overdue' | 'Completed';
 
@@ -57,7 +57,7 @@ export const AuditDashboardScreen = () => {
 
   return (
     <ScreenContainer title="Audit" showBack>
-      {/* <AuditDashboardHeader/> */}
+      <AuditDashboardHeader />
       <View style={styles.tabContainer}>
         {['Scheduled', 'Overdue', 'Completed'].map(
           (item: string, i: number) => (
@@ -106,7 +106,7 @@ export const AuditDashboardScreen = () => {
         ListEmptyComponent={
           <Text
             style={StyleSheet.compose(styles.noRecord, {textAlign: 'center'})}>
-            No records found!!!
+            No records found!
           </Text>
         }
         data={auditData ?? []}

@@ -12,9 +12,13 @@ import {
   back,
   bell,
   branchSvg,
+  complete_flag,
   edit,
+  eye,
   re_register,
   search,
+  scanner,
+  major,
   menu,
   chev_right,
   success_checked,
@@ -32,9 +36,13 @@ export type IAssets =
   | 'add'
   | 'back'
   | 'bell'
+  | 'complete_flag'
   | 'edit'
+  | 'eye'
   | 're_register'
   | 'search'
+  | 'scanner'
+  | 'major'
   | 'menu'
   | 'chev_right'
   | 'success_checked';
@@ -95,10 +103,20 @@ const assets: Record<IAssets, {height: number; width: number; image: any}> = {
     width: 352,
     image: bell,
   },
+  complete_flag: {
+    height: 321,
+    width: 352,
+    image: complete_flag,
+  },
   edit: {
     height: 321,
     width: 352,
     image: edit,
+  },
+  eye: {
+    height: 321,
+    width: 352,
+    image: eye,
   },
   re_register: {
     height: 321,
@@ -109,6 +127,16 @@ const assets: Record<IAssets, {height: number; width: number; image: any}> = {
     height: 321,
     width: 352,
     image: search,
+  },
+  scanner: {
+    height: 321,
+    width: 352,
+    image: scanner,
+  },
+  major: {
+    height: 321,
+    width: 352,
+    image: major,
   },
   menu: {
     height: 321,

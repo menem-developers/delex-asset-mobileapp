@@ -11,15 +11,16 @@ import {
   View,
 } from 'react-native';
 import React, {Fragment, useEffect, useState} from 'react';
-import {Divider, Progressbar, ScreenContainer} from 'components';
+import {Divider, ScreenContainer} from 'components';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import LinearGradient from 'react-native-linear-gradient';
 import {navigate} from 'routes/utils';
 import {useDebounce, useFetchApi} from 'hooks';
 import Search from 'assets/img/search.svg';
 import ChevronRight from 'assets/img/chev-right.svg';
+import CompleteFlag from 'assets/img/complete_flag.svg';
 import {ASSETS} from 'utlis/endpoints';
 import styles from './styles';
+import AssetListHeader from './AssetListHeader';
 
 type ISelectedTab = 'open_assets' | 'completed';
 
@@ -36,9 +37,12 @@ export const AssetListScreen = ({route}: any) => {
 
   const {execute, loading} = useFetchApi({
     onSuccess: res => {
+      console.log(res?.data);
       if (res?.status === 200) {
         setAssetData(prev =>
-          pageNo === 1 ? res?.data?.items : prev.concat(res?.data?.items),
+          prev?.length
+            ? res?.data?.items
+            : [...prev.concat(res?.data?.items ?? [])],
         );
         if (res.url.includes('rfid_reference=1')) {
           setCompleteAssetDetails(res?.data);
@@ -85,68 +89,13 @@ export const AssetListScreen = ({route}: any) => {
 
   return (
     <ScreenContainer title="Asset List" showBack>
-      <LinearGradient
-        start={{x: 0, y: 0.1}}
-        end={{x: 0, y: 0.9}}
-        colors={['rgba(73, 114, 156, 0.50)', '#E1EBF5', '#E8EFF6', '#94AEC8']}
-        style={styles.statsCardBg}>
-        <View style={styles.statsCard}>
-          {route?.params?.location_name?.location_name && (
-            <Text style={styles.statsLocationValue}>
-              {route?.params?.location_name?.location_name}
-            </Text>
-          )}
-          {route?.params?.building_name?.building_name && (
-            <Text style={styles.statsLocationTitle}>
-              {route?.params?.building_name?.building_name}
-            </Text>
-          )}
-          {route?.params?.room_name?.room_name && (
-            <Text style={styles.taggingText}>
-              {route?.params?.room_name?.room_name}
-            </Text>
-          )}
-
-          {(route?.params?.location_name?.location_name ||
-            route?.params?.building_name?.building_name ||
-            route?.params?.room_name?.room_name) && (
-            <Divider orientation="horizontal" size={2} />
-          )}
-
-          <Text style={styles.taggingText}>Tagging progress</Text>
-
-          <View style={{gap: wp(2)}}>
-            <View style={styles.progressInfoContainer}>
-              <Text style={styles.progressPercentageText}>
-                {completeAssetDetails?.total && openAssetDetails?.total
-                  ? Math.floor(
-                      ((completeAssetDetails?.total - openAssetDetails?.total) /
-                        completeAssetDetails?.total) *
-                        100,
-                    )
-                  : 0}
-                % Completed
-              </Text>
-              <Text style={styles.taggingCountText}>
-                <Text style={{color: '#1E90FF'}}>
-                  {openAssetDetails?.total}
-                </Text>{' '}
-                / {completeAssetDetails?.total}
-              </Text>
-            </View>
-
-            <Progressbar
-              color={'#1E90FF'}
-              size={6}
-              progress={Math.floor(
-                ((completeAssetDetails?.total - openAssetDetails?.total) /
-                  completeAssetDetails?.total) *
-                  100,
-              )}
-            />
-          </View>
-        </View>
-      </LinearGradient>
+      <AssetListHeader
+        data={route?.params}
+        completeAssetDetails={
+          completeAssetDetails?.total ? completeAssetDetails?.total : 0
+        }
+        openAssetDetails={openAssetDetails?.total ? openAssetDetails?.total : 0}
+      />
 
       <View style={styles.tabContainer}>
         <TouchableOpacity
@@ -166,7 +115,9 @@ export const AssetListScreen = ({route}: any) => {
             Open Assets
           </Text>
           {selectedTab === 'open_assets' && (
-            <Text style={styles.tabBadge}>{openAssetDetails?.total ?? 0}</Text>
+            <Text style={styles.tabBadge}>
+              {openAssetDetails?.total ? openAssetDetails?.total : 0}
+            </Text>
           )}
         </TouchableOpacity>
         <TouchableOpacity
@@ -242,7 +193,7 @@ export const AssetListScreen = ({route}: any) => {
         ListEmptyComponent={
           <Text
             style={StyleSheet.compose(styles.noRecord, {textAlign: 'center'})}>
-            No records found!!!
+            No records found!
           </Text>
         }
         data={assetData ?? []}
@@ -252,13 +203,23 @@ export const AssetListScreen = ({route}: any) => {
             <TouchableOpacity
               style={styles.assetDataCard}
               onPress={() => navigate('AssetDetails', item)}>
-              <View style={styles.assetDataContainer}>
+              <View
+                style={
+                  selectedTab === 'completed'
+                    ? styles.completeAssetContainer
+                    : styles.assetDataContainer
+                }>
                 <Text style={styles.assetDataTitle}>
                   {item?.asset_description ?? ''}
                 </Text>
-                <Text style={styles.assetDataDesc}>{item?.asset_id ?? ''}</Text>
+                <Text style={styles.assetDataDesc}>
+                  Asset No: {item?.erp_asset_no ?? ''}
+                </Text>
               </View>
-              <ChevronRight height={16} width={16} />
+              {selectedTab === 'completed' && (
+                <CompleteFlag height={20} width={20} />
+              )}
+              <ChevronRight height={18} width={18} />
             </TouchableOpacity>
 
             <Divider orientation="horizontal" />

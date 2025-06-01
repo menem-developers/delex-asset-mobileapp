@@ -7,6 +7,7 @@ import {AssetImage} from 'components/AssetImage';
 import Menu from 'assets/img/menu.svg';
 import Bell from 'assets/img/bell.svg';
 import Back from 'assets/img/back.svg';
+import Scanner from 'assets/img/scanner.svg';
 
 interface IHeaderProps {
   title?: string;
@@ -14,6 +15,7 @@ interface IHeaderProps {
   renderRight?: React.ReactNode;
   showDrawer?: boolean;
   showBack?: boolean;
+  onPressScanner?(): void;
   onBack?(): void;
   showNotify?: boolean;
 }
@@ -26,6 +28,7 @@ export const Header: React.FC<IHeaderProps> = props => {
     renderRight,
     showNotify,
     showDrawer,
+    onPressScanner,
     onBack,
   } = props;
 
@@ -86,6 +89,14 @@ export const Header: React.FC<IHeaderProps> = props => {
       //       <Icon name="bars" size={wp(8)} color="#ffffff" />
       //     </TouchableOpacity>
       //   ))} */}
+
+      {!!onPressScanner && (
+        <TouchableOpacity
+          style={[styles.iconButton, {paddingRight: wp(3)}]}
+          onPress={onPressScanner}>
+          <Scanner height={32} width={32} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

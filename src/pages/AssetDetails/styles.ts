@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderRadius: 8,
   },
+  backButtonText: {
+    color: '#1D232F',
+    fontWeight: '600',
+    fontSize: wp(4),
+  },
   submitButtonText: {
     color: '#FAFBFF',
     fontWeight: '600',

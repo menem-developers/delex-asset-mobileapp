@@ -4,7 +4,9 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 const styles = StyleSheet.create({
   auditHeader: {
     backgroundColor: '#EAF1F7',
-    padding: 24,
+    // padding: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 8,
     display: 'flex',
     flexDirection: 'column',
     gap: 16,

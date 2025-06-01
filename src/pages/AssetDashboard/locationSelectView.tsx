@@ -76,7 +76,10 @@ const LocationSelectView = ({
         width: wp(90),
         marginHorizontal: wp(5),
       }}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label}>
+        {label}
+        {label === 'Main' && '*'}
+      </Text>
       <Dropdown
         data={options()}
         value={selectedLocation[keys as keyof typeof selectedLocation]}
@@ -88,7 +91,7 @@ const LocationSelectView = ({
         style={styles.dropdown}
         flatListProps={{
           ListEmptyComponent: () => (
-            <Text style={styles.noRecord}>No records found!!!</Text>
+            <Text style={styles.noRecord}>No records found!</Text>
           ),
         }}
       />

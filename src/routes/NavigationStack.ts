@@ -8,6 +8,7 @@ import {
   AssetListScreen,
   AuditDashboardScreen,
   AuditListScreen,
+  AuditScanScreen,
   HomeScreen,
   LoginScreen,
 } from 'pages';
@@ -26,6 +27,7 @@ const AppStack = createNativeStackNavigator({
     AssetList: AssetListScreen,
     AuditDashboard: AuditDashboardScreen,
     AuditList: AuditListScreen,
+    AuditScan: AuditScanScreen,
   },
 });
 

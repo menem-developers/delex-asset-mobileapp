@@ -30,7 +30,9 @@ export default function AuditListItem(props: AuditListItemProps) {
       />
       <View style={styles.detailContents}>
         <View style={styles.auditDetail}>
+          {/* Audit ID - Audit001 */}
           <Text style={styles.auditName}>{audit_name}</Text>
+          {/* Asset Location */}
           <Text style={styles.auditBranchName}>{asset_location_name}</Text>
         </View>
         <View style={styles.auditDateStatus}>

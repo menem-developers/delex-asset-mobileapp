@@ -1,10 +1,7 @@
-import dayjs from 'dayjs';
 import {
   ActivityIndicator,
-  Alert,
-  Image,
+  // Image,
   ScrollView,
-  StyleSheet,
   Text,
   ToastAndroid,
   TouchableOpacity,
@@ -30,23 +27,26 @@ import styles from './styles';
 export const AssetDetailsScreen = ({route}: any) => {
   const [rfid, setRFID] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [isTagReaded, onTagReaded] = useState<boolean>(false);
   const [tags, setTags] = useState<any[]>([]);
 
-  const {execute, loading: loader} = useFetchApi({
+  const {execute} = useFetchApi({
     onSuccess: res => {
       if (res?.status === 200) {
         console.log(res?.data);
-        back();
+        // back();
+        setLoading(false);
+        deInitializeReader();
       }
+      setLoading(false);
     },
     onError: err => {
       console.log('err', JSON.stringify(err?.data));
       ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+      setLoading(false);
     },
   });
 
-  const loadData = async () => {
+  const scanData = async () => {
     setLoading(true);
     try {
       await initializeReader();
@@ -54,8 +54,8 @@ export const AssetDetailsScreen = ({route}: any) => {
       // @ts-ignore
       tagListener(eventListenerTag);
     } catch (error: any) {
-      showAlert(error.message);
       setLoading(false);
+      ToastAndroid.show(error?.message ?? '', ToastAndroid.SHORT);
     }
   };
 
@@ -97,71 +97,73 @@ export const AssetDetailsScreen = ({route}: any) => {
   const handlerScanSingleTag = async () => {
     try {
       const result = await readSingleTag();
+      await execute(`${ASSETS}/${route?.params?.id}`, {
+        method: HTTP.PUT,
+        data: {...route?.params, rfid_reference: result[0]},
+      });
       setRFID(result[0]);
-      onTagReaded(true);
-      setTimeout(() => {
-        setLoading(false);
-        onTagReaded(false);
-      }, 500);
-      deInitializeReader();
+      // onTagReaded(true);
+      // setTimeout(() => {
+      //   setLoading(false);
+      //   onTagReaded(false);
+      // }, 500);
+      // deInitializeReader();
     } catch (error: any) {
       console.log('RFID Reading Power', error?.message);
       deInitializeReader();
+      setLoading(false);
     }
   };
 
-  const showAlert = (title: string, data?: string) => {
-    Alert.alert(title, data, [{text: 'OK', onPress: () => {}}]);
-  };
-
-  const payload = () => {
-    return {
-      asset_name: route?.params?.asset_name,
-      asset_image: route?.params?.asset_image,
-      asset_type_id: route?.params?.asset_type_id,
-      erp_asset_no: route?.params?.erp_asset_no,
-      category_id: route?.params?.category_id,
-      sub_category_id: route?.params?.sub_category_id,
-      purchase_date: route?.params?.purchase_date,
-      purchase_value: route?.params?.purchase_value,
-      currency_id: route?.params?.currency_id,
-      vendor_id: route?.params?.vendor_id,
-      custodian_id: route?.params?.custodian_id,
-      building_id: route?.params?.building_id,
-      asset_location_id: route?.params?.asset_location_id,
-      floor_id: route?.params?.floor_id,
-      room_id: route?.params?.room_id,
-      subroom_id: route?.params?.subroom_id,
-      department_id: route?.params?.department_id,
-      color_id: route?.params?.color_id,
-      asset_status: route?.params?.asset_status,
-      po_number: route?.params?.po_number,
-      invoice_number: route?.params?.invoice_number,
-      invoice_line: route?.params?.invoice_line,
-      manufacturer: route?.params?.manufacturer,
-      model_name: route?.params?.model_name,
-      model_number: route?.params?.model_number,
-      serial_number: route?.params?.serial_number,
-      warranty_period_value: route?.params?.warranty_period_value,
-      warranty_period_type_id: route?.params?.warranty_period_type_id,
-      warranty_start_date: route?.params?.warranty_start_date,
-      warranty_end_date: route?.params?.warranty_end_date,
-      current_value: route?.params?.current_value,
-      current_value_currency_id: route?.params?.current_value_currency_id,
-      license_no: route?.params?.license_no,
-      license_provider: route?.params?.license_provider,
-      license_start_date: route?.params?.license_start_date,
-      license_end_date: route?.params?.license_end_date,
-      notes: route?.params?.notes,
-      assignment_type_id: route?.params?.assignment_type_id,
-      rfid_reference: rfid,
-      is_custodian_assigned: route?.params?.is_custodian_assigned,
-      status_id: route?.params?.status_id,
-    };
-  };
+  // const payload = () => {
+  //   return {
+  //     asset_name: route?.params?.asset_name,
+  //     asset_image: route?.params?.asset_image,
+  //     asset_type_id: route?.params?.asset_type_id,
+  //     erp_asset_no: route?.params?.erp_asset_no,
+  //     category_id: route?.params?.category_id,
+  //     sub_category_id: route?.params?.sub_category_id,
+  //     purchase_date: route?.params?.purchase_date,
+  //     purchase_value: route?.params?.purchase_value,
+  //     currency_id: route?.params?.currency_id,
+  //     vendor_id: route?.params?.vendor_id,
+  //     custodian_id: route?.params?.custodian_id,
+  //     building_id: route?.params?.building_id,
+  //     asset_location_id: route?.params?.asset_location_id,
+  //     floor_id: route?.params?.floor_id,
+  //     room_id: route?.params?.room_id,
+  //     subroom_id: route?.params?.subroom_id,
+  //     department_id: route?.params?.department_id,
+  //     color_id: route?.params?.color_id,
+  //     asset_status: route?.params?.asset_status,
+  //     po_number: route?.params?.po_number,
+  //     invoice_number: route?.params?.invoice_number,
+  //     invoice_line: route?.params?.invoice_line,
+  //     manufacturer: route?.params?.manufacturer,
+  //     model_name: route?.params?.model_name,
+  //     model_number: route?.params?.model_number,
+  //     serial_number: route?.params?.serial_number,
+  //     warranty_period_value: route?.params?.warranty_period_value,
+  //     warranty_period_type_id: route?.params?.warranty_period_type_id,
+  //     warranty_start_date: route?.params?.warranty_start_date,
+  //     warranty_end_date: route?.params?.warranty_end_date,
+  //     current_value: route?.params?.current_value,
+  //     current_value_currency_id: route?.params?.current_value_currency_id,
+  //     license_no: route?.params?.license_no,
+  //     license_provider: route?.params?.license_provider,
+  //     license_start_date: route?.params?.license_start_date,
+  //     license_end_date: route?.params?.license_end_date,
+  //     notes: route?.params?.notes,
+  //     assignment_type_id: route?.params?.assignment_type_id,
+  //     rfid_reference: rfid,
+  //     is_custodian_assigned: route?.params?.is_custodian_assigned,
+  //     status_id: route?.params?.status_id,
+  //   };
+  // };
+  // console.log(route?.params, 'route?.params');
 
   return (
-    <ScreenContainer title="Asset Details" showBack>
+    <ScreenContainer title="Asset Registration" showBack>
       <ScrollView>
         <View
           style={{
@@ -174,7 +176,7 @@ export const AssetDetailsScreen = ({route}: any) => {
             borderWidth: 1,
             gap: wp(5),
           }}>
-          <View
+          {/* <View
             style={{
               borderColor: '#D4D6D9',
               padding: wp(0.5),
@@ -190,7 +192,7 @@ export const AssetDetailsScreen = ({route}: any) => {
             ) : (
               <AssetImage image="upload_asset_image" size={wp(15)} />
             )}
-          </View>
+          </View> */}
 
           <View style={{flex: 1, gap: wp(1)}}>
             <Text
@@ -204,10 +206,10 @@ export const AssetDetailsScreen = ({route}: any) => {
             <Text
               style={{
                 color: '#3B475B',
-                fontSize: wp(3.4),
+                fontSize: wp(3.2),
                 fontWeight: '500',
               }}>
-              {route?.params?.asset_type_name ?? ''}
+              {route?.params?.category_name ?? ''}
             </Text>
             <View
               style={{
@@ -258,13 +260,14 @@ export const AssetDetailsScreen = ({route}: any) => {
             width: wp(90),
           }}>
           {[
-            {label: 'Brand'},
-            {label: 'Model'},
-            {label: 'Room'},
-            {label: 'Department'},
-            {label: 'Purchase Date'},
-            {label: 'Assignment Type'},
-            {label: 'RFID Reference No.'},
+            {label: 'Asset No'}, // Asset No
+            {label: 'Serial No'}, // Asset No
+            {label: 'Main'}, // Main
+            {label: 'Major'}, // Major
+            {label: 'Field/Costal'}, // Field/Costal
+            {label: 'Area/Section'}, // Area/Section
+            {label: 'Asset Assigned To'}, // Asset Assigned To
+            {label: 'RFID Reference No'}, // RFID Reference No
           ].map(el => (
             <Fragment key={el.label}>
               <View
@@ -291,26 +294,22 @@ export const AssetDetailsScreen = ({route}: any) => {
                     letterSpacing: wp(0.2),
                     color: '#323B48',
                   }}>
-                  {el.label === 'Brand'
-                    ? route?.params?.category_name ?? ''
-                    : el.label === 'Model'
-                    ? route?.params?.model_name ?? ''
-                    : el.label === 'Room'
+                  {el.label === 'Asset No'
+                    ? route?.params?.erp_asset_no ?? ''
+                    : el.label === 'Serial No'
+                    ? route?.params?.asset_id ?? ''
+                    : el.label === 'Main'
+                    ? route?.params?.main_or_location ?? ''
+                    : el.label === 'Major'
+                    ? route?.params?.major_or_building ?? ''
+                    : el.label === 'Field/Costal'
+                    ? route?.params?.field_or_costal_or_floor ?? ''
+                    : el.label === 'Area/Section'
                     ? route?.params?.area_or_section_or_room ?? ''
-                    : el.label === 'Department'
-                    ? route?.params?.department_name ?? ''
-                    : el.label === 'Assignment Type'
-                    ? !route?.params?.is_custodian_assigned
-                      ? 'Custodian'
-                      : 'Sub Room'
-                    : el.label === 'RFID Reference No.'
+                    : el.label === 'Asset Assigned To'
+                    ? route?.params?.assigned_to ?? ''
+                    : el.label === 'RFID Reference No'
                     ? route?.params?.assignment_type_id ?? rfid
-                    : el.label === 'Purchase Date'
-                    ? route?.params?.purchase_date
-                      ? dayjs(route?.params?.purchase_date).format(
-                          'DD MMM YYYY',
-                        )
-                      : ''
                     : ''}
                 </Text>
               </View>
@@ -332,7 +331,7 @@ export const AssetDetailsScreen = ({route}: any) => {
                 borderWidth: 1,
                 width: wp(90),
               }}>
-              {isTagReaded ? (
+              {rfid ? (
                 <AssetImage
                   image="success_checked"
                   size={wp(10)}
@@ -352,12 +351,12 @@ export const AssetDetailsScreen = ({route}: any) => {
                   fontWeight: '600',
                   fontSize: wp(3.5),
                 }}>
-                Asset Tagging Pending
+                RFID Scanning
               </Text>
             </View>
           ) : (
             <TouchableOpacity
-              onPress={loadData}
+              onPress={scanData}
               style={{
                 borderColor: '#1D232F',
                 marginHorizontal: wp(5),
@@ -375,25 +374,26 @@ export const AssetDetailsScreen = ({route}: any) => {
                   fontWeight: '600',
                   fontSize: wp(3.5),
                 }}>
-                {`${rfid ? 'Res' : 'S'}can RFID`}
+                {rfid ? 'RFID Registered Successfully' : 'Scan RFID'}
               </Text>
             </TouchableOpacity>
           ))}
       </ScrollView>
-      {!route?.params?.rfid_reference && !!rfid && !loading && !isTagReaded && (
+      {rfid && (
         <View style={styles.footer}>
           <TouchableOpacity
-            style={StyleSheet.compose(styles.backButton, styles.submitButton)}
+            style={styles.backButton}
             onPress={() => {
-              execute(`${ASSETS}/${route?.params?.id}`, {
-                method: HTTP.PUT,
-                data: payload(),
-              });
+              // execute(`${ASSETS}/${route?.params?.id}`, {
+              //   method: HTTP.PUT,
+              //   data: payload(),
+              // });
+              back();
             }}>
-            {loader ? (
+            {loading ? (
               <ActivityIndicator color={'#FFF'} />
             ) : (
-              <Text style={styles.submitButtonText}>Submit</Text>
+              <Text style={styles.backButtonText}>Back</Text>
             )}
           </TouchableOpacity>
         </View>

@@ -1,5 +1,5 @@
-// import Icon from '@react-native-vector-icons/fontawesome6-pro';
 import {login_bg} from 'assets/img';
+import EyeIcon from 'assets/img/eye.svg';
 import {AssetImage} from 'components/AssetImage';
 import {ScreenContainer} from 'components/ScreenContainer';
 import React from 'react';
@@ -118,9 +118,9 @@ export const LoginScreen = () => {
             placeholder="Enter here"
           />
 
-          {/*<TouchableOpacity>
-            <Icon name="eye" size={wp(5)} />
-          </TouchableOpacity> */}
+          <TouchableOpacity>
+            <EyeIcon height={20} width={20} />
+          </TouchableOpacity>
         </View>
 
         <Text
@@ -133,8 +133,7 @@ export const LoginScreen = () => {
             marginTop: hp(2),
             textAlign: 'right',
           }}>
-          Forgot Password{'  '}
-          {/* <Icon name="question" iconStyle="solid" size={wp(4)} /> */}
+          Forgot Password ?
         </Text>
 
         <TouchableOpacity

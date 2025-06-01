@@ -124,6 +124,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: wp(4),
   },
+  disabled: {
+    backgroundColor: '#EEF1F4',
+    borderColor: '#EEF1F4',
+  },
 });
 
 export default styles;
