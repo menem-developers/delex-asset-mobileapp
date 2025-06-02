@@ -297,7 +297,7 @@ export const AssetDetailsScreen = ({route}: any) => {
                   {el.label === 'Asset No'
                     ? route?.params?.erp_asset_no ?? ''
                     : el.label === 'Serial No'
-                    ? route?.params?.asset_id ?? ''
+                    ? route?.params?.serial_number ?? ''
                     : el.label === 'Main'
                     ? route?.params?.main_or_location ?? ''
                     : el.label === 'Major'
@@ -309,7 +309,7 @@ export const AssetDetailsScreen = ({route}: any) => {
                     : el.label === 'Asset Assigned To'
                     ? route?.params?.assigned_to ?? ''
                     : el.label === 'RFID Reference No'
-                    ? route?.params?.assignment_type_id ?? rfid
+                    ? route?.params?.rfid_reference ?? rfid
                     : ''}
                 </Text>
               </View>

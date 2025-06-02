@@ -10,7 +10,7 @@ export const FLOORS = '/api/locations/floors';
 export const AUDIT_FORMS = '/api/asset-audit-forms';
 export const AUDIT_FORMS_ID = '/api/asset-audit-forms/';
 export const AUDIT_FORMS_ID_ITEM =
-  '/api/asset-audit-item-statuses/asset-audit-form/{audit_form_id}/items';
+  '/api/asset-audit-item-statuses/asset-audit-form/{audit_form_id}/items-by-status';
 export const AUDIT_FORMS_SCAN_RFID =
   '/api/asset-audit-item-statuses/asset-audit-form/{audit_form_id}/validate-rfid';
 export const AUDIT_FORMS_COUNT =

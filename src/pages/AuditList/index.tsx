@@ -74,7 +74,9 @@ export const AuditListScreen = ({route}: Props) => {
     const url = `${AUDIT_FORMS_ID_ITEM.replace(
       '{audit_form_id}',
       route?.params?.id ? route?.params?.id?.toString() : '',
-    )}?page=${pageNumber}&per_page=${perPage}&asset_name=${search ?? ''}`;
+    )}?page=${pageNumber}&per_page=${perPage}`;
+    //  &asset_name=${search ?? ''}
+    console.log(search);
     execute(url);
   };
 
