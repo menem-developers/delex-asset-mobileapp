@@ -176,22 +176,24 @@ export const AssetDashboardScreen = () => {
           </View>
         </View>
 
-        {selectedRoute
-          ? renderLocationSelectView()
-          : menuItemList.map((el, i) => {
-              return (
-                <TouchableOpacity
-                  style={styles.menuButton}
-                  key={i}
-                  onPress={() => handleMenuClick(el)}>
-                  <View style={styles.menuTitleContainer}>
-                    {el.icon}
-                    <Text style={styles.menuTitle}>{el.title}</Text>
-                  </View>
-                  <CrevRight height={20} width={20} />
-                </TouchableOpacity>
-              );
-            })}
+        <View style={styles.menuList}>
+          {selectedRoute
+            ? renderLocationSelectView()
+            : menuItemList.map((el, i) => {
+                return (
+                  <TouchableOpacity
+                    style={styles.menuButton}
+                    key={i}
+                    onPress={() => handleMenuClick(el)}>
+                    <View style={styles.menuTitleContainer}>
+                      {el.icon}
+                      <Text style={styles.menuTitle}>{el.title}</Text>
+                    </View>
+                    <CrevRight height={20} width={20} />
+                  </TouchableOpacity>
+                );
+              })}
+        </View>
       </ScrollView>
 
       <View style={styles.footer}>

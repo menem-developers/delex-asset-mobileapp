@@ -1,11 +1,15 @@
 import React, {useRef} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {AssetImage, ScreenContainer} from 'components';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import {navigate} from 'routes/utils';
 import Simplification from 'assets/img/simplification.svg';
 import Submitted from 'assets/img/submitted.svg';
+import {home_bg} from 'assets/img';
 
 type IMenuItem = {
   icon?: React.ReactNode;
@@ -16,12 +20,12 @@ type IMenuItem = {
 export const HomeScreen = () => {
   const menuItemsList = useRef<Array<IMenuItem>>([
     {
-      icon: <AssetImage image="register_asset_icon" size={wp(20)} />,
+      icon: <AssetImage image="register_asset_icon" size={60} />,
       title: 'Registration',
       route: 'AssetDashboard',
     },
     {
-      icon: <AssetImage image="audit_asset_icon" size={wp(20)} />,
+      icon: <AssetImage image="audit_asset_icon" size={60} />,
       title: 'Audit',
       route: 'AuditDashboard',
     },
@@ -30,7 +34,10 @@ export const HomeScreen = () => {
   return (
     <ScreenContainer showLogo showDrawer showNotify>
       <ScrollView style={{flex: 1}}>
-        <AssetImage image="home_bg" size={wp(100)} fitWidth />
+        <Image
+          source={home_bg}
+          style={{height: hp(25), width: wp(100), objectFit: 'fill'}}
+        />
         <Text
           style={{
             fontSize: wp(5),
@@ -69,8 +76,8 @@ export const HomeScreen = () => {
                   ]}
                   style={{
                     alignItems: 'center',
-                    paddingHorizontal: wp(5),
-                    paddingVertical: wp(4),
+                    paddingHorizontal: wp(2),
+                    paddingVertical: wp(2),
                     gap: wp(4),
                   }}>
                   {el.icon}
@@ -133,6 +140,7 @@ export const HomeScreen = () => {
                   fontSize: 10,
                   lineHeight: 13,
                   letterSpacing: 0.5,
+                  flex: 1,
                 }}>
                 Asset Tag- 70 Assets has been registered on 14 Jan 2025
               </Text>
@@ -152,6 +160,7 @@ export const HomeScreen = () => {
                   fontSize: 10,
                   lineHeight: 13,
                   letterSpacing: 0.5,
+                  flex: 1,
                 }}>
                 Audit- Audit0724 is submitted on 17 Jan 2024.
               </Text>
@@ -171,11 +180,10 @@ export const HomeScreen = () => {
           textAlign: 'center',
           color: '#4B4B4B',
         }}>
-        Powered by{' '}
         <Text style={{fontWeight: '600', color: '#212121'}}>
           Del<Text style={{color: '#F65D5D'}}>Track</Text>
         </Text>
-        , Version: 2025.01.18
+        v1.0.0 - Amended in 2025
       </Text>
     </ScreenContainer>
   );

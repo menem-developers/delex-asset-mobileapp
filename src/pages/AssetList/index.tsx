@@ -62,7 +62,7 @@ export const AssetListScreen = ({route}: any) => {
     isCompleted: boolean,
     search?: string,
   ) => {
-    const url = `${ASSETS}?page=${pageNumber}&per_page=${perPage}&asset_name=${
+    const url = `${ASSETS}?page=${pageNumber}&per_page=${perPage}&global_search=${
       search ?? ''
     }&asset_location_id=${route?.params?.location_name?.id ?? ''}&building_id=${
       route?.params?.building_name?.id ?? ''
@@ -158,6 +158,7 @@ export const AssetListScreen = ({route}: any) => {
             fontSize: wp(3.5),
             fontWeight: '400',
             letterSpacing: wp(0.2),
+            color: '#3B475B',
           }}
           placeholder="Search"
           placeholderTextColor="#B4B9C2"

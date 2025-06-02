@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     padding: wp(5),
     borderRadius: 8,
     backgroundColor: '#fff',
-    gap: wp(1),
+    gap: 4,
   },
   statsLocationDetailsConatiner: {
     flexDirection: 'row',
@@ -127,21 +127,32 @@ const styles = StyleSheet.create({
   },
   assetDataContainer: {
     width: wp(85),
-    gap: wp(2),
+    gap: wp(1.5),
     marginVertical: wp(2),
   },
   completeAssetContainer: {
     width: wp(80),
-    gap: wp(2),
+    gap: wp(1.5),
     marginVertical: wp(2),
   },
-  assetDataTitle: {fontSize: wp(4), fontWeight: '500', color: '#3B475B'},
+  assetDataTitle: {fontSize: wp(3.5), fontWeight: '500', color: '#3B475B'},
   assetDataDesc: {fontSize: wp(3), fontWeight: '400', color: '#848B98'},
   noRecord: {
     fontSize: wp(3.5),
     letterSpacing: wp(0.15),
     padding: 12,
     color: '#848B98',
+  },
+
+  titleTop: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+  },
+  auditDetailTop: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
   titleBottom: {

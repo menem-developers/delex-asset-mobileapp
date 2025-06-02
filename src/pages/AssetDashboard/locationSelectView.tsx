@@ -71,11 +71,7 @@ const LocationSelectView = ({
   };
 
   return (
-    <View
-      style={{
-        width: wp(90),
-        marginHorizontal: wp(5),
-      }}>
+    <View style={{display: 'flex', flexDirection: 'column', gap: '4'}}>
       <Text style={styles.label}>
         {label}
         {label === 'Main' && '*'}
@@ -108,8 +104,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: wp(3),
     paddingRight: wp(4),
-    marginTop: wp(3),
-    marginBottom: wp(4),
   },
   label: {
     fontSize: wp(3.5),

@@ -26,15 +26,15 @@ const AssetListHeader = (props: AssetListHeaderProps) => {
       colors={['rgba(73, 114, 156, 0.50)', '#E1EBF5', '#E8EFF6', '#94AEC8']}
       style={styles.statsCardBg}>
       <View style={styles.statsCard}>
-        <View style={styles.titleBottom}>
-          <View style={styles.auditDetail}>
+        <View style={styles.titleTop}>
+          <View style={styles.auditDetailTop}>
             <Text style={styles.auditField}>Main</Text>
             <Text style={styles.auditValue} numberOfLines={2}>
               {data?.location_name?.location_name ?? ''}
             </Text>
           </View>
           {data?.building_name?.building_name && (
-            <View style={styles.auditDetail}>
+            <View style={styles.auditDetailTop}>
               <Text style={styles.auditFieldRight}>Major</Text>
               <Text style={styles.auditValueRight} numberOfLines={2}>
                 {data?.building_name?.building_name ?? ''}
