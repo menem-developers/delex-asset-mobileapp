@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#F1F1F1',
     elevation: 12,
-    marginBottom: wp(10),
   },
   assetInfoContainer: {
     flexDirection: 'row',
@@ -74,11 +73,16 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#3B475B',
   },
+  menuList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: wp(4),
+    padding: wp(4),
+    paddingHorizontal: wp(6),
+    paddingTop: wp(1),
+  },
   menuButton: {
-    width: wp(90),
     backgroundColor: '#FBFDFF',
-    marginHorizontal: wp(5),
-    marginBottom: wp(8),
     padding: wp(5),
     borderRadius: 8,
     borderWidth: 1,
@@ -123,6 +127,10 @@ const styles = StyleSheet.create({
     color: '#FAFBFF',
     fontWeight: '600',
     fontSize: wp(4),
+  },
+  disabled: {
+    backgroundColor: '#EEF1F4',
+    borderColor: '#EEF1F4',
   },
 });
 

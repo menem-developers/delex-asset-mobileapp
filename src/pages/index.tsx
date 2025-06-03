@@ -4,4 +4,5 @@ export * from './AssetDetails';
 export * from './AssetList';
 export * from './AuditDashboard';
 export * from './AuditList';
+export * from './AuditScan';
 export * from './Login';

@@ -5,9 +5,11 @@
     "paths": {
       // This needs to be mirrored in babel.config.js
       "components/*": ["components/*"],
+      "hooks/*": ["hooks/*"],
       "routes/*": ["routes/*"],
       "assets/*": ["assets/*"],
-      "pages/*": ["pages/*"]
+      "pages/*": ["pages/*"],
+      "utlis/*": ["utlis/*"]
     }
   }
 }

@@ -9,11 +9,16 @@ import branchSvg from './branch.svg';
 import add from './add.svg';
 import back from './back.svg';
 import bell from './bell.svg';
+import complete_flag from './complete_flag.svg';
 import edit from './edit.svg';
+import eye from './eye.svg';
 import re_register from './re-register.svg';
 import search from './search.svg';
+import scanner from './scanner.svg';
+import major from './major.svg';
 import menu from './menu.svg';
 import chev_right from './chev-right.svg';
+import success_checked from './success_checked.png';
 
 export {
   logo,
@@ -27,9 +32,14 @@ export {
   add,
   back,
   bell,
+  complete_flag,
   edit,
+  eye,
   re_register,
   search,
+  scanner,
+  major,
   menu,
   chev_right,
+  success_checked,
 };
