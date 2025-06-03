@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-native-rfid-chainway-c72/android/build.gradle b/node_modules/react-native-rfid-chainway-c72/android/build.gradle
+index 2f19717..00ad571 100644
+--- a/node_modules/react-native-rfid-chainway-c72/android/build.gradle
++++ b/node_modules/react-native-rfid-chainway-c72/android/build.gradle
+@@ -108,11 +108,14 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
+ dependencies {
+   // For < 0.71, this will be from the local maven repo
+   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
+-  //noinspection GradleDynamicVersion
+-  implementation fileTree(dir: "libs", include: ["*.aar"])
++  // noinspection GradleDynamicVersion
++  // implementation fileTree(dir: "libs", include: ["*.aar"])
+   implementation "com.facebook.react:react-native:+"
+   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+   // files('./src/main/libs/DeviceAPI_ver20231208_release.aar') 
++
++  // Replace with compileOnly if the classes are needed at compile time:
++  compileOnly files('./libs/DeviceAPI_ver20231208_release.aar')
+ }
+ 
+ if (isNewArchitectureEnabled()) {
