@@ -42,14 +42,18 @@ export default function AuditListItem(props: AuditListItemProps) {
           <Text
             style={StyleSheet.compose(styles.auditStatus, {
               backgroundColor:
-                status_name === 'Active'
+                status_name === 'Active' || status_name === 'Not Started'
                   ? '#E8F4FF'
+                  : status_name === 'Completed'
+                  ? '#E9F6EC'
                   : status_name === 'In Progress'
                   ? '#FFF9E6'
                   : '#FEEBEB',
               color:
-                status_name === 'Active'
+                status_name === 'Active' || status_name === 'Not Started'
                   ? '#1E90FF'
+                  : status_name === 'Completed'
+                  ? '#28A745'
                   : status_name === 'In Progress'
                   ? '#E7AD00'
                   : '#F43434',

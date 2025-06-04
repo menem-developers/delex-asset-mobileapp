@@ -8,16 +8,22 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
+  Modal,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ScreenContainer} from 'components';
 import {RouteProp, useIsFocused} from '@react-navigation/native';
 import Search from 'assets/img/search.svg';
-import useFetchApi from 'hooks/useFetchApi';
-import {AUDIT_FORMS_COUNT, AUDIT_FORMS_ID_ITEM} from 'utlis/endpoints';
+import useFetchApi, {HTTP} from 'hooks/useFetchApi';
+import {
+  AUDIT_COMPLETE,
+  AUDIT_FORMS_COUNT,
+  AUDIT_FORMS_ID_ITEM,
+} from 'utlis/endpoints';
 import AuditListHeader from './AuditListHeader';
 import {navigate} from 'routes/utils';
 import styles from './styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuditListItemProps = {
   completed_assets: number;
@@ -45,6 +51,10 @@ export const AuditListScreen = ({route}: Props) => {
   const [pageNo, setPageNo] = useState<number>(1);
   const [perPage] = useState<number>(10);
 
+  const [search, setSearch] = useState<string>('');
+
+  const [showCloseDrawer, setShowCloseDrawer] = useState<boolean>(false);
+
   const [tab, setTab] = useState<number>(2);
 
   const {execute, loading} = useFetchApi({
@@ -56,6 +66,17 @@ export const AuditListScreen = ({route}: Props) => {
             ? res?.data?.items
             : [...prev.concat(res?.data?.items ?? [])],
         );
+      }
+    },
+    onError: err => {
+      console.log('err', JSON.stringify(err?.data));
+      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+    },
+  });
+  const {execute: completeExecution} = useFetchApi({
+    onSuccess: res => {
+      if (res?.status === 200) {
+        navigate('AuditDashboard', {tab: 'Completed'});
       }
     },
     onError: err => {
@@ -87,7 +108,17 @@ export const AuditListScreen = ({route}: Props) => {
     console.log(search);
     execute(url);
   };
-
+  const completeAudit = () => {
+    const url = `${AUDIT_COMPLETE.replace(
+      '{audit_form_id}',
+      route?.params?.id ? route?.params?.id?.toString() : '',
+    )}
+    `;
+    completeExecution(url, {
+      method: HTTP.POST,
+      data: '',
+    });
+  };
   useEffect(() => {
     if (isFocused) {
       setPageNo(1);
@@ -129,6 +160,10 @@ export const AuditListScreen = ({route}: Props) => {
               style={styles.search}
               placeholder="Search"
               placeholderTextColor={'#B4B9C2'}
+              value={search}
+              onChangeText={val => {
+                setSearch(val);
+              }}
             />
           </View>
         </View>
@@ -185,16 +220,55 @@ export const AuditListScreen = ({route}: Props) => {
           </View>
         )}
       />
-      {!!auditList?.length && (
-        <View style={styles.bottomFooter}>
-          <TouchableOpacity style={styles.cancelBtn}>
-            <Text style={styles.cancel}>Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.submitBtn}>
-            <Text style={styles.submit}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <View style={styles.bottomFooter}>
+        <TouchableOpacity
+          style={styles.cancelBtn}
+          onPress={() => {
+            navigate('AuditDashboard');
+          }}>
+          <Text style={styles.cancel}>Back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.submitBtn}
+          onPress={() => {
+            setShowCloseDrawer(true);
+          }}>
+          <Text style={styles.submit}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showCloseDrawer}
+        onRequestClose={() => setShowCloseDrawer(false)}>
+        <SafeAreaView edges={['bottom']} style={styles.drawerOverlay}>
+          <View style={styles.drawerContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.drawerTitle}>
+                Are you sure you want to Submit the Audit ?
+              </Text>
+              <Text style={styles.drawerMessage}>
+                Complete asset audit and automatically update all assets
+              </Text>
+            </View>
+            <View style={styles.drawerButtons}>
+              <TouchableOpacity
+                style={styles.drawerSubmit}
+                onPress={() => {
+                  setShowCloseDrawer(false);
+                  completeAudit();
+                }}>
+                <Text style={styles.drawerSubmitText}>Yes, Continue</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.drawerCancel}
+                onPress={() => setShowCloseDrawer(false)}>
+                <Text style={styles.drawerCancelText}>No, Review Again</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
     </ScreenContainer>
   );
 };

@@ -18,3 +18,4 @@ export const AUDIT_FORMS_SCAN_RFID =
 export const AUDIT_FORMS_COUNT =
   '/api/asset-audit-item-statuses/asset-audit-form/{audit_form_id}/items-summary';
 export const AUDIT_DASHBOARD_HEADER = '/api/asset-audit-forms/summary';
+export const AUDIT_COMPLETE = '/api/asset-audit-forms/{audit_form_id}/complete';

@@ -20,12 +20,14 @@ import AuditDashboardHeader from './AuditDashboardHeader';
 
 export type ISelectedTab = 'Scheduled' | 'Overdue' | 'Completed';
 
-export const AuditDashboardScreen = () => {
+export const AuditDashboardScreen = ({route}: any) => {
   const isFocused = useIsFocused();
   const [auditData, setAuditData] = useState<any[]>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [perPage] = useState<number>(10);
-  const [selectedTab, setSelectedTab] = useState<ISelectedTab>('Scheduled');
+  const [selectedTab, setSelectedTab] = useState<ISelectedTab>(
+    route?.params?.tab ? route?.params?.tab : 'Scheduled',
+  );
 
   const {execute, loading} = useFetchApi({
     onSuccess: res => {
@@ -50,7 +52,7 @@ export const AuditDashboardScreen = () => {
   useEffect(() => {
     if (isFocused) {
       setPageNo(1);
-      fetchData(1, 'Scheduled');
+      fetchData(1, selectedTab);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
