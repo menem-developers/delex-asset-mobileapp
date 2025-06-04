@@ -68,9 +68,9 @@ export const AssetListScreen = ({route}: any) => {
       route?.params?.building_name?.id ?? ''
     }&floor_id=${route?.params?.floor_name?.id ?? ''}&room_id=${
       route?.params?.room_name?.id ?? ''
-    }&subroom_id=${route?.params?.subroom_name?.id ?? ''}&rfid_reference=${
-      isCompleted ? 1 : ''
-    }&rfid_reference_required=true`;
+    }&custodian_id=${route?.params?.full_name?.id ?? ''}&category_id=${
+      route?.params?.category_name?.id ?? ''
+    }&rfid_reference=${isCompleted ? 1 : ''}&rfid_reference_required=true`;
     execute(url);
   };
 

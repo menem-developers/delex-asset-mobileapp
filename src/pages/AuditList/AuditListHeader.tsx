@@ -19,7 +19,7 @@ const AuditListHeader = ({auditCount, data}: Props) => {
     <>
       <View style={styles.auditTitleContainer}>
         <View style={styles.titleTop}>
-          <Text style={styles.auditFieldName}>Audit ID</Text>
+          <Text style={styles.auditFieldName}>Audit Location</Text>
           <Text style={styles.auditName}>{data?.audit_name ?? ''}</Text>
         </View>
         <View style={styles.titleBottom}>

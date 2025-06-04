@@ -6,9 +6,10 @@ import useFetchApi from 'hooks/useFetchApi';
 import {
   ASSET_LOCATIONS,
   BUILDINGS,
+  CUSTODIANS,
   FLOORS,
+  GROUPINGS,
   ROOMS,
-  SUBROOMS,
 } from 'utlis/endpoints';
 
 const LocationSelectView = ({
@@ -29,15 +30,17 @@ const LocationSelectView = ({
 
   useEffect(() => {
     if (keys === 'location_name') {
-      execute(ASSET_LOCATIONS);
+      execute(ASSET_LOCATIONS + '/?page=1&per_page=100');
     } else if (keys === 'building_name') {
-      execute(BUILDINGS);
+      execute(BUILDINGS + '/?page=1&per_page=100');
     } else if (keys === 'floor_name') {
-      execute(FLOORS);
+      execute(FLOORS + '/?page=1&per_page=100');
     } else if (keys === 'room_name') {
-      execute(ROOMS);
-    } else if (keys === 'subroom_name') {
-      execute(SUBROOMS);
+      execute(ROOMS + '/?page=1&per_page=100');
+    } else if (keys === 'category_name') {
+      execute(GROUPINGS + '/?page=1&per_page=100');
+    } else if (keys === 'full_name') {
+      execute(CUSTODIANS + '/?page=1&per_page=100');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keys]);

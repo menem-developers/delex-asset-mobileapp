@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     margin: wp(5),
+    marginTop: wp(3),
     width: wp(90),
     padding: wp(3),
     alignItems: 'center',

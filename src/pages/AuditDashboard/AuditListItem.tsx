@@ -3,9 +3,11 @@ import {CircularProgress} from 'components/CircularProgress';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {navigate} from 'routes/utils';
 import dayjs from 'dayjs';
+import {ISelectedTab} from '.';
 
 type AuditListItemProps = {
   item: any;
+  listStatus: ISelectedTab;
 };
 
 export default function AuditListItem(props: AuditListItemProps) {
@@ -16,6 +18,7 @@ export default function AuditListItem(props: AuditListItemProps) {
     due_date,
     total_assets,
     status_name,
+    start_date,
   } = props.item;
   return (
     <TouchableOpacity
@@ -54,7 +57,17 @@ export default function AuditListItem(props: AuditListItemProps) {
             {status_name}
           </Text>
           <Text style={styles.auditDate}>
-            {due_date ? dayjs(due_date).format('DD MMM YYYY') : ''}
+            {props.listStatus === 'Scheduled'
+              ? start_date
+                ? dayjs(start_date).format('DD MMM YYYY')
+                : ''
+              : props.listStatus === 'Overdue'
+              ? due_date
+                ? dayjs(due_date).format('DD MMM YYYY')
+                : ''
+              : due_date
+              ? dayjs(due_date).format('DD MMM YYYY')
+              : ''}
           </Text>
         </View>
       </View>

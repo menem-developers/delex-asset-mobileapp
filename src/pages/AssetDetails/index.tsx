@@ -163,7 +163,14 @@ export const AssetDetailsScreen = ({route}: any) => {
   // console.log(route?.params, 'route?.params');
 
   return (
-    <ScreenContainer title="Asset Registration" showBack>
+    <ScreenContainer
+      title={
+        route?.params?.rfid_reference !== '' &&
+        route?.params?.rfid_reference !== null
+          ? 'Asset Details'
+          : 'Asset Registration'
+      }
+      showBack>
       <ScrollView>
         <View
           style={{
@@ -207,11 +214,11 @@ export const AssetDetailsScreen = ({route}: any) => {
               style={{
                 color: '#3B475B',
                 fontSize: wp(3.2),
-                fontWeight: '500',
+                fontWeight: '400',
               }}>
               {route?.params?.category_name ?? ''}
             </Text>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -235,13 +242,13 @@ export const AssetDetailsScreen = ({route}: any) => {
                 }}>
                 {route?.params?.status_name ?? ''}
               </Text>
-            </View>
+            </View> */}
           </View>
         </View>
 
         <Text
           style={{
-            marginTop: wp(5),
+            marginTop: wp(3),
             marginBottom: wp(3),
             paddingHorizontal: wp(5),
             fontWeight: '500',
@@ -261,13 +268,13 @@ export const AssetDetailsScreen = ({route}: any) => {
           }}>
           {[
             {label: 'Asset No'}, // Asset No
-            {label: 'Serial No'}, // Asset No
+            {label: 'Serial Number'}, // Asset No
             {label: 'Main'}, // Main
             {label: 'Major'}, // Major
             {label: 'Field/Costal'}, // Field/Costal
             {label: 'Area/Section'}, // Area/Section
             {label: 'Asset Assigned To'}, // Asset Assigned To
-            {label: 'RFID Reference No'}, // RFID Reference No
+            {label: 'RFID Reference'}, // RFID Reference No
           ].map(el => (
             <Fragment key={el.label}>
               <View
@@ -296,7 +303,7 @@ export const AssetDetailsScreen = ({route}: any) => {
                   }}>
                   {el.label === 'Asset No'
                     ? route?.params?.erp_asset_no ?? ''
-                    : el.label === 'Serial No'
+                    : el.label === 'Serial Number'
                     ? route?.params?.serial_number ?? ''
                     : el.label === 'Main'
                     ? route?.params?.main_or_location ?? ''
@@ -308,7 +315,7 @@ export const AssetDetailsScreen = ({route}: any) => {
                     ? route?.params?.area_or_section_or_room ?? ''
                     : el.label === 'Asset Assigned To'
                     ? route?.params?.assigned_to ?? ''
-                    : el.label === 'RFID Reference No'
+                    : el.label === 'RFID Reference'
                     ? route?.params?.rfid_reference ?? rfid
                     : ''}
                 </Text>

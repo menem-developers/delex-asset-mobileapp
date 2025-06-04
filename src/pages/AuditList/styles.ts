@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     color: '#3B475B',
     maxWidth: 200,
-    width: 80,
+    width: 160,
     fontSize: 9,
     letterSpacing: 0.135,
     textAlignVertical: 'center',

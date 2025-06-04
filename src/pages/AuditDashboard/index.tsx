@@ -18,7 +18,7 @@ import {AUDIT_FORMS} from 'utlis/endpoints';
 import {useIsFocused} from '@react-navigation/native';
 import AuditDashboardHeader from './AuditDashboardHeader';
 
-type ISelectedTab = 'Scheduled' | 'Overdue' | 'Completed';
+export type ISelectedTab = 'Scheduled' | 'Overdue' | 'Completed';
 
 export const AuditDashboardScreen = () => {
   const isFocused = useIsFocused();
@@ -111,7 +111,9 @@ export const AuditDashboardScreen = () => {
         }
         data={auditData ?? []}
         keyExtractor={(_itm, i) => i.toString()}
-        renderItem={({item}) => <AuditListItem item={item} />}
+        renderItem={({item}) => (
+          <AuditListItem item={item} listStatus={selectedTab} />
+        )}
       />
     </ScreenContainer>
   );

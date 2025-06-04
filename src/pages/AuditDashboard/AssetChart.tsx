@@ -94,7 +94,7 @@ export const AssetCharts = () => {
           innerCircleColor={'#EAF1F7'}
           centerLabelComponent={() => (
             <CenterDisplay
-              title="Total Assets"
+              title="Total Audits"
               value={
                 auditHeaderCount?.total_audit_forms
                   ? auditHeaderCount?.total_audit_forms
@@ -112,12 +112,12 @@ export const AssetCharts = () => {
               ? +auditHeaderCount?.overdue_count
               : 0}
           </Text>
-          <Text style={styles.legendText}>Pending</Text>
+          <Text style={styles.legendText}>Not Started</Text>
         </View>
         <View style={styles.lengendContainer}>
           {renderDot('#E7AD00')}
           <Text style={styles.legendVal}>{pendingAssets}</Text>
-          <Text style={styles.legendText}>Progress</Text>
+          <Text style={styles.legendText}>In Progress</Text>
         </View>
         <View style={styles.lengendContainer}>
           {renderDot('#28A745')}
@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
   lengendContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: 120,
+    justifyContent: 'space-between',
+    width: 100,
     gap: 8,
   },
 });

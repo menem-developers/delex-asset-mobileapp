@@ -184,6 +184,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E6E6E6',
     alignItems: 'center',
+    margin: 16,
+    borderColor: '#EDEEF1',
+    boxShadow: '0px 2px 12px 0px rgba(10, 10, 10, 0.10)',
+    borderRadius: 10,
+    fontFamily: 'Roboto',
   },
   assetItemList: {
     display: 'flex',

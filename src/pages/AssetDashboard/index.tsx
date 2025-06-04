@@ -39,7 +39,8 @@ export const AssetDashboardScreen = () => {
     building_name: '',
     floor_name: '',
     room_name: '',
-    subroom_name: '',
+    category_name: '',
+    full_name: '',
   });
 
   const assetInfoData: Array<IAssetInfoData> = [
@@ -82,7 +83,8 @@ export const AssetDashboardScreen = () => {
       {keys: 'building_name', label: 'Major'},
       {keys: 'floor_name', label: 'Field/Coastal'},
       {keys: 'room_name', label: 'Area/Section'},
-      {keys: 'subroom_name', label: 'Asset Grouping'},
+      {keys: 'category_name', label: 'Asset Grouping'},
+      {keys: 'full_name', label: 'Asset Assigned To'},
     ].map(el => (
       <LocationSelectView
         key={el.keys}
@@ -106,7 +108,8 @@ export const AssetDashboardScreen = () => {
         building_name: '',
         floor_name: '',
         room_name: '',
-        subroom_name: '',
+        category_name: '',
+        full_name: '',
       });
       execute(REGISTRATION_STATS);
     }
