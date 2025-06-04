@@ -40,7 +40,7 @@ export const AssetListScreen = ({route}: any) => {
       console.log(res?.data);
       if (res?.status === 200) {
         setAssetData(prev =>
-          prev?.length
+          prev?.length === 0
             ? res?.data?.items
             : [...prev.concat(res?.data?.items ?? [])],
         );
