@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     marginTop: 4,
-    flexGrow: 1,
+    justifyContent: 'space-between',
   },
   assetListsTitle: {
     display: 'flex',

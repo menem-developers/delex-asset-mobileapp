@@ -17,7 +17,28 @@ const LocationSelectView = ({
   label,
   selectedLocation,
   setSelectedLocation,
-}: any) => {
+}: {
+  keys: any;
+  label: any;
+  selectedLocation: {
+    location_name: any;
+    building_name: any;
+    floor_name: any;
+    room_name: any;
+    category_name: any;
+    full_name: any;
+  };
+  setSelectedLocation: React.Dispatch<
+    React.SetStateAction<{
+      location_name: any;
+      building_name: any;
+      floor_name: any;
+      room_name: any;
+      category_name: any;
+      full_name: any;
+    }>
+  >;
+}) => {
   const [items, setItems] = useState<any[]>([]);
   const {execute} = useFetchApi({
     onSuccess: res => {
@@ -73,6 +94,11 @@ const LocationSelectView = ({
     }
   };
 
+  const isDisabled =
+    (keys === 'building_name' && selectedLocation.location_name === '') ||
+    (keys === 'floor_name' && selectedLocation.building_name === '') ||
+    (keys === 'room_name' && selectedLocation.floor_name === '');
+
   return (
     <View style={{display: 'flex', flexDirection: 'column', gap: '4'}}>
       <Text style={styles.label}>
@@ -81,15 +107,61 @@ const LocationSelectView = ({
       </Text>
       <Dropdown
         data={options()}
+        disable={isDisabled}
         value={selectedLocation[keys as keyof typeof selectedLocation]}
         onChange={val => {
-          setSelectedLocation({...selectedLocation, [keys]: val});
+          if (keys === 'location_name') {
+            setSelectedLocation(prev => {
+              return {
+                ...prev,
+                location_name: val,
+                building_name: '',
+                floor_name: '',
+                room_name: '',
+              };
+            });
+          }
+          if (keys === 'building_name') {
+            setSelectedLocation(prev => {
+              return {
+                ...prev,
+                building_name: val,
+                floor_name: '',
+                room_name: '',
+              };
+            });
+          }
+          if (keys === 'floor_name') {
+            setSelectedLocation(prev => {
+              return {
+                ...prev,
+                floor_name: val,
+                room_name: '',
+              };
+            });
+          }
+          if (keys === 'room_name') {
+            setSelectedLocation(prev => {
+              return {
+                ...prev,
+                room_name: val,
+              };
+            });
+          } else {
+            setSelectedLocation(prev => {
+              return {
+                ...prev,
+                [keys]: val,
+              };
+            });
+          }
         }}
         labelField={keys}
         valueField={keys}
-        style={styles.dropdown}
+        style={isDisabled ? styles.dropdownDisabled : styles.dropdown}
         search
         searchPlaceholder="Enter Here"
+        placeholderStyle={isDisabled ? styles.disabledPlaceholder : ''}
         flatListProps={{
           ListEmptyComponent: () => (
             <Text style={styles.noRecord}>No records found!</Text>
@@ -109,6 +181,18 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: wp(3),
     paddingRight: wp(4),
+  },
+  dropdownDisabled: {
+    backgroundColor: '#E9ECEF',
+    borderColor: '#B5BABE',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: wp(3),
+    paddingRight: wp(4),
+    color: '#B5BABE',
+  },
+  disabledPlaceholder: {
+    color: '#B5BABE',
   },
   label: {
     fontSize: wp(3.5),

@@ -155,7 +155,7 @@ export const LoginScreen = () => {
               marginTop: hp(4),
               padding: wp(3),
               borderRadius: 8,
-              backgroundColor: '#002B5C',
+              backgroundColor: '#1E90FF',
               alignItems: 'center',
             }}>
             <Text

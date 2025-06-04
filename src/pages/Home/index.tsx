@@ -1,5 +1,14 @@
-import React, {useRef} from 'react';
-import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {AssetImage, ScreenContainer} from 'components';
 import {
   heightPercentageToDP as hp,
@@ -10,6 +19,9 @@ import {navigate} from 'routes/utils';
 import Simplification from 'assets/img/simplification.svg';
 import Submitted from 'assets/img/submitted.svg';
 import {home_bg} from 'assets/img';
+import Search from 'assets/img/search.svg';
+import useFetchApi from 'hooks/useFetchApi';
+import {ASSETS} from 'utlis/endpoints';
 
 type IMenuItem = {
   icon?: React.ReactNode;
@@ -18,6 +30,8 @@ type IMenuItem = {
 };
 
 export const HomeScreen = () => {
+  const [search, setSearch] = useState<string>('');
+  const [assetData, setAssetData] = useState<any[]>([]);
   const menuItemsList = useRef<Array<IMenuItem>>([
     {
       icon: <AssetImage image="register_asset_icon" size={60} />,
@@ -30,6 +44,36 @@ export const HomeScreen = () => {
       route: 'AuditDashboard',
     },
   ]).current;
+
+  const {execute, loading} = useFetchApi({
+    onSuccess: res => {
+      console.log(res?.data);
+      if (res?.status === 200) {
+        setAssetData(
+          res?.data?.items.length >= 1 ? res?.data?.items : undefined,
+        );
+      }
+    },
+    onError: err => {
+      console.log(err, 'err');
+      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+    },
+  });
+
+  const fetchData = (pageNumber: number) => {
+    const url = `${ASSETS}?page=${pageNumber}&per_page=10&global_search=${
+      search ?? ''
+    }`;
+    execute(url);
+  };
+
+  useEffect(() => {
+    if (assetData.length > 0) {
+      const item = assetData[0];
+      setAssetData([]);
+      navigate('AssetDetails', item);
+    }
+  }, [assetData]);
 
   return (
     <ScreenContainer showLogo showDrawer showNotify>
@@ -98,6 +142,38 @@ export const HomeScreen = () => {
         <View
           style={{
             display: 'flex',
+            flexDirection: 'row',
+            gap: 8,
+            flex: 1,
+            paddingTop: 24,
+            marginHorizontal: 16,
+          }}>
+          <View style={styles.searchbar}>
+            <Search height={16} width={16} />
+            <TextInput
+              style={styles.search}
+              placeholder="Search"
+              placeholderTextColor={'#B4B9C2'}
+              value={search}
+              onChangeText={val => setSearch(val)}
+            />
+          </View>
+          <TouchableOpacity
+            style={
+              loading || search === ''
+                ? styles.searchButtonDisabled
+                : styles.searchButton
+            }
+            disabled={loading || search === ''}
+            onPress={() => {
+              fetchData(1);
+            }}>
+            <Text style={styles.searchButtonText}>Go</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            display: 'flex',
             flexDirection: 'column',
             gap: 8,
             flex: 1,
@@ -142,7 +218,7 @@ export const HomeScreen = () => {
                   letterSpacing: 0.5,
                   flex: 1,
                 }}>
-                Asset Tag- 70 Assets has been registered on 14 Jan 2025
+                RFID tag was linked to Asset-231 on 12/05/25
               </Text>
             </View>
             <View
@@ -162,7 +238,7 @@ export const HomeScreen = () => {
                   letterSpacing: 0.5,
                   flex: 1,
                 }}>
-                Audit- Audit0724 is submitted on 17 Jan 2024.
+                Audit AUD-23 was submitted on 11/05/25.
               </Text>
             </View>
           </View>
@@ -188,3 +264,50 @@ export const HomeScreen = () => {
     </ScreenContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  search: {
+    borderWidth: 0,
+    color: '#3B475B',
+    fontSize: 14,
+    letterSpacing: 0.135,
+    textAlignVertical: 'center',
+    lineHeight: 12,
+    padding: 0,
+    margin: 0,
+    flex: 1,
+    height: 24,
+  },
+  searchbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#E6E6E6',
+    borderWidth: 0.75,
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    padding: 4,
+    flex: 1,
+    gap: 8,
+  },
+  searchButton: {
+    backgroundColor: '#1E90FF',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  searchButtonDisabled: {
+    backgroundColor: '#1E90FF60',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  searchButtonText: {
+    color: '#FAFBFF',
+  },
+});

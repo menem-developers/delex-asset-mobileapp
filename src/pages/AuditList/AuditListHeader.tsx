@@ -1,13 +1,16 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Progressbar} from 'components';
 
 type Props = {
   auditCount: any;
   data: any;
+  tab: number;
+  setTab: React.Dispatch<React.SetStateAction<number>>;
+  loading: boolean;
 };
 
-const AuditListHeader = ({auditCount, data}: Props) => {
+const AuditListHeader = ({auditCount, data, tab, setTab, loading}: Props) => {
   const percentage = (
     openAsset: string | number,
     completeAsset: string | number,
@@ -77,7 +80,17 @@ const AuditListHeader = ({auditCount, data}: Props) => {
           progress={(data.completed_assets / data.total_assets) * 100}
         />
         <View style={styles.progressDataList}>
-          <View style={styles.progressDataDisplay}>
+          <TouchableOpacity
+            style={
+              tab === 1
+                ? styles.progressDataDisplaySelected
+                : styles.progressDataDisplay
+            }
+            onPress={() => {
+              if (!loading) {
+                setTab(1);
+              }
+            }}>
             <Text style={styles.progressDataTitle}>Scanned</Text>
             <Text
               style={StyleSheet.compose(styles.progressDataValue, {
@@ -85,8 +98,18 @@ const AuditListHeader = ({auditCount, data}: Props) => {
               })}>
               {auditCount?.completed_count ?? 0}
             </Text>
-          </View>
-          <View style={styles.progressDataDisplay}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={
+              tab === 2
+                ? styles.progressDataDisplaySelected
+                : styles.progressDataDisplay
+            }
+            onPress={() => {
+              if (!loading) {
+                setTab(2);
+              }
+            }}>
             <Text style={styles.progressDataTitle}>Not Scanned</Text>
             <Text
               style={StyleSheet.compose(styles.progressDataValue, {
@@ -94,8 +117,18 @@ const AuditListHeader = ({auditCount, data}: Props) => {
               })}>
               {auditCount?.not_scanned_count ?? 0}
             </Text>
-          </View>
-          <View style={styles.progressDataDisplay}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={
+              tab === 3
+                ? styles.progressDataDisplaySelected
+                : styles.progressDataDisplay
+            }
+            onPress={() => {
+              if (!loading) {
+                setTab(3);
+              }
+            }}>
             <Text style={styles.progressDataTitle}>Scan Failed</Text>
             <Text
               style={StyleSheet.compose(styles.progressDataValue, {
@@ -103,7 +136,7 @@ const AuditListHeader = ({auditCount, data}: Props) => {
               })}>
               {auditCount?.unlisted_count ?? 0}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </>
@@ -245,6 +278,20 @@ const styles = StyleSheet.create({
     boxShadow: '1px 1px 16px 0px rgba(0, 0, 0, 0.12)',
     flexGrow: 1,
     alignItems: 'center',
+    borderRadius: 6,
+  },
+  progressDataDisplaySelected: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 8,
+    gap: 8,
+    backgroundColor: '#EAF1F7',
+    boxShadow: '1px 1px 16px 0px rgba(0, 0, 0, 0.12)',
+    flexGrow: 1,
+    alignItems: 'center',
+    borderColor: '#7FA9D1',
+    borderWidth: 1,
+    borderRadius: 6,
   },
   progressDataTitle: {
     color: '#8A8A8A',
