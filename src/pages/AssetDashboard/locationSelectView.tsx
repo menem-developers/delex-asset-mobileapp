@@ -30,15 +30,15 @@ const LocationSelectView = ({
 
   useEffect(() => {
     if (keys === 'location_name') {
-      execute(ASSET_LOCATIONS + '/?page=1&per_page=100');
+      execute(ASSET_LOCATIONS);
     } else if (keys === 'building_name') {
-      execute(BUILDINGS + '/?page=1&per_page=100');
+      execute(BUILDINGS);
     } else if (keys === 'floor_name') {
-      execute(FLOORS + '/?page=1&per_page=100');
+      execute(FLOORS);
     } else if (keys === 'room_name') {
-      execute(ROOMS + '/?page=1&per_page=100');
+      execute(ROOMS);
     } else if (keys === 'category_name') {
-      execute(GROUPINGS + '/?page=1&per_page=100');
+      execute(GROUPINGS + '?page=1&per_page=100');
     } else if (keys === 'full_name') {
       execute(CUSTODIANS + '/?page=1&per_page=100');
     }
@@ -88,6 +88,8 @@ const LocationSelectView = ({
         labelField={keys}
         valueField={keys}
         style={styles.dropdown}
+        search
+        searchPlaceholder="Enter Here"
         flatListProps={{
           ListEmptyComponent: () => (
             <Text style={styles.noRecord}>No records found!</Text>
