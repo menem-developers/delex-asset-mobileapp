@@ -13,7 +13,7 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 import {
   deInitializeReader,
-  readPower,
+  // readPower,
   readSingleTag,
   initializeReader,
   powerListener,
@@ -74,10 +74,10 @@ export const AssetDetailsScreen = ({route}: any) => {
   const eventListenerTag = async (data: any[]) => {
     try {
       setTags(tags.concat(data[0]));
-      ToastAndroid.show(
-        'Event Listener Tag:- ' + JSON.stringify(data),
-        ToastAndroid.SHORT,
-      );
+      // ToastAndroid.show(
+      //   'Event Listener Tag:- ' + JSON.stringify(data),
+      //   ToastAndroid.SHORT,
+      // );
       await handlerReadPower();
     } catch (error: any) {
       console.log('Event Listener Tag', error?.message);
@@ -86,8 +86,8 @@ export const AssetDetailsScreen = ({route}: any) => {
 
   const handlerReadPower = async () => {
     try {
-      const result = await readPower();
-      ToastAndroid.show(`RFID Reading Power is ${result}`, ToastAndroid.SHORT);
+      // const result = await readPower();
+      // ToastAndroid.show(`RFID Reading Power is ${result}`, ToastAndroid.SHORT);
       await handlerScanSingleTag();
     } catch (error: any) {
       console.log('RFID Reading Power', error?.message);

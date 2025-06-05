@@ -14,7 +14,7 @@ import {
   deInitializeReader,
   initializeReader,
   powerListener,
-  readPower,
+  // readPower,
   startReadingTags,
   tagListener,
 } from 'react-native-rfid-chainway-c72';
@@ -79,12 +79,12 @@ export const AuditScanScreen = ({route}: Props) => {
     }
   };
 
-  const eventListenerPower = async (data: string) => {
+  const eventListenerPower = async () => {
     try {
-      ToastAndroid.show(
-        'Listener Power - ' + data?.toLocaleUpperCase(),
-        ToastAndroid.SHORT,
-      );
+      // ToastAndroid.show(
+      //   'Listener Power - ' + data?.toLocaleUpperCase(),
+      //   ToastAndroid.SHORT,
+      // );
       await handlerReadPower();
     } catch (error: any) {
       console.log('Event Listener Power', error?.message);
@@ -93,10 +93,10 @@ export const AuditScanScreen = ({route}: Props) => {
 
   const eventListenerTag = async (data: any[]) => {
     try {
-      ToastAndroid.show(
-        'Event Listener Tag:- ' + JSON.stringify(data),
-        ToastAndroid.SHORT,
-      );
+      // ToastAndroid.show(
+      //   'Event Listener Tag:- ' + JSON.stringify(data),
+      //   ToastAndroid.SHORT,
+      // );
       // setTags(prevState => [...prevState, data[0]]);
       execute(
         `${AUDIT_FORMS_SCAN_RFID.replace(
@@ -118,8 +118,8 @@ export const AuditScanScreen = ({route}: Props) => {
 
   const handlerReadPower = async () => {
     try {
-      const result = await readPower();
-      ToastAndroid.show(`RFID Reading Power is ${result}`, ToastAndroid.SHORT);
+      // const result = await readPower();
+      // ToastAndroid.show(`RFID Reading Power is ${result}`, ToastAndroid.SHORT);
       await handlerStartReading();
     } catch (error: any) {
       console.log('RFID Reading Power', error?.message);
