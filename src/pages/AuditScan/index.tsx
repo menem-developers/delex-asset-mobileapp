@@ -20,10 +20,29 @@ import {
 } from 'react-native-rfid-chainway-c72';
 import {back} from 'routes/utils';
 import styles from './styles';
-import useFetchApi from 'hooks/useFetchApi';
-import {ASSETS} from 'utlis/endpoints';
+import useFetchApi, {HTTP} from 'hooks/useFetchApi';
+import {AUDIT_FORMS_SCAN_RFID} from 'utlis/endpoints';
+import {RouteProp} from '@react-navigation/native';
 
-export const AuditScanScreen = () => {
+type AuditListItemProps = {
+  completed_assets: number;
+  total_assets: number;
+  audit_name: string;
+  asset_location_name: string;
+  status: string;
+  start_date: string;
+  id: number;
+};
+
+type RootStackParamList = {
+  AuditList: AuditListItemProps;
+};
+
+type Props = {
+  route: RouteProp<RootStackParamList, 'AuditList'>;
+};
+
+export const AuditScanScreen = ({route}: Props) => {
   const [tags, setTags] = useState<any[]>([]);
 
   const {execute, loading} = useFetchApi({
@@ -31,9 +50,9 @@ export const AuditScanScreen = () => {
       if (res?.status === 200) {
         console.log(res.data);
         setTags(prev =>
-          prev?.length
-            ? res?.data?.items
-            : [...prev.concat(res?.data?.items ?? [])],
+          prev?.length === 0
+            ? res?.data?.assets
+            : [...prev.concat(res?.data?.assets ?? [])],
         );
       }
     },
@@ -80,7 +99,16 @@ export const AuditScanScreen = () => {
       );
       // setTags(prevState => [...prevState, data[0]]);
       execute(
-        `${ASSETS}?page=1&per_page=1&rfid_reference=${data[0]}&rfid_reference_required=true`,
+        `${AUDIT_FORMS_SCAN_RFID.replace(
+          '{audit_form_id}',
+          route?.params?.id ? route?.params?.id?.toString() : '',
+        )}`,
+        {
+          method: HTTP.POST,
+          data: {
+            rfid_references: data,
+          },
+        },
       );
       // await handlerReadPower();
     } catch (error: any) {

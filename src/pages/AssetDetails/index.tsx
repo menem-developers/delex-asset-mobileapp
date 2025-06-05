@@ -325,8 +325,8 @@ export const AssetDetailsScreen = ({route}: any) => {
           ))}
         </View>
 
-        {!route?.params?.rfid_reference &&
-          (loading ? (
+        {!route?.params?.rfid_reference ? (
+          loading ? (
             <View
               style={{
                 borderColor: '#1D232F',
@@ -384,7 +384,66 @@ export const AssetDetailsScreen = ({route}: any) => {
                 {rfid ? 'RFID Registered Successfully' : 'Scan RFID'}
               </Text>
             </TouchableOpacity>
-          ))}
+          )
+        ) : loading ? (
+          <View
+            style={{
+              borderColor: '#1D232F',
+              marginHorizontal: wp(5),
+              alignItems: 'center',
+              borderRadius: 10,
+              marginTop: wp(5),
+              padding: wp(2.5),
+              borderWidth: 1,
+              width: wp(90),
+            }}>
+            {rfid ? (
+              <AssetImage
+                image="success_checked"
+                size={wp(10)}
+                style={{marginTop: 8, marginBottom: 16}}
+              />
+            ) : (
+              <ActivityIndicator
+                size={'large'}
+                color={'#1D232F'}
+                style={{marginTop: 8, marginBottom: 16}}
+              />
+            )}
+            <Text
+              style={{
+                letterSpacing: wp(0.15),
+                color: '#1D232F',
+                fontWeight: '600',
+                fontSize: wp(3.5),
+              }}>
+              RFID Re-Scanning
+            </Text>
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={scanData}
+            style={{
+              borderColor: '#1D232F',
+              marginHorizontal: wp(5),
+              alignItems: 'center',
+              borderRadius: 10,
+              marginTop: wp(5),
+              padding: wp(2.5),
+              borderWidth: 1,
+              width: wp(90),
+            }}>
+            <Text
+              style={{
+                letterSpacing: wp(0.15),
+                color: '#1D232F',
+                fontWeight: '600',
+                fontSize: wp(3.5),
+              }}>
+              {rfid ? 'RFID Re-Registered Successfully' : 'Re-Scan RFID'}
+            </Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
       {rfid && (
         <View style={styles.footer}>

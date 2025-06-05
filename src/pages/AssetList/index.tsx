@@ -76,6 +76,7 @@ export const AssetListScreen = ({route}: any) => {
 
   useEffect(() => {
     if (route?.params && isFocused) {
+      setAssetData([]);
       setPageNo(1);
       if (!completeAssetDetails && !openAssetDetails) {
         fetchData(1, true);
@@ -85,7 +86,7 @@ export const AssetListScreen = ({route}: any) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route?.params, searchQuery, isFocused]);
+  }, [route?.params, searchQuery, isFocused, selectedTab]);
 
   return (
     <ScreenContainer title="Asset List" showBack>
