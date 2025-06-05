@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -18,7 +21,9 @@ import CrevRight from 'assets/img/chev-right.svg';
 import LocationSelectView from './locationSelectView';
 import {useIsFocused} from '@react-navigation/native';
 import useFetchApi from 'hooks/useFetchApi';
-import {REGISTRATION_STATS} from 'utlis/endpoints';
+import {ASSETS, REGISTRATION_STATS} from 'utlis/endpoints';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Search from 'assets/img/search.svg';
 
 interface IAssetInfoData {
   title: string;
@@ -42,6 +47,11 @@ export const AssetDashboardScreen = () => {
     category_name: '',
     full_name: '',
   });
+  const [showReregisterDrawer, setShowReregisterDrawer] =
+    useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
+
+  const [assetData, setAssetData] = useState<any[]>([]);
 
   const assetInfoData: Array<IAssetInfoData> = [
     {title: 'Active Assets', color: '#1E90FF'},
@@ -100,6 +110,36 @@ export const AssetDashboardScreen = () => {
     },
     onError: err => console.log(err, 'err'),
   });
+
+  const {execute: searchExecution, loading} = useFetchApi({
+    onSuccess: res => {
+      console.log(res?.data);
+      if (res?.status === 200) {
+        setAssetData(
+          res?.data?.items.length >= 1 ? res?.data?.items : undefined,
+        );
+      }
+    },
+    onError: err => {
+      console.log(err, 'err');
+      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+    },
+  });
+
+  const fetchData = (pageNumber: number) => {
+    const url = `${ASSETS}?page=${pageNumber}&per_page=10&global_search=${
+      search ?? ''
+    }`;
+    searchExecution(url);
+  };
+
+  useEffect(() => {
+    if (assetData.length > 0) {
+      const item = assetData[0];
+      setAssetData([]);
+      navigate('AssetDetails', item);
+    }
+  }, [assetData]);
 
   useEffect(() => {
     if (isFocused) {
@@ -187,7 +227,15 @@ export const AssetDashboardScreen = () => {
                   <TouchableOpacity
                     style={styles.menuButton}
                     key={i}
-                    onPress={() => handleMenuClick(el)}>
+                    onPress={() => {
+                      if (el.route) {
+                        handleMenuClick(el);
+                      } else {
+                        if (el.title === 'Asset Re-Registration') {
+                          setShowReregisterDrawer(true);
+                        }
+                      }
+                    }}>
                     <View style={styles.menuTitleContainer}>
                       {el.icon}
                       <Text style={styles.menuTitle}>{el.title}</Text>
@@ -227,6 +275,50 @@ export const AssetDashboardScreen = () => {
           </TouchableOpacity>
         )}
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showReregisterDrawer}
+        onRequestClose={() => setShowReregisterDrawer(false)}>
+        <SafeAreaView edges={['bottom']} style={styles.drawerOverlay}>
+          <View style={styles.drawerContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.drawerTitle}>Asset Re-Registration</Text>
+              <Text style={styles.drawerMessage}>
+                Enter asset tag or serial number in below input field to view
+                the asset details
+              </Text>
+            </View>
+            <View style={styles.searchbar}>
+              <Search height={16} width={16} />
+              <TextInput
+                style={styles.search}
+                placeholder="Search"
+                placeholderTextColor={'#B4B9C2'}
+                value={search}
+                onChangeText={val => setSearch(val)}
+              />
+            </View>
+            <View style={styles.drawerButtons}>
+              <TouchableOpacity
+                style={styles.drawerCancel}
+                disabled={loading}
+                onPress={() => setShowReregisterDrawer(false)}>
+                <Text style={styles.drawerCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.drawerSubmit}
+                disabled={loading}
+                onPress={() => {
+                  setShowReregisterDrawer(false);
+                  fetchData(1);
+                }}>
+                <Text style={styles.drawerSubmitText}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
     </ScreenContainer>
   );
 };
