@@ -2,6 +2,7 @@
 export const BASE_URL = 'https://ams.shriaura.com';
 export const REGISTRATION_STATS = '/api/assets/registration-stats';
 export const ASSETS = '/api/assets';
+export const ASSETS_REGISTER = '/api/assets/register';
 export const ASSET_LOCATIONS = '/api/locations/asset-locations';
 export const BUILDINGS = '/api/locations/buildings';
 export const ROOMS = '/api/locations/rooms';

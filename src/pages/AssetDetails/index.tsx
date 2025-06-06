@@ -21,18 +21,21 @@ import {
 } from 'react-native-rfid-chainway-c72';
 import {back} from 'routes/utils';
 import {HTTP, useFetchApi} from 'hooks';
-import {ASSETS} from 'utlis/endpoints';
+import {ASSETS_REGISTER} from 'utlis/endpoints';
 import styles from './styles';
+import {convertToLocalDateTime} from 'utlis/timefunctions';
 
 export const AssetDetailsScreen = ({route}: any) => {
   const [rfid, setRFID] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [tags, setTags] = useState<any[]>([]);
+  const [registeredOn, setRegisteredOn] = useState<string>('');
 
   const {execute} = useFetchApi({
     onSuccess: res => {
       if (res?.status === 200) {
         console.log(res?.data);
+        setRegisteredOn(res?.data?.registered_on);
         // back();
         setLoading(false);
         deInitializeReader();
@@ -97,9 +100,9 @@ export const AssetDetailsScreen = ({route}: any) => {
   const handlerScanSingleTag = async () => {
     try {
       const result = await readSingleTag();
-      await execute(`${ASSETS}/${route?.params?.id}`, {
-        method: HTTP.PUT,
-        data: {...route?.params, rfid_reference: result[0]},
+      await execute(`${ASSETS_REGISTER}`, {
+        method: HTTP.POST,
+        data: {id: route?.params?.id, rfid_reference: result[0]},
       });
       setRFID(result[0]);
       // onTagReaded(true);
@@ -275,6 +278,7 @@ export const AssetDetailsScreen = ({route}: any) => {
             {label: 'Area/Section'}, // Area/Section
             {label: 'Asset Assigned To'}, // Asset Assigned To
             {label: 'RFID Reference'}, // RFID Reference No
+            {label: 'Registration Date'},
           ].map(el => (
             <Fragment key={el.label}>
               <View
@@ -316,7 +320,13 @@ export const AssetDetailsScreen = ({route}: any) => {
                     : el.label === 'Asset Assigned To'
                     ? route?.params?.assigned_to ?? ''
                     : el.label === 'RFID Reference'
-                    ? route?.params?.rfid_reference ?? rfid
+                    ? rfid !== ''
+                      ? rfid
+                      : route?.params?.rfid_reference
+                    : el.label === 'Registration Date'
+                    ? registeredOn !== ''
+                      ? convertToLocalDateTime(registeredOn)
+                      : convertToLocalDateTime(route?.params?.last_registered)
                     : ''}
                 </Text>
               </View>

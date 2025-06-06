@@ -1,5 +1,6 @@
 import {
-  BackHandler,
+  // BackHandler,
+  Modal,
   RefreshControl,
   ScrollView,
   Text,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {ScreenContainer} from 'components';
 
 import {
@@ -18,11 +19,12 @@ import {
   startReadingTags,
   tagListener,
 } from 'react-native-rfid-chainway-c72';
-import {back} from 'routes/utils';
+import {back, navigate} from 'routes/utils';
 import styles from './styles';
 import useFetchApi, {HTTP} from 'hooks/useFetchApi';
 import {AUDIT_FORMS_SCAN_RFID} from 'utlis/endpoints';
 import {RouteProp} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type AuditListItemProps = {
   completed_assets: number;
@@ -44,6 +46,8 @@ type Props = {
 
 export const AuditScanScreen = ({route}: Props) => {
   const [tags, setTags] = useState<any[]>([]);
+  const [isScanning, setIsScanning] = useState<boolean>(false);
+  const [showStopScanDrawer, setShowStopScanDrawer] = useState<boolean>(false);
 
   const {execute, loading} = useFetchApi({
     onSuccess: res => {
@@ -62,12 +66,8 @@ export const AuditScanScreen = ({route}: Props) => {
     },
   });
 
-  useEffect(() => {
-    scanData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const scanData = async () => {
+    setIsScanning(true);
     try {
       await initializeReader();
       // @ts-ignore
@@ -139,19 +139,27 @@ export const AuditScanScreen = ({route}: Props) => {
       await deInitializeReader();
     }
   };
-  const backhandler = () => {
-    async () => await deInitializeReader();
-    return true;
-  };
+  // const backhandler = () => {
+  //   deInitializeReader()
+  //     .then(() => {
+  //       setIsScanning(false);
+  //     })
+  //     .catch(err => {
+  //       console.error('Error deinitializing:', err);
+  //       setIsScanning(false); // even if error, update UI
+  //     });
+  //   setIsScanning(false);
+  //   return true;
+  // };
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backhandler,
-    );
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backhandler,
+  //   );
 
-    return () => backHandler.remove();
-  }, []);
+  //   return () => backHandler.remove();
+  // }, []);
 
   return (
     <ScreenContainer
@@ -183,20 +191,60 @@ export const AuditScanScreen = ({route}: Props) => {
           ))
         ) : (
           <Text style={[styles.noRecord, {paddingTop: 32}]}>
-            No records found!
+            No assets Scanned! Please Start Scanning
           </Text>
         )}
       </ScrollView>
       <View style={styles.bottomFooter}>
         <TouchableOpacity
           style={styles.cancelBtn}
-          onPress={async () => await deInitializeReader()}>
+          onPress={() => setShowStopScanDrawer(true)}>
           <Text style={styles.cancel}>Stop Scan</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.submitBtn} onPress={scanData}>
+        <TouchableOpacity
+          style={isScanning ? styles.submitBtnDisabled : styles.submitBtn}
+          onPress={scanData}
+          disabled={isScanning}>
           <Text style={styles.submit}>Start Scan</Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showStopScanDrawer}
+        onRequestClose={() => setShowStopScanDrawer(false)}>
+        <SafeAreaView edges={['bottom']} style={styles.drawerOverlay}>
+          <View style={styles.drawerContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.drawerTitle}>
+                Are you sure you want to stop the Scanning ?
+              </Text>
+              <Text style={styles.drawerMessage}>
+                Stop Current Scanning and return back to the List
+              </Text>
+            </View>
+            <View style={styles.drawerButtons}>
+              <TouchableOpacity
+                style={styles.drawerSubmit}
+                onPress={async () => {
+                  setIsScanning(false);
+                  setShowStopScanDrawer(false);
+                  await deInitializeReader();
+                  navigate('AuditList', route?.params);
+                }}>
+                <Text style={styles.drawerSubmitText}>Stop Scanning</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.drawerCancel}
+                onPress={() => setShowStopScanDrawer(false)}>
+                <Text style={styles.drawerCancelText}>
+                  No, Continue Scanning
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
     </ScreenContainer>
   );
 };

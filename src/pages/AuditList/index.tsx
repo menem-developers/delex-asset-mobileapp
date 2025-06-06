@@ -30,7 +30,7 @@ type AuditListItemProps = {
   total_assets: number;
   audit_name: string;
   asset_location_name: string;
-  status: string;
+  status_name: string;
   start_date: string;
   id: number;
 };
@@ -50,6 +50,7 @@ export const AuditListScreen = ({route}: Props) => {
   const [auditCount, setAuditCount] = useState<any>();
   const [pageNo, setPageNo] = useState<number>(1);
   const [perPage] = useState<number>(10);
+  const status = route.params.status_name;
 
   const [search, setSearch] = useState<string>('');
 
@@ -143,7 +144,11 @@ export const AuditListScreen = ({route}: Props) => {
     <ScreenContainer
       title="Audit List"
       showBack
-      onPressScanner={() => navigate('AuditScan', route?.params)}>
+      onPressScanner={
+        status !== 'Completed'
+          ? () => navigate('AuditScan', route?.params)
+          : undefined
+      }>
       <AuditListHeader
         data={data}
         auditCount={auditCount}
@@ -220,22 +225,24 @@ export const AuditListScreen = ({route}: Props) => {
           </View>
         )}
       />
-      <View style={styles.bottomFooter}>
-        <TouchableOpacity
-          style={styles.cancelBtn}
-          onPress={() => {
-            navigate('AuditDashboard');
-          }}>
-          <Text style={styles.cancel}>Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.submitBtn}
-          onPress={() => {
-            setShowCloseDrawer(true);
-          }}>
-          <Text style={styles.submit}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+      {status !== 'Completed' && (
+        <View style={styles.bottomFooter}>
+          <TouchableOpacity
+            style={styles.cancelBtn}
+            onPress={() => {
+              navigate('AuditDashboard');
+            }}>
+            <Text style={styles.cancel}>Back</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.submitBtn}
+            onPress={() => {
+              setShowCloseDrawer(true);
+            }}>
+            <Text style={styles.submit}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <Modal
         animationType="slide"
         transparent={true}
