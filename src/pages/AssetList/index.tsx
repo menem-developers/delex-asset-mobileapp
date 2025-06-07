@@ -18,7 +18,7 @@ import {useDebounce, useFetchApi} from 'hooks';
 import Search from 'assets/img/search.svg';
 import ChevronRight from 'assets/img/chev-right.svg';
 import CompleteFlag from 'assets/img/complete_flag.svg';
-import {ASSETS} from 'utlis/endpoints';
+import {ASSETS, REGISTRATION_STATS} from 'utlis/endpoints';
 import styles from './styles';
 import AssetListHeader from './AssetListHeader';
 
@@ -29,11 +29,27 @@ export const AssetListScreen = ({route}: any) => {
   const [selectedTab, setSelectedTab] = useState<ISelectedTab>('open_assets');
   const [searchText, setSearchText] = useState<string>('');
   const [assetData, setAssetData] = useState<any[]>([]);
-  const [completeAssetDetails, setCompleteAssetDetails] = useState<any>();
-  const [openAssetDetails, setOpenAssetDetails] = useState<any>();
+  const [countDetails, setCountDetails] = useState<{
+    completed_assets: number;
+    open_assets: number;
+  }>();
   const [pageNo, setPageNo] = useState<number>(1);
   const [perPage] = useState<number>(10);
   const searchQuery = useDebounce(searchText, 1000);
+
+  const {execute: countExecute} = useFetchApi({
+    onSuccess: res => {
+      console.log(res?.data);
+      setCountDetails({
+        completed_assets: res?.data.completed_assets,
+        open_assets: res?.data.open_assets,
+      });
+    },
+    onError: err => {
+      console.log(err, 'err');
+      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+    },
+  });
 
   const {execute, loading} = useFetchApi({
     onSuccess: res => {
@@ -44,11 +60,6 @@ export const AssetListScreen = ({route}: any) => {
             ? res?.data?.items
             : [...prev.concat(res?.data?.items ?? [])],
         );
-        if (res.url.includes('rfid_reference=1')) {
-          setCompleteAssetDetails(res?.data);
-        } else {
-          setOpenAssetDetails(res?.data);
-        }
       }
     },
     onError: err => {
@@ -80,11 +91,21 @@ export const AssetListScreen = ({route}: any) => {
     if (route?.params && isFocused) {
       setAssetData([]);
       setPageNo(1);
-      // if (!completeAssetDetails && !openAssetDetails) {
+      // if (!countDetails && !openAssetDetails) {
       //   fetchData(1, true);
       //   fetchData(1, false);
       // } else {
       // setAssetData([]);
+      countExecute(
+        REGISTRATION_STATS +
+          `?asset_location_id=${
+            route?.params?.location_name?.id ?? ''
+          }&building_id=${route?.params?.building_name?.id ?? ''}&floor_id=${
+            route?.params?.floor_name?.id ?? ''
+          }&room_id=${route?.params?.room_name?.id ?? ''}&subroom_id=${
+            route?.params?.full_name?.id ?? ''
+          }`,
+      );
       fetchData(1, selectedTab === 'completed', searchQuery);
       // }
     }
@@ -96,9 +117,11 @@ export const AssetListScreen = ({route}: any) => {
       <AssetListHeader
         data={route?.params}
         completeAssetDetails={
-          completeAssetDetails?.total ? completeAssetDetails?.total : 0
+          countDetails?.completed_assets ? countDetails?.completed_assets : 0
         }
-        openAssetDetails={openAssetDetails?.total ? openAssetDetails?.total : 0}
+        openAssetDetails={
+          countDetails?.open_assets ? countDetails?.open_assets : 0
+        }
       />
 
       <View style={styles.tabContainer}>
@@ -121,7 +144,7 @@ export const AssetListScreen = ({route}: any) => {
           </Text>
           {selectedTab === 'open_assets' && (
             <Text style={styles.tabBadge}>
-              {openAssetDetails?.total ? openAssetDetails?.total : 0}
+              {countDetails?.open_assets ? countDetails?.open_assets : 0}
             </Text>
           )}
         </TouchableOpacity>

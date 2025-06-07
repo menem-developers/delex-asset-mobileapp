@@ -79,12 +79,12 @@ export const AuditScanScreen = ({route}: Props) => {
     }
   };
 
-  const eventListenerPower = async () => {
+  const eventListenerPower = async (data: any) => {
     try {
-      // ToastAndroid.show(
-      //   'Listener Power - ' + data?.toLocaleUpperCase(),
-      //   ToastAndroid.SHORT,
-      // );
+      ToastAndroid.show(
+        'Listener Power - ' + data?.toLocaleUpperCase(),
+        ToastAndroid.SHORT,
+      );
       await handlerReadPower();
     } catch (error: any) {
       console.log('Event Listener Power', error?.message);
