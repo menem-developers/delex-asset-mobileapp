@@ -193,6 +193,7 @@ export const AssetListScreen = ({route}: any) => {
             refreshing={loading}
             onRefresh={() => {
               setPageNo(1);
+              setAssetData([]);
               fetchData(1, selectedTab === 'completed');
             }}
           />
