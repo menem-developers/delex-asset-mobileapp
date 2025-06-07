@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     color: '#3B475B',
     maxWidth: 200,
     width: 160,
-    fontSize: 9,
+    fontSize: 10,
     letterSpacing: 0.135,
     textAlignVertical: 'center',
     lineHeight: 12,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     padding: 0,
     gap: 8,
-    height: 24,
+    height: 30,
   },
   assetDetailItem: {
     display: 'flex',

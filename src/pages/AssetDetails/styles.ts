@@ -5,6 +5,11 @@ const styles = StyleSheet.create({
   assetHeaderContainer: {},
   assetDeatailsCard: {},
   assetDetailSection: {},
+  statsCardBg: {
+    padding: wp(4),
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
   asset: {},
   footer: {
     borderWidth: 2,

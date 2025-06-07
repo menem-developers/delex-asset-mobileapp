@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   // Image,
   ScrollView,
   Text,
@@ -24,6 +25,7 @@ import {HTTP, useFetchApi} from 'hooks';
 import {ASSETS_REGISTER} from 'utlis/endpoints';
 import styles from './styles';
 import {convertToLocalDateTime} from 'utlis/timefunctions';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const AssetDetailsScreen = ({route}: any) => {
   const [rfid, setRFID] = useState<string>('');
@@ -36,6 +38,7 @@ export const AssetDetailsScreen = ({route}: any) => {
       if (res?.status === 200) {
         console.log(res?.data);
         setRegisteredOn(res?.data?.registered_on);
+        setRFID(res?.data?.rfid_reference);
         // back();
         setLoading(false);
         deInitializeReader();
@@ -44,7 +47,10 @@ export const AssetDetailsScreen = ({route}: any) => {
     },
     onError: err => {
       console.log('err', JSON.stringify(err?.data));
-      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+      Alert.alert('RFID Registration Error', err?.data?.message ?? '', [
+        {text: 'OK', onPress: () => deInitializeReader()},
+      ]);
+      deInitializeReader();
       setLoading(false);
     },
   });
@@ -104,7 +110,6 @@ export const AssetDetailsScreen = ({route}: any) => {
         method: HTTP.POST,
         data: {id: route?.params?.id, rfid_reference: result[0]},
       });
-      setRFID(result[0]);
       // onTagReaded(true);
       // setTimeout(() => {
       //   setLoading(false);
@@ -117,6 +122,20 @@ export const AssetDetailsScreen = ({route}: any) => {
       setLoading(false);
     }
   };
+
+  // const testFunction = async () => {
+  //   await execute(`${ASSETS_REGISTER}`, {
+  //     method: HTTP.POST,
+  //     data: {
+  //       id: 24743,
+  //       rfid_reference: 'E28011B0A5020068B8DF4F21',
+  //     },
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   testFunction();
+  // }, []);
 
   // const payload = () => {
   //   return {
@@ -175,18 +194,27 @@ export const AssetDetailsScreen = ({route}: any) => {
       }
       showBack>
       <ScrollView>
-        <View
-          style={{
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8,
-            borderColor: '#D4D6D9',
-            paddingHorizontal: wp(4),
-            paddingVertical: wp(3),
-            flexDirection: 'row',
-            borderWidth: 1,
-            gap: wp(5),
-          }}>
-          {/* <View
+        <LinearGradient
+          start={{x: 0, y: 0.1}}
+          end={{x: 0, y: 0.9}}
+          colors={['rgba(73, 114, 156, 0.50)', '#E1EBF5', '#E8EFF6', '#94AEC8']}
+          style={styles.statsCardBg}>
+          <View
+            style={{
+              borderBottomLeftRadius: 8,
+              borderBottomRightRadius: 8,
+              borderColor: '#D4D6D9',
+              paddingHorizontal: 16,
+              paddingVertical: 16,
+              flexDirection: 'row',
+              borderWidth: 1,
+              gap: wp(5),
+              backgroundColor: '#fff',
+              borderRadius: 8,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            {/* <View
             style={{
               borderColor: '#D4D6D9',
               padding: wp(0.5),
@@ -204,24 +232,26 @@ export const AssetDetailsScreen = ({route}: any) => {
             )}
           </View> */}
 
-          <View style={{flex: 1, gap: wp(1)}}>
-            <Text
-              style={{
-                color: '#3B475B',
-                fontSize: wp(3.5),
-                fontWeight: '600',
-              }}>
-              {route?.params?.asset_description ?? ''}
-            </Text>
-            <Text
-              style={{
-                color: '#3B475B',
-                fontSize: wp(3.2),
-                fontWeight: '400',
-              }}>
-              {route?.params?.category_name ?? ''}
-            </Text>
-            {/* <View
+            <View style={{flex: 1, gap: wp(1)}}>
+              <Text
+                style={{
+                  color: '#3B475B',
+                  fontSize: wp(3.5),
+                  fontWeight: '600',
+                  textAlign: 'center',
+                }}>
+                {route?.params?.asset_description ?? ''}
+              </Text>
+              <Text
+                style={{
+                  color: '#3B475B',
+                  fontSize: wp(3.2),
+                  fontWeight: '400',
+                  textAlign: 'center',
+                }}>
+                {route?.params?.category_name ?? ''}
+              </Text>
+              {/* <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -246,9 +276,9 @@ export const AssetDetailsScreen = ({route}: any) => {
                 {route?.params?.status_name ?? ''}
               </Text>
             </View> */}
+            </View>
           </View>
-        </View>
-
+        </LinearGradient>
         <Text
           style={{
             marginTop: wp(3),

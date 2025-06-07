@@ -70,7 +70,9 @@ export const AssetListScreen = ({route}: any) => {
       route?.params?.room_name?.id ?? ''
     }&custodian_id=${route?.params?.full_name?.id ?? ''}&category_id=${
       route?.params?.category_name?.id ?? ''
-    }&rfid_reference=${isCompleted ? 1 : ''}&rfid_reference_required=true`;
+    }&rfid_reference=${isCompleted ? 1 : ''}&rfid_reference_required=${
+      isCompleted ? false : true
+    }`;
     execute(url);
   };
 
@@ -78,12 +80,13 @@ export const AssetListScreen = ({route}: any) => {
     if (route?.params && isFocused) {
       setAssetData([]);
       setPageNo(1);
-      if (!completeAssetDetails && !openAssetDetails) {
-        fetchData(1, true);
-        fetchData(1, false);
-      } else {
-        fetchData(1, selectedTab === 'completed', searchQuery);
-      }
+      // if (!completeAssetDetails && !openAssetDetails) {
+      //   fetchData(1, true);
+      //   fetchData(1, false);
+      // } else {
+      // setAssetData([]);
+      fetchData(1, selectedTab === 'completed', searchQuery);
+      // }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route?.params, searchQuery, isFocused, selectedTab]);
@@ -101,9 +104,10 @@ export const AssetListScreen = ({route}: any) => {
       <View style={styles.tabContainer}>
         <TouchableOpacity
           onPress={() => {
-            setPageNo(1);
-            setSelectedTab('open_assets');
-            fetchData(1, false);
+            if (!loading) {
+              setPageNo(1);
+              setSelectedTab('open_assets');
+            } // fetchData(1, false);
           }}
           style={StyleSheet.compose(styles.tabButton, {
             backgroundColor:
@@ -123,9 +127,11 @@ export const AssetListScreen = ({route}: any) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setPageNo(1);
-            setSelectedTab('completed');
-            fetchData(1, true);
+            if (!loading) {
+              setPageNo(1);
+              setSelectedTab('completed');
+            }
+            // fetchData(1, true);
           }}
           style={StyleSheet.compose(styles.tabButton, {
             backgroundColor:

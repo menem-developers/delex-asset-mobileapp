@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   Modal,
   ScrollView,
   StyleSheet,
@@ -101,7 +102,7 @@ export const AssetDashboardScreen = () => {
         {...{...el, selectedLocation, setSelectedLocation}}
       />
     ));
-  const {execute} = useFetchApi({
+  const {execute, loading: infoLoading} = useFetchApi({
     onSuccess: res => {
       if (res?.status === 200) {
         console.log('res:- ', res?.data);
@@ -201,19 +202,24 @@ export const AssetDashboardScreen = () => {
                     style={[styles.radioDot, {backgroundColor: el.color}]}
                   />
                 </View>
-                <View style={{gap: wp(1)}}>
-                  <Text style={styles.assetInfoValue}>
-                    {el.title === 'Active Assets'
-                      ? (assetInfo?.completed_assets
-                          ? assetInfo?.completed_assets
-                          : 0) +
-                        (assetInfo?.open_assets ? assetInfo?.open_assets : 0)
-                      : assetInfo?.completed_assets
-                      ? assetInfo?.completed_assets
-                      : 0}
-                  </Text>
-                  <Text style={styles.assetInfoTitle}>{el.title}</Text>
-                </View>
+                {!infoLoading ? (
+                  <View style={{gap: wp(1)}}>
+                    <Text style={styles.assetInfoValue}>
+                      {el.title === 'Active Assets'
+                        ? (assetInfo?.completed_assets
+                            ? assetInfo?.completed_assets
+                            : 0) +
+                          (assetInfo?.open_assets ? assetInfo?.open_assets : 0)
+                        : assetInfo?.completed_assets
+                        ? assetInfo?.completed_assets
+                        : 0}
+                    </Text>
+
+                    <Text style={styles.assetInfoTitle}>{el.title}</Text>
+                  </View>
+                ) : (
+                  <ActivityIndicator />
+                )}
               </View>
             ))}
           </View>
@@ -313,7 +319,7 @@ export const AssetDashboardScreen = () => {
                   setShowReregisterDrawer(false);
                   fetchData(1);
                 }}>
-                <Text style={styles.drawerSubmitText}>Submit</Text>
+                <Text style={styles.drawerSubmitText}>Search</Text>
               </TouchableOpacity>
             </View>
           </View>

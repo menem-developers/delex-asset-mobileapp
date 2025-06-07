@@ -93,10 +93,16 @@ export const AuditScanScreen = ({route}: Props) => {
 
   const eventListenerTag = async (data: any[]) => {
     try {
-      // ToastAndroid.show(
-      //   'Event Listener Tag:- ' + JSON.stringify(data),
-      //   ToastAndroid.SHORT,
-      // );
+      ToastAndroid.show(
+        'Event Listener Tag:- ' +
+          JSON.stringify({
+            method: HTTP.POST,
+            data: {
+              rfid_references: data,
+            },
+          }),
+        ToastAndroid.SHORT,
+      );
       // setTags(prevState => [...prevState, data[0]]);
       execute(
         `${AUDIT_FORMS_SCAN_RFID.replace(

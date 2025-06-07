@@ -92,7 +92,7 @@ const AssetListHeader = (props: AssetListHeaderProps) => {
             </Text>
             <Text style={styles.taggingCountText}>
               <Text style={{color: '#1E90FF'}}>{completeAssetDetails}</Text> /{' '}
-              {openAssetDetails ?? 0 + completeAssetDetails ?? 0}
+              {openAssetDetails + completeAssetDetails}
             </Text>
           </View>
 

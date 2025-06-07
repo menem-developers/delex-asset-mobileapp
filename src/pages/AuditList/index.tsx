@@ -98,14 +98,15 @@ export const AuditListScreen = ({route}: Props) => {
     },
   });
 
-  const fetchData = (pageNumber: number, search?: string) => {
+  const fetchData = (pageNumber: number) => {
     const url = `${AUDIT_FORMS_ID_ITEM.replace(
       '{audit_form_id}',
       route?.params?.id ? route?.params?.id?.toString() : '',
-    )}?page=${pageNumber}&per_page=${perPage}&status=${
+    )}?page=${pageNumber}&per_page=${perPage}${
+      search !== undefined && search !== '' ? `&global_search=${search}` : ''
+    }&status=${
       tab === 1 ? 'Completed' : tab === 2 ? 'Not Scanned' : 'Unlisted'
     }`;
-    //  &asset_name=${search ?? ''}
     console.log(search);
     execute(url);
   };
@@ -138,7 +139,7 @@ export const AuditListScreen = ({route}: Props) => {
     setAuditlist([]);
     fetchData(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab]);
+  }, [tab, search]);
 
   return (
     <ScreenContainer
