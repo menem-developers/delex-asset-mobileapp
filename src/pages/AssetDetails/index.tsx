@@ -42,8 +42,8 @@ export const AssetDetailsScreen = ({route}: any) => {
         // back();
         setLoading(false);
         deInitializeReader();
+        setLoading(false);
       }
-      setLoading(false);
     },
     onError: err => {
       console.log('err', JSON.stringify(err?.data));
@@ -106,6 +106,14 @@ export const AssetDetailsScreen = ({route}: any) => {
   const handlerScanSingleTag = async () => {
     try {
       const result = await readSingleTag();
+      ToastAndroid.show(`Tag Value ${result}`, ToastAndroid.SHORT);
+      ToastAndroid.show(
+        `Req: ${JSON.stringify({
+          id: route?.params?.id,
+          rfid_reference: result[0],
+        })}`,
+        ToastAndroid.LONG,
+      );
       await execute(`${ASSETS_REGISTER}`, {
         method: HTTP.POST,
         data: {id: route?.params?.id, rfid_reference: result[0]},
