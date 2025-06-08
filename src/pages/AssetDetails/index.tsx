@@ -4,7 +4,6 @@ import {
   // Image,
   ScrollView,
   Text,
-  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -12,125 +11,128 @@ import React, {Fragment, useState} from 'react';
 import {AssetImage, Divider, ScreenContainer} from 'components';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-import {
-  deInitializeReader,
-  // readPower,
-  readSingleTag,
-  initializeReader,
-  powerListener,
-  tagListener,
-  readPower,
-} from 'react-native-rfid-chainway-c72';
+import // deInitializeReader,
+// readPower,
+// readSingleTag,
+// initializeReader,
+// powerListener,
+// tagListener,
+'react-native-rfid-chainway-c72';
 import {back} from 'routes/utils';
 import {HTTP, useFetchApi} from 'hooks';
 import {ASSETS_REGISTER} from 'utlis/endpoints';
 import styles from './styles';
 import {convertToLocalDateTime} from 'utlis/timefunctions';
 import LinearGradient from 'react-native-linear-gradient';
+// import {useIsFocused} from '@react-navigation/native';
+import {handlerScanSingleTag} from 'utlis/readRFID';
 
 export const AssetDetailsScreen = ({route}: any) => {
   const [rfid, setRFID] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [tags, setTags] = useState<any[]>([]);
+  // const [tags, setTags] = useState<any[]>([]);
   const [registeredOn, setRegisteredOn] = useState<string>('');
 
   const {execute} = useFetchApi({
     onSuccess: res => {
-      if (res?.status === 200) {
+      if (res?.status === 201) {
         console.log(res?.data);
         setRegisteredOn(res?.data?.registered_on);
         setRFID(res?.data?.rfid_reference);
         // back();
-        setLoading(false);
-        deInitializeReader();
         setLoading(false);
       }
     },
     onError: err => {
       console.log('err', JSON.stringify(err?.data));
       Alert.alert('RFID Registration Error', err?.data?.message ?? '', [
-        {text: 'OK', onPress: () => deInitializeReader()},
+        {text: 'OK', onPress: () => {}},
       ]);
-      deInitializeReader();
       setLoading(false);
     },
   });
 
-  const scanData = async () => {
-    setLoading(true);
-    try {
-      await initializeReader();
-      powerListener(eventListenerPower);
-      // @ts-ignore
-      tagListener(eventListenerTag);
-    } catch (error: any) {
-      setLoading(false);
-      ToastAndroid.show(error?.message ?? '', ToastAndroid.SHORT);
-    }
+  const scanButttonClicked = async () => {
+    const res = await handlerScanSingleTag();
+
+    await execute(`${ASSETS_REGISTER}`, {
+      method: HTTP.POST,
+      data: {id: route?.params?.id, rfid_reference: res[0]},
+    });
   };
 
-  const eventListenerPower = async (data: any) => {
-    try {
-      ToastAndroid.show(
-        data?.toLocaleUpperCase()?.replace('SUCCESS:', 'RFID Power: '),
-        ToastAndroid.SHORT,
-      );
-      await handlerReadPower();
-    } catch (error: any) {
-      console.log('Event Listener Power', error?.message);
-    }
-  };
+  // const scanData = async () => {
+  //   setLoading(true);
+  //   try {
+  //     await initializeReader();
+  //     powerListener(eventListenerPower);
+  //     // @ts-ignore
+  //     tagListener(eventListenerTag);
+  //     handlerScanSingleTag();
+  //   } catch (error: any) {
+  //     setLoading(false);
+  //     ToastAndroid.show(error?.message ?? '', ToastAndroid.SHORT);
+  //   }
+  // };
 
-  const eventListenerTag = async (data: any[]) => {
-    try {
-      setTags(tags.concat(data[0]));
-      ToastAndroid.show(
-        'Event Listener Tag:- ' + JSON.stringify(data),
-        ToastAndroid.SHORT,
-      );
-      await handlerReadPower();
-    } catch (error: any) {
-      console.log('Event Listener Tag', error?.message);
-    }
-  };
+  // const eventListenerPower = async (data: any) => {
+  //   try {
+  //     console.log(
+  //       data?.toLocaleUpperCase()?.replace('SUCCESS:', 'RFID Power: '),
+  //     );
+  //     // await handlerReadPower();
+  //   } catch (error: any) {
+  //     console.log('Event Listener Power', error?.message);
+  //   }
+  // };
 
-  const handlerReadPower = async () => {
-    try {
-      const result = await readPower();
-      ToastAndroid.show(`RFID Reading Power is ${result}`, ToastAndroid.SHORT);
-      await handlerScanSingleTag();
-    } catch (error: any) {
-      console.log('RFID Reading Power', error?.message);
-    }
-  };
+  // const eventListenerTag = async (data: any[]) => {
+  //   try {
+  //     setTags(tags.concat(data[0]));
+  //     console.log('Event Listener Tag:- ' + JSON.stringify(data));
+  //     // await handlerReadPower();
+  //   } catch (error: any) {
+  //     console.log('Event Listener Tag', error?.message);
+  //   }
+  // };
 
-  const handlerScanSingleTag = async () => {
-    try {
-      const result = await readSingleTag();
-      ToastAndroid.show(`Tag Value ${result}`, ToastAndroid.SHORT);
-      ToastAndroid.show(
-        `Req: ${JSON.stringify({
-          id: route?.params?.id,
-          rfid_reference: result[0],
-        })}`,
-        ToastAndroid.LONG,
-      );
-      await execute(`${ASSETS_REGISTER}`, {
-        method: HTTP.POST,
-        data: {id: route?.params?.id, rfid_reference: result[0]},
-      });
-      // onTagReaded(true);
-      // setTimeout(() => {
-      //   setLoading(false);
-      //   onTagReaded(false);
-      // }, 500);
-      // deInitializeReader();
-    } catch (error: any) {
-      console.log('RFID Reading Power', error?.message);
-      deInitializeReader();
-      setLoading(false);
-    }
-  };
+  // const handlerReadPower = async () => {
+  //   try {
+  //     const result = await readPower();
+  //     console.log(`RFID Reading Power is ${result}`);
+  //     // await handlerScanSingleTag();
+  //   } catch (error: any) {
+  //     console.log('RFID Reading Power', error?.message);
+  //   }
+  // };
+
+  // const handlerScanSingleTag = async () => {
+  //   if (!route.params.id) return;
+  //   if (apiLoading) return;
+  //   try {
+  //     const result = await readSingleTag();
+  //     console.log(`Tag Value ${result}`);
+  //     console.log(
+  //       `Req: ${JSON.stringify({
+  //         id: route?.params?.id,
+  //         rfid_reference: result[0],
+  //       })}`,
+  //     );
+  //     await execute(`${ASSETS_REGISTER}`, {
+  //       method: HTTP.POST,
+  //       data: {id: route?.params?.id, rfid_reference: result[0]},
+  //     });
+  //     // onTagReaded(true);
+  //     // setTimeout(() => {
+  //     //   setLoading(false);
+  //     //   onTagReaded(false);
+  //     // }, 500);
+  //     // deInitializeReader();
+  //   } catch (error: any) {
+  //     console.log('RFID Reading Power', error?.message);
+  //     setLoading(false);
+  //   }
+  // };
 
   // const testFunction = async () => {
   //   await execute(`${ASSETS_REGISTER}`, {
@@ -192,6 +194,17 @@ export const AssetDetailsScreen = ({route}: any) => {
   //   };
   // };
   // console.log(route?.params, 'route?.params');
+
+  // useEffect(() => {
+  //   if (!isFocused) {
+  //     deInitializeReader();
+  //   }
+
+  //   return () => {
+  //     console.log('Cleaning up Asset Detail Screen');
+  //     deInitializeReader();
+  //   };
+  // }, [isFocused]);
 
   return (
     <ScreenContainer
@@ -412,7 +425,7 @@ export const AssetDetailsScreen = ({route}: any) => {
             </View>
           ) : (
             <TouchableOpacity
-              onPress={scanData}
+              onPress={scanButttonClicked}
               style={{
                 borderColor: '#1D232F',
                 marginHorizontal: wp(5),
@@ -471,7 +484,7 @@ export const AssetDetailsScreen = ({route}: any) => {
           </View>
         ) : (
           <TouchableOpacity
-            onPress={scanData}
+            onPress={scanButttonClicked}
             style={{
               borderColor: '#1D232F',
               marginHorizontal: wp(5),

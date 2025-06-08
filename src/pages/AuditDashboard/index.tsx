@@ -17,6 +17,7 @@ import useFetchApi from 'hooks/useFetchApi';
 import {AUDIT_FORMS} from 'utlis/endpoints';
 import {useIsFocused} from '@react-navigation/native';
 import AuditDashboardHeader from './AuditDashboardHeader';
+import {navigate} from 'routes/utils';
 
 export type ISelectedTab = 'Scheduled' | 'Overdue' | 'Completed';
 
@@ -58,7 +59,12 @@ export const AuditDashboardScreen = ({route}: any) => {
   }, [isFocused]);
 
   return (
-    <ScreenContainer title="Audit" showBack>
+    <ScreenContainer
+      title="Audit"
+      showBack
+      onBack={() => {
+        navigate('Home');
+      }}>
       <AuditDashboardHeader />
       <View style={styles.tabContainer}>
         {['Scheduled', 'Overdue', 'Completed'].map(

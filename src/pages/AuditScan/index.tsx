@@ -1,4 +1,5 @@
 import {
+  DeviceEventEmitter,
   // BackHandler,
   Modal,
   RefreshControl,
@@ -8,23 +9,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ScreenContainer} from 'components';
 
-import {
-  deInitializeReader,
-  initializeReader,
-  powerListener,
-  // readPower,
-  startReadingTags,
-  tagListener,
-} from 'react-native-rfid-chainway-c72';
-import {back, navigate} from 'routes/utils';
+// import {
+//   deInitializeReader,
+//   initializeReader,
+//   powerListener,
+//   startReadingTags,
+//   stopReadingTags,
+//   tagListener,
+// } from 'react-native-rfid-chainway-c72';
+import {reset} from 'routes/utils';
 import styles from './styles';
 import useFetchApi, {HTTP} from 'hooks/useFetchApi';
 import {AUDIT_FORMS_SCAN_RFID} from 'utlis/endpoints';
 import {RouteProp} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {handlerStartReading, handlerStopReading} from 'utlis/readRFID';
 
 type AuditListItemProps = {
   completed_assets: number;
@@ -47,16 +49,31 @@ type Props = {
 export const AuditScanScreen = ({route}: Props) => {
   const [tags, setTags] = useState<any[]>([]);
   const [isScanning, setIsScanning] = useState<boolean>(false);
+  const isScanningRef = useRef(false);
   const [showStopScanDrawer, setShowStopScanDrawer] = useState<boolean>(false);
 
-  const {execute, loading} = useFetchApi({
+  // const isFocused = useIsFocused();
+
+  // useEffect(() => {
+  //   if (!isFocused) {
+  //     deInitializeReader();
+  //   }
+  // }, [isFocused]);
+
+  const setScanning = (value: boolean) => {
+    setIsScanning(value);
+    isScanningRef.current = value;
+  };
+
+  const {execute: executeAudit, loading} = useFetchApi({
     onSuccess: res => {
+      console.log(res.data);
       if (res?.status === 200) {
         console.log(res.data);
         setTags(prev =>
           prev?.length === 0
             ? res?.data?.assets
-            : [...prev.concat(res?.data?.assets ?? [])],
+            : [...new Set([...prev, ...(res?.data?.assets ?? [])])],
         );
       }
     },
@@ -66,105 +83,159 @@ export const AuditScanScreen = ({route}: Props) => {
     },
   });
 
-  const scanData = async () => {
-    setIsScanning(true);
-    try {
-      await initializeReader();
-      // @ts-ignore
-      powerListener(eventListenerPower);
-      // @ts-ignore
-      tagListener(eventListenerTag);
-    } catch (error: any) {
-      ToastAndroid.show(error?.message ?? '', ToastAndroid.SHORT);
-    }
-  };
-
-  const eventListenerPower = async (data: any) => {
-    try {
-      ToastAndroid.show(
-        'Listener Power - ' + data?.toLocaleUpperCase(),
-        ToastAndroid.SHORT,
-      );
-      await handlerReadPower();
-    } catch (error: any) {
-      console.log('Event Listener Power', error?.message);
-    }
-  };
-
-  const eventListenerTag = async (data: any[]) => {
-    try {
-      ToastAndroid.show(
-        'Event Listener Tag:- ' +
-          JSON.stringify({
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      'multiscantag',
+      data => {
+        console.log(data);
+        executeAudit(
+          `${AUDIT_FORMS_SCAN_RFID.replace(
+            '{audit_form_id}',
+            route?.params?.id ? route?.params?.id?.toString() : '',
+          )}`,
+          {
             method: HTTP.POST,
             data: {
-              rfid_references: data,
+              rfid_references: [data.tag],
             },
-          }),
-        ToastAndroid.SHORT,
-      );
-      // setTags(prevState => [...prevState, data[0]]);
-      execute(
-        `${AUDIT_FORMS_SCAN_RFID.replace(
-          '{audit_form_id}',
-          route?.params?.id ? route?.params?.id?.toString() : '',
-        )}`,
-        {
-          method: HTTP.POST,
-          data: {
-            rfid_references: data,
           },
-        },
-      );
-      // await handlerReadPower();
-    } catch (error: any) {
-      console.log('Event Listener Tag', error?.message);
-    }
-  };
-
-  const handlerReadPower = async () => {
-    try {
-      // const result = await readPower();
-      // ToastAndroid.show(`RFID Reading Power is ${result}`, ToastAndroid.SHORT);
-      await handlerStartReading();
-    } catch (error: any) {
-      console.log('RFID Reading Power', error?.message);
-    }
-  };
-
-  const handlerStartReading = async () => {
-    try {
-      startReadingTags((message: any) => {
-        ToastAndroid.show(
-          'Start Reading:- ' + JSON.stringify(message),
-          ToastAndroid.SHORT,
         );
-      });
-    } catch (error: any) {
-      console.log('RFID Reading Power', error?.message);
-      await deInitializeReader();
-    }
+      },
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  });
+
+  const scanButtonClicked = async () => {
+    setScanning(true);
+    await handlerStartReading();
   };
-  // const backhandler = () => {
-  //   deInitializeReader()
-  //     .then(() => {
-  //       setIsScanning(false);
-  //     })
-  //     .catch(err => {
-  //       console.error('Error deinitializing:', err);
-  //       setIsScanning(false); // even if error, update UI
+
+  const stopButtonClicked = async () => {
+    await handlerStopReading();
+
+    setScanning(false);
+    setShowStopScanDrawer(false);
+    reset([{name: 'AuditList', params: route?.params}]);
+  };
+
+  console.log(isScanningRef.current);
+
+  // const eventListenerPower = async (data: any) => {
+  //   try {
+  //     console.log('Listener Power - ' + data?.toLocaleUpperCase());
+  //     // await handlerReadPower();
+  //   } catch (error: any) {
+  //     console.log('Event Listener Power', error?.message);
+  //   }
+  // };
+
+  // const eventListenerTag = async (data: any[]) => {
+  //   try {
+  //     console.log(
+  //       'Event Listener Tag:- ' +
+  //         JSON.stringify({
+  //           method: HTTP.POST,
+  //           data: {
+  //             rfid_references: data,
+  //           },
+  //         }),
+  //     );
+  //     // setTags(prevState => [...prevState, data[0]]);
+  //     executeAudit(
+  //       `${AUDIT_FORMS_SCAN_RFID.replace(
+  //         '{audit_form_id}',
+  //         route?.params?.id ? route?.params?.id?.toString() : '',
+  //       )}`,
+  //       {
+  //         method: HTTP.POST,
+  //         data: {
+  //           rfid_references: [data[0]],
+  //         },
+  //       },
+  //     );
+  //     // await handlerReadPower();
+  //   } catch (error: any) {
+  //     console.log('Event Listener Tag', error?.message);
+  //   }
+  // };
+
+  // const handlerReadPower = async () => {
+  //   try {
+  //     const result = await readPower();
+  //     console.log(RFID Reading Power is ${result});
+  //   } catch (error: any) {
+  //     console.log('RFID Reading Power', error?.message);
+  //   }
+  // };
+
+  // const handlerStartReading = () => {
+  //   try {
+  //     startReadingTags((message: any) => {
+  //       console.log('Start Reading:- ' + JSON.stringify(message));
   //     });
-  //   setIsScanning(false);
-  //   return true;
+  //   } catch (error: any) {
+  //     console.log('RFID Reading Power', error?.message);
+  //   }
+  // };
+
+  // const handlerStopReading = () => {
+  //   try {
+  //     stopReadingTags((message: any) => {
+  //       console.log('Stop Reading:- ' + JSON.stringify(message));
+  //     });
+  //     console.log({tags});
+  //     setTags([]);
+  //   } catch (error: any) {
+  //     console.log('RFID Reading Power', error?.message);
+  //   }
+  // };
+
+  // const handlerStopReading = async () => {
+  //   try {
+  //     stopReadingTags((message: any) => {
+  //       console.log('Stop Reading:', JSON.stringify(message));
+  //     });
+  //     setTags([]);
+  //     setScanning(false);
+  //   } catch (error: any) {
+  //     console.log('Stop Reading Error:', error?.message);
+  //     setScanning(false);
+  //   }
   // };
 
   // useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener(
+  //   const backhandler = () => {
+  //     // Call your async logic without marking this function async
+  //     setScanning(false);
+  //     setShowStopScanDrawer(false);
+  //     handlerStopReading();
+  //     return true; // prevent default back behavior
+  //   };
+
+  //   const backHandlerEvent = BackHandler.addEventListener(
   //     'hardwareBackPress',
   //     backhandler,
   //   );
 
-  //   return () => backHandler.remove();
+  //   return () => backHandlerEvent.remove();
+  // }, []);
+
+  // useEffect(() => {
+  //   return () => {
+  //     (async () => {
+  //       console.log('[AuditScan] Cleanup triggered');
+  //       try {
+  //         await deInitializeReader();
+  //         navigate('AuditList', route?.params);
+  //         console.log('[AuditScan] Cleanup complete');
+  //       } catch (error) {
+  //         console.error('[AuditScan] Cleanup error:', error ?? '');
+  //       }
+  //     })();
+  //   };
   // }, []);
 
   return (
@@ -172,8 +243,7 @@ export const AuditScanScreen = ({route}: Props) => {
       title="Audit List"
       showBack
       onBack={async () => {
-        await deInitializeReader();
-        back();
+        stopButtonClicked();
       }}>
       <View style={[styles.assetDetailItem, {padding: 16}]}>
         <Text style={styles.assetIdText}>Asset Scanned</Text>
@@ -186,9 +256,7 @@ export const AuditScanScreen = ({route}: Props) => {
           tags?.map((item: any, index: number) => (
             <View key={index} style={styles.assetDetailItem}>
               <View style={styles.assetItemDetail}>
-                <Text style={styles.assetIdText}>
-                  {item?.asset_description ?? ''}
-                </Text>
+                <Text style={styles.assetIdText}>{item?.asset_name ?? ''}</Text>
                 <Text style={styles.assetNameText}>
                   Asset No: {item?.erp_asset_no ?? ''}
                 </Text>
@@ -209,7 +277,7 @@ export const AuditScanScreen = ({route}: Props) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={isScanning ? styles.submitBtnDisabled : styles.submitBtn}
-          onPress={scanData}
+          onPress={scanButtonClicked}
           disabled={isScanning}>
           <Text style={styles.submit}>Start Scan</Text>
         </TouchableOpacity>
@@ -233,10 +301,10 @@ export const AuditScanScreen = ({route}: Props) => {
               <TouchableOpacity
                 style={styles.drawerSubmit}
                 onPress={async () => {
-                  setIsScanning(false);
-                  setShowStopScanDrawer(false);
-                  await deInitializeReader();
-                  navigate('AuditList', route?.params);
+                  stopButtonClicked();
+                  // await deInitializeReader().then(() => {
+                  //   navigate('AuditList', route?.params);
+                  // });
                 }}>
                 <Text style={styles.drawerSubmitText}>Stop Scanning</Text>
               </TouchableOpacity>

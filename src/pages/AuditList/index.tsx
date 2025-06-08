@@ -145,6 +145,7 @@ export const AuditListScreen = ({route}: Props) => {
     <ScreenContainer
       title="Audit List"
       showBack
+      onBack={() => navigate('AuditDashboard', route?.params)}
       onPressScanner={
         status !== 'Completed'
           ? () => navigate('AuditScan', route?.params)

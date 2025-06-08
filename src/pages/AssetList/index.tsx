@@ -82,7 +82,7 @@ export const AssetListScreen = ({route}: any) => {
     }&custodian_id=${route?.params?.full_name?.id ?? ''}&category_id=${
       route?.params?.category_name?.id ?? ''
     }&rfid_reference=${isCompleted ? 1 : ''}&rfid_reference_required=${
-      isCompleted ? false : true
+      isCompleted ? true : false
     }`;
     execute(url);
   };

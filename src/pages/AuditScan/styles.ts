@@ -184,7 +184,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E6E6E6',
     alignItems: 'center',
-    margin: 16,
+    marginTop: 2,
+    marginBottom: 2,
     borderColor: '#EDEEF1',
     boxShadow: '0px 2px 12px 0px rgba(10, 10, 10, 0.10)',
     borderRadius: 10,
@@ -195,7 +196,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 8,
     flexGrow: 1,
-    height: 40,
   },
   assetItemDetail: {
     display: 'flex',
