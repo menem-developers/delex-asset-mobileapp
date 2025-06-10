@@ -101,7 +101,7 @@ const LocationSelectView = ({
 
   return (
     <View style={{display: 'flex', flexDirection: 'column', gap: '4'}}>
-      <Text style={styles.label}>
+      <Text style={isDisabled ? styles.labelDisabled : styles.label}>
         {label}
         {label === 'Main' && '*'}
       </Text>
@@ -159,9 +159,14 @@ const LocationSelectView = ({
         labelField={keys}
         valueField={keys}
         style={isDisabled ? styles.dropdownDisabled : styles.dropdown}
+        containerStyle={styles.containerStyle}
+        itemContainerStyle={styles.itemContainerStyle}
+        inputSearchStyle={styles.inputSearchStyle}
         search
+        iconColor={isDisabled ? '#B5BABE' : '#858C93'}
         searchPlaceholder="Enter Here"
         placeholderStyle={isDisabled ? styles.disabledPlaceholder : ''}
+        activeColor={'#D4E2F0'}
         flatListProps={{
           ListEmptyComponent: () => (
             <Text style={styles.noRecord}>No records found!</Text>
@@ -182,9 +187,29 @@ const styles = StyleSheet.create({
     padding: wp(3),
     paddingRight: wp(4),
   },
+  containerStyle: {
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  itemContainerStyle: {
+    borderRadius: 8,
+    margin: 4,
+  },
+  inputSearchStyle: {
+    borderRadius: 8,
+  },
   dropdownDisabled: {
-    backgroundColor: '#E9ECEF',
-    borderColor: '#B5BABE',
+    backgroundColor: '#F8F9FA',
+    borderColor: '#E6E6E6',
     borderWidth: 1,
     borderRadius: 6,
     padding: wp(3),
@@ -198,6 +223,13 @@ const styles = StyleSheet.create({
     fontSize: wp(3.5),
     fontWeight: '600',
     letterSpacing: wp(0.15),
+    color: '#3b475b',
+  },
+  labelDisabled: {
+    fontSize: wp(3.5),
+    fontWeight: '600',
+    letterSpacing: wp(0.15),
+    color: '#848b98',
   },
   noRecord: {
     fontSize: wp(3.5),

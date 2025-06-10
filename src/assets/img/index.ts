@@ -2,7 +2,7 @@ import logo from './logo.png';
 import paper_pad from './paper_pad.png';
 import upload_asset_image from './upload_asset_image.png';
 import login_bg from './login_bg.png';
-import home_bg from './home_bg.png';
+import home_bg from './home_bg.jpg';
 import audit_asset_icon from './audit_asset_icon.png';
 import register_asset_icon from './register_asset_icon.png';
 import branchSvg from './branch.svg';
@@ -19,6 +19,7 @@ import major from './major.svg';
 import menu from './menu.svg';
 import chev_right from './chev-right.svg';
 import success_checked from './success_checked.png';
+import rfidScan from './rfidScan.gif';
 
 export {
   logo,
@@ -42,4 +43,5 @@ export {
   menu,
   chev_right,
   success_checked,
+  rfidScan,
 };

@@ -253,16 +253,22 @@ export const AuditScanScreen = ({route}: Props) => {
         style={styles.assetItemList}
         refreshControl={<RefreshControl refreshing={loading} />}>
         {tags?.length ? (
-          tags?.map((item: any, index: number) => (
-            <View key={index} style={styles.assetDetailItem}>
-              <View style={styles.assetItemDetail}>
-                <Text style={styles.assetIdText}>{item?.asset_name ?? ''}</Text>
-                <Text style={styles.assetNameText}>
-                  Asset No: {item?.erp_asset_no ?? ''}
-                </Text>
-              </View>
-            </View>
-          ))
+          tags?.map((item: any, index: number) => {
+            if (item.error === null) {
+              return (
+                <View key={index} style={styles.assetDetailItem}>
+                  <View style={styles.assetItemDetail}>
+                    <Text style={styles.assetIdText}>
+                      {item?.asset_name ?? ''}
+                    </Text>
+                    <Text style={styles.assetNameText}>
+                      Asset No: {item?.erp_asset_no ?? ''}
+                    </Text>
+                  </View>
+                </View>
+              );
+            }
+          })
         ) : (
           <Text style={[styles.noRecord, {paddingTop: 32}]}>
             No assets Scanned! Please Start Scanning

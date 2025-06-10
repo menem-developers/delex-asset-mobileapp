@@ -68,11 +68,11 @@ export const LoginScreen = () => {
             display: 'flex',
             alignContent: 'center',
             justifyContent: 'flex-start',
-            padding: wp(10),
+            padding: 24,
           }}>
           <Text
             style={{
-              fontWeight: '600',
+              fontWeight: '500',
               color: '#3B475B',
               fontSize: wp(4),
             }}>
@@ -91,9 +91,9 @@ export const LoginScreen = () => {
             <TextInput
               style={{
                 flex: 1,
-                fontSize: wp(4),
-                fontWeight: '500',
-                color: '#3B475B',
+                fontSize: 16,
+                fontWeight: '400',
+                color: '#1D232F',
               }}
               placeholderTextColor="#848B98"
               placeholder="Enter here"
@@ -101,10 +101,10 @@ export const LoginScreen = () => {
           </View>
           <Text
             style={{
-              fontWeight: '600',
+              fontWeight: '500',
               color: '#3B475B',
               fontSize: wp(4),
-              marginTop: hp(2),
+              marginTop: hp(4),
             }}>
             Password
           </Text>
@@ -121,9 +121,9 @@ export const LoginScreen = () => {
             <TextInput
               style={{
                 flex: 1,
-                fontSize: wp(4),
-                fontWeight: '500',
-                color: '#3B475B',
+                fontSize: 16,
+                fontWeight: '400',
+                color: '#1D232F',
               }}
               placeholderTextColor="#848B98"
               placeholder="Enter here"
@@ -152,7 +152,7 @@ export const LoginScreen = () => {
               reset([{name: 'Home'}]);
             }}
             style={{
-              marginTop: hp(4),
+              marginTop: 40,
               padding: wp(3),
               borderRadius: 8,
               backgroundColor: '#1E90FF',

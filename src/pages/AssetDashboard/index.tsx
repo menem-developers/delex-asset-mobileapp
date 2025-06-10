@@ -94,8 +94,8 @@ export const AssetDashboardScreen = () => {
       {keys: 'building_name', label: 'Major'},
       {keys: 'floor_name', label: 'Field/Coastal'},
       {keys: 'room_name', label: 'Area/Section'},
-      {keys: 'category_name', label: 'Asset Grouping'},
       {keys: 'full_name', label: 'Asset Assigned To'},
+      {keys: 'category_name', label: 'Asset Grouping'},
     ].map(el => (
       <LocationSelectView
         key={el.keys}
@@ -163,18 +163,19 @@ export const AssetDashboardScreen = () => {
       onBack={selectedRoute ? () => setSelectedRoute('') : undefined}
       showBack>
       <ScrollView>
-        <View style={styles.assetDataCard}>
-          <Text
-            style={{
-              fontSize: wp(5),
-              fontWeight: '600',
-              letterSpacing: wp(0.2),
-              paddingHorizontal: wp(4),
-              marginTop: wp(4),
-            }}>
-            Overview
-          </Text>
-          {/* <Dropdown
+        {selectedRoute !== 'AssetList' && (
+          <View style={styles.assetDataCard}>
+            <Text
+              style={{
+                fontSize: wp(5),
+                fontWeight: '600',
+                letterSpacing: wp(0.2),
+                paddingHorizontal: wp(4),
+                marginTop: wp(4),
+              }}>
+              Overview
+            </Text>
+            {/* <Dropdown
             labelField={'label'}
             valueField={'value'}
             data={[{label: 'Main Office', value: 'main_office'}]}
@@ -193,37 +194,40 @@ export const AssetDashboardScreen = () => {
               />
             )}
           /> */}
-          <View style={styles.assetInfoContainer}>
-            {assetInfoData.map((el, i) => (
-              <View style={styles.assetInfoCard} key={i}>
-                <View
-                  style={[styles.radioDotContainer, {borderColor: el.color}]}>
+            <View style={styles.assetInfoContainer}>
+              {assetInfoData.map((el, i) => (
+                <View style={styles.assetInfoCard} key={i}>
                   <View
-                    style={[styles.radioDot, {backgroundColor: el.color}]}
-                  />
-                </View>
-                {!infoLoading ? (
-                  <View style={{gap: wp(1)}}>
-                    <Text style={styles.assetInfoValue}>
-                      {el.title === 'Active Assets'
-                        ? (assetInfo?.completed_assets
-                            ? assetInfo?.completed_assets
-                            : 0) +
-                          (assetInfo?.open_assets ? assetInfo?.open_assets : 0)
-                        : assetInfo?.completed_assets
-                        ? assetInfo?.completed_assets
-                        : 0}
-                    </Text>
-
-                    <Text style={styles.assetInfoTitle}>{el.title}</Text>
+                    style={[styles.radioDotContainer, {borderColor: el.color}]}>
+                    <View
+                      style={[styles.radioDot, {backgroundColor: el.color}]}
+                    />
                   </View>
-                ) : (
-                  <ActivityIndicator />
-                )}
-              </View>
-            ))}
+                  {!infoLoading ? (
+                    <View style={{gap: wp(1)}}>
+                      <Text style={styles.assetInfoValue}>
+                        {el.title === 'Active Assets'
+                          ? (assetInfo?.completed_assets
+                              ? assetInfo?.completed_assets
+                              : 0) +
+                            (assetInfo?.open_assets
+                              ? assetInfo?.open_assets
+                              : 0)
+                          : assetInfo?.completed_assets
+                          ? assetInfo?.completed_assets
+                          : 0}
+                      </Text>
+
+                      <Text style={styles.assetInfoTitle}>{el.title}</Text>
+                    </View>
+                  ) : (
+                    <ActivityIndicator />
+                  )}
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
+        )}
 
         <View style={styles.menuList}>
           {selectedRoute

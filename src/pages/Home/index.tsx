@@ -34,12 +34,12 @@ export const HomeScreen = () => {
   const [assetData, setAssetData] = useState<any[]>([]);
   const menuItemsList = useRef<Array<IMenuItem>>([
     {
-      icon: <AssetImage image="register_asset_icon" size={60} />,
+      icon: <AssetImage image="register_asset_icon" size={48} />,
       title: 'Registration',
       route: 'AssetDashboard',
     },
     {
-      icon: <AssetImage image="audit_asset_icon" size={60} />,
+      icon: <AssetImage image="audit_asset_icon" size={48} />,
       title: 'Audit',
       route: 'AuditDashboard',
     },
@@ -76,77 +76,37 @@ export const HomeScreen = () => {
   }, [assetData]);
 
   return (
-    <ScreenContainer showLogo showDrawer showNotify>
-      <ScrollView style={{flex: 1}}>
+    <ScreenContainer showLogo showNotify showLogout>
+      <ScrollView style={{flex: 1, backgroundColor: '#FbFdff'}}>
         <Image
           source={home_bg}
-          style={{height: hp(25), width: wp(100), objectFit: 'fill'}}
+          style={{
+            height: hp(25),
+            width: wp(100),
+            objectFit: 'fill',
+          }}
         />
         <Text
           style={{
-            fontSize: wp(5),
-            marginVertical: wp(3),
-            marginLeft: wp(3),
-            fontWeight: '600',
+            fontSize: 18,
+            marginVertical: 16,
+            marginLeft: 16,
+            fontWeight: '700',
             letterSpacing: wp(0.2),
+            color: '#002b5c',
           }}>
           Asset Management
         </Text>
 
         <View
           style={{
-            flexDirection: 'row',
-            marginHorizontal: wp(5),
-            gap: wp(5),
-          }}>
-          {menuItemsList.map(el => {
-            return (
-              <TouchableOpacity
-                key={el.title}
-                onPress={() => {
-                  el.route && navigate(el.route);
-                }}
-                style={{
-                  flex: 1,
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  elevation: 10,
-                  backgroundColor: '#ffffff',
-                }}>
-                <LinearGradient
-                  colors={[
-                    'rgba(183, 214, 244, 0.50)',
-                    'rgba(231, 243, 255, 0.24)',
-                  ]}
-                  style={{
-                    alignItems: 'center',
-                    paddingHorizontal: wp(2),
-                    paddingVertical: wp(2),
-                    gap: wp(4),
-                  }}>
-                  {el.icon}
-                  <Text
-                    style={{
-                      fontSize: wp(4),
-                      fontWeight: '500',
-                      color: '#002B5C',
-                      letterSpacing: wp(0.2),
-                    }}>
-                    {el.title}
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <View
-          style={{
             display: 'flex',
             flexDirection: 'row',
             gap: 8,
             flex: 1,
-            paddingTop: 24,
             marginHorizontal: 16,
+            marginBottom: 24,
+            backgroundColor: '#ffffff',
           }}>
           <View style={styles.searchbar}>
             <Search height={16} width={16} />
@@ -173,23 +133,69 @@ export const HomeScreen = () => {
         </View>
         <View
           style={{
+            flexDirection: 'row',
+            marginHorizontal: 16,
+            gap: wp(5),
+          }}>
+          {menuItemsList.map(el => {
+            return (
+              <TouchableOpacity
+                key={el.title}
+                onPress={() => {
+                  el.route && navigate(el.route);
+                }}
+                style={{
+                  flex: 1,
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  elevation: 10,
+                  backgroundColor: '#ffffff',
+                }}>
+                <LinearGradient
+                  colors={[
+                    'rgba(183, 214, 244, 0.50)',
+                    'rgba(231, 243, 255, 0.24)',
+                  ]}
+                  style={{
+                    alignItems: 'center',
+                    paddingHorizontal: 16,
+                    paddingTop: 16,
+                    paddingBottom: 12,
+                    gap: 8,
+                  }}>
+                  {el.icon}
+                  <Text
+                    style={{
+                      fontSize: wp(4),
+                      fontWeight: 500,
+                      color: '#002B5C',
+                      letterSpacing: wp(0.2),
+                    }}>
+                    {el.title}
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        <View
+          style={{
             display: 'flex',
             flexDirection: 'column',
             gap: 8,
             flex: 1,
-            paddingTop: 24,
+            paddingVertical: 24,
             paddingHorizontal: 16,
           }}>
           <Text
             style={{
               color: '#002B5C',
-              fontFamily: 'Roboto',
               fontSize: 14,
               fontWeight: 700,
               lineHeight: 18.2,
               letterSpacing: 0.7,
             }}>
-            Recent Activites
+            Notification
           </Text>
           <View
             style={{
@@ -198,6 +204,8 @@ export const HomeScreen = () => {
               padding: 8,
               display: 'flex',
               flexDirection: 'column',
+              borderRadius: 8,
+              backgroundColor: '#ffffff',
             }}>
             <View
               style={{
@@ -255,6 +263,7 @@ export const HomeScreen = () => {
           fontWeight: '400',
           textAlign: 'center',
           color: '#4B4B4B',
+          backgroundColor: '#FbFdff',
         }}>
         <Text style={{fontWeight: '600', color: '#212121'}}>
           Del<Text style={{color: '#F65D5D'}}>Track</Text>
@@ -290,6 +299,7 @@ const styles = StyleSheet.create({
     padding: 4,
     flex: 1,
     gap: 8,
+    height: 40,
   },
   searchButton: {
     backgroundColor: '#1E90FF',

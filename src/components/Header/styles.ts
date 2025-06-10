@@ -5,7 +5,7 @@ export default StyleSheet.create({
   container: {
     height: wp(15),
     width: wp(100),
-    paddingHorizontal: wp(2.5),
+    paddingHorizontal: 16,
     backgroundColor: '#002B5C',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -19,6 +19,9 @@ export default StyleSheet.create({
     color: '#ffffff',
   },
   logo: {},
+  backIconButton: {
+    padding: 0,
+  },
   iconButton: {
     padding: wp(2),
   },

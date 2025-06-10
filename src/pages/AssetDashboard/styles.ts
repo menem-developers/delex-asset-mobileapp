@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: wp(4),
     padding: wp(4),
-    paddingHorizontal: wp(6),
-    paddingTop: wp(1),
+    paddingHorizontal: 16,
+    paddingVertical: 24,
   },
   menuButton: {
     backgroundColor: '#FBFDFF',
@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
     padding: 16,
     display: 'flex',
     gap: 16,
-    boxShadow: '0px -4px 12px 0px rgba(0, 0, 0, 0.12)',
   },
   drawerCancel: {
     paddingVertical: 12,

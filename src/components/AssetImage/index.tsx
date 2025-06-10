@@ -22,6 +22,7 @@ import {
   menu,
   chev_right,
   success_checked,
+  rfidScan,
 } from 'assets/img';
 
 export type IAssets =
@@ -45,7 +46,8 @@ export type IAssets =
   | 'major'
   | 'menu'
   | 'chev_right'
-  | 'success_checked';
+  | 'success_checked'
+  | 'rfid_scanning';
 
 const assets: Record<IAssets, {height: number; width: number; image: any}> = {
   logo: {
@@ -152,6 +154,11 @@ const assets: Record<IAssets, {height: number; width: number; image: any}> = {
     height: 10,
     width: 10,
     image: success_checked,
+  },
+  rfid_scanning: {
+    height: 10,
+    width: 10,
+    image: rfidScan,
   },
 };
 

@@ -8,6 +8,7 @@ import Menu from 'assets/img/menu.svg';
 import Bell from 'assets/img/bell.svg';
 import Back from 'assets/img/back.svg';
 import Scanner from 'assets/img/scanner.svg';
+import Logout from 'assets/img/logout.svg';
 
 interface IHeaderProps {
   title?: string;
@@ -15,6 +16,7 @@ interface IHeaderProps {
   renderRight?: React.ReactNode;
   showDrawer?: boolean;
   showBack?: boolean;
+  showLogout?: boolean;
   onPressScanner?(): void;
   onBack?(): void;
   showNotify?: boolean;
@@ -30,6 +32,7 @@ export const Header: React.FC<IHeaderProps> = props => {
     showDrawer,
     onPressScanner,
     onBack,
+    showLogout,
   } = props;
 
   return (
@@ -46,27 +49,34 @@ export const Header: React.FC<IHeaderProps> = props => {
 
       {showBack && (
         <TouchableOpacity
-          style={styles.iconButton}
+          style={styles.backIconButton}
           onPress={() => {
             onBack ? onBack() : back();
           }}>
-          <Back width={20} height={20} />
+          <Back width={16} height={16} />
         </TouchableOpacity>
       )}
 
       {showLogo ? (
-        <AssetImage image="logo" size={wp(6)} />
+        <AssetImage image="logo" size={wp(5)} />
       ) : (
         title && <Text style={styles.title}>{title}</Text>
       )}
 
       {renderRight}
 
-      {showNotify && (
-        <TouchableOpacity style={styles.iconButton}>
-          <Bell width={20} height={20} />
-        </TouchableOpacity>
-      )}
+      <View style={{display: 'flex', flexDirection: 'row', gap: 5}}>
+        {showNotify && (
+          <TouchableOpacity style={styles.iconButton}>
+            <Bell width={20} height={20} />
+          </TouchableOpacity>
+        )}
+        {showLogout && (
+          <TouchableOpacity style={styles.iconButton}>
+            <Logout width={20} height={20} />
+          </TouchableOpacity>
+        )}
+      </View>
       {/* // {showLogo ? (
       //   <AssetImage image="logo" size={wp(6)} style={{marginLeft: wp(2.5)}} />
       // ) : (
