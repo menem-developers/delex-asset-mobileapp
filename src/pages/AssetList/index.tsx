@@ -103,7 +103,7 @@ export const AssetListScreen = ({route}: any) => {
           }&building_id=${route?.params?.building_name?.id ?? ''}&floor_id=${
             route?.params?.floor_name?.id ?? ''
           }&room_id=${route?.params?.room_name?.id ?? ''}&subroom_id=${
-            route?.params?.full_name?.id ?? ''
+            route?.params?.subroom_name?.id ?? ''
           }`,
       );
       fetchData(1, selectedTab === 'completed', searchQuery);

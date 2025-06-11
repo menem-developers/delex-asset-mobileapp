@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Alert,
+  Image,
   // Image,
   ScrollView,
   Text,
@@ -14,13 +15,6 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
-import // deInitializeReader,
-// readPower,
-// readSingleTag,
-// initializeReader,
-// powerListener,
-// tagListener,
-'react-native-rfid-chainway-c72';
 import {back} from 'routes/utils';
 import {HTTP, useFetchApi} from 'hooks';
 import {ASSETS_REGISTER} from 'utlis/endpoints';
@@ -440,9 +434,10 @@ export const AssetDetailsScreen = ({route}: any) => {
                   style={{marginTop: 8, marginBottom: 16}}
                 />
               ) : (
-                <AssetImage
-                  image="rfid_scanning"
-                  size={100}
+                <Image
+                  source={require('assets/img/rfidScan.gif')}
+                  height={100}
+                  width={100}
                   style={{marginTop: 8, marginBottom: 16}}
                 />
               )}

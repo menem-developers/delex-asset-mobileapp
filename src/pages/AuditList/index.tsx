@@ -151,82 +151,84 @@ export const AuditListScreen = ({route}: Props) => {
           ? () => navigate('AuditScan', route?.params)
           : undefined
       }>
-      <AuditListHeader
-        data={data}
-        auditCount={auditCount}
-        tab={tab}
-        setTab={setTab}
-        loading={loading}
-      />
-      <View style={styles.assetLists}>
-        <View style={styles.assetListsTitle}>
-          <Text style={styles.assetListTitleText}>Assets</Text>
-          <View style={styles.searchbar}>
-            <Search height={12} width={12} />
-            <TextInput
-              style={styles.search}
-              placeholder="Search"
-              placeholderTextColor={'#B4B9C2'}
-              value={search}
-              onChangeText={val => {
-                setSearch(val);
-              }}
-            />
+      <View style={styles.assetListMainContent}>
+        <AuditListHeader
+          data={data}
+          auditCount={auditCount}
+          tab={tab}
+          setTab={setTab}
+          loading={loading}
+        />
+        <View style={styles.assetLists}>
+          <View style={styles.assetListsTitle}>
+            <Text style={styles.assetListTitleText}>Assets</Text>
+            <View style={styles.searchbar}>
+              <Search height={12} width={12} />
+              <TextInput
+                style={styles.search}
+                placeholder="Search"
+                placeholderTextColor={'#B4B9C2'}
+                value={search}
+                onChangeText={val => {
+                  setSearch(val);
+                }}
+              />
+            </View>
           </View>
         </View>
-      </View>
-      <FlatList
-        //  style={styles.assetItemList}>
-        automaticallyAdjustKeyboardInsets
-        onEndReached={() => {
-          if (auditList?.length && !loading) {
-            if (!(auditList?.length % perPage)) {
-              setPageNo(pageNo + 1);
-              fetchData(pageNo + 1);
+        <FlatList
+          //  style={styles.assetItemList}>
+          automaticallyAdjustKeyboardInsets
+          onEndReached={() => {
+            if (auditList?.length && !loading) {
+              if (!(auditList?.length % perPage)) {
+                setPageNo(pageNo + 1);
+                fetchData(pageNo + 1);
+              }
             }
+          }}
+          ListFooterComponent={
+            loading && pageNo !== 1 ? <ActivityIndicator /> : undefined
           }
-        }}
-        ListFooterComponent={
-          loading && pageNo !== 1 ? <ActivityIndicator /> : undefined
-        }
-        refreshControl={
-          <RefreshControl
-            refreshing={loading}
-            onRefresh={() => {
-              setPageNo(1);
-              fetchData(1);
-            }}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <Text
-            style={StyleSheet.compose(styles.noRecord, {
-              textAlign: 'center',
-            })}>
-            No records found!
-          </Text>
-        }
-        data={auditList}
-        keyExtractor={(_itm, i) => i.toString()}
-        renderItem={({item}) => (
-          <View style={styles.assetDetailItem}>
-            <View style={styles.assetItemDetail}>
-              <Text style={styles.assetIdText}>{item.erp_asset_no}</Text>
-              <Text style={styles.assetNameText}>{item.asset_name}</Text>
-            </View>
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={() => {
+                setPageNo(1);
+                fetchData(1);
+              }}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
             <Text
-              style={StyleSheet.compose(styles.assetStatus, {
-                backgroundColor:
-                  tab === 1 ? '#E9F6EC' : tab === 2 ? '#FFF9E6' : '#FEEBEB',
-                color:
-                  tab === 1 ? '#28A745' : tab === 2 ? '#E7AD00' : '#F43434',
+              style={StyleSheet.compose(styles.noRecord, {
+                textAlign: 'center',
               })}>
-              {tab === 1 ? 'Scanned' : tab === 2 ? 'Not Scanned' : 'Unlisted'}
+              No records found!
             </Text>
-          </View>
-        )}
-      />
+          }
+          data={auditList}
+          keyExtractor={(_itm, i) => i.toString()}
+          renderItem={({item}) => (
+            <View style={styles.assetDetailItem}>
+              <View style={styles.assetItemDetail}>
+                <Text style={styles.assetIdText}>{item.erp_asset_no}</Text>
+                <Text style={styles.assetNameText}>{item.asset_name}</Text>
+              </View>
+              <Text
+                style={StyleSheet.compose(styles.assetStatus, {
+                  backgroundColor:
+                    tab === 1 ? '#E9F6EC' : tab === 2 ? '#FFF9E6' : '#FEEBEB',
+                  color:
+                    tab === 1 ? '#28A745' : tab === 2 ? '#E7AD00' : '#F43434',
+                })}>
+                {tab === 1 ? 'Scanned' : tab === 2 ? 'Not Scanned' : 'Unlisted'}
+              </Text>
+            </View>
+          )}
+        />
+      </View>
       {status !== 'Completed' && (
         <View style={styles.bottomFooter}>
           <TouchableOpacity

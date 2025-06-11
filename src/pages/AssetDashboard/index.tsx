@@ -46,7 +46,7 @@ export const AssetDashboardScreen = () => {
     floor_name: '',
     room_name: '',
     category_name: '',
-    full_name: '',
+    subroom_name: '',
   });
   const [showReregisterDrawer, setShowReregisterDrawer] =
     useState<boolean>(false);
@@ -94,7 +94,7 @@ export const AssetDashboardScreen = () => {
       {keys: 'building_name', label: 'Major'},
       {keys: 'floor_name', label: 'Field/Coastal'},
       {keys: 'room_name', label: 'Area/Section'},
-      {keys: 'full_name', label: 'Asset Assigned To'},
+      {keys: 'subroom_name', label: 'Asset Assigned To'},
       {keys: 'category_name', label: 'Asset Grouping'},
     ].map(el => (
       <LocationSelectView
@@ -150,7 +150,7 @@ export const AssetDashboardScreen = () => {
         floor_name: '',
         room_name: '',
         category_name: '',
-        full_name: '',
+        subroom_name: '',
       });
       execute(REGISTRATION_STATS);
     }

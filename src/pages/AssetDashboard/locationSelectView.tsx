@@ -6,10 +6,10 @@ import useFetchApi from 'hooks/useFetchApi';
 import {
   ASSET_LOCATIONS,
   BUILDINGS,
-  CUSTODIANS,
   FLOORS,
   GROUPINGS,
   ROOMS,
+  SUBROOMS,
 } from 'utlis/endpoints';
 
 const LocationSelectView = ({
@@ -26,7 +26,7 @@ const LocationSelectView = ({
     floor_name: any;
     room_name: any;
     category_name: any;
-    full_name: any;
+    subroom_name: any;
   };
   setSelectedLocation: React.Dispatch<
     React.SetStateAction<{
@@ -35,7 +35,7 @@ const LocationSelectView = ({
       floor_name: any;
       room_name: any;
       category_name: any;
-      full_name: any;
+      subroom_name: any;
     }>
   >;
 }) => {
@@ -51,7 +51,7 @@ const LocationSelectView = ({
 
   useEffect(() => {
     if (keys === 'location_name') {
-      execute(ASSET_LOCATIONS);
+      execute(ASSET_LOCATIONS + '?page=1&per_page=100');
     } else if (keys === 'building_name') {
       execute(BUILDINGS);
     } else if (keys === 'floor_name') {
@@ -59,9 +59,9 @@ const LocationSelectView = ({
     } else if (keys === 'room_name') {
       execute(ROOMS);
     } else if (keys === 'category_name') {
-      execute(GROUPINGS + '?page=1&per_page=100');
-    } else if (keys === 'full_name') {
-      execute(CUSTODIANS + '/?page=1&per_page=100');
+      execute(GROUPINGS);
+    } else if (keys === 'subroom_name') {
+      execute(SUBROOMS);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keys]);
@@ -97,7 +97,8 @@ const LocationSelectView = ({
   const isDisabled =
     (keys === 'building_name' && selectedLocation.location_name === '') ||
     (keys === 'floor_name' && selectedLocation.building_name === '') ||
-    (keys === 'room_name' && selectedLocation.floor_name === '');
+    (keys === 'room_name' && selectedLocation.floor_name === '') ||
+    (keys === 'subroom_name' && selectedLocation.room_name === '');
 
   return (
     <View style={{display: 'flex', flexDirection: 'column', gap: '4'}}>

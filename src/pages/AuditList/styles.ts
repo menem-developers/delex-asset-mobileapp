@@ -1,5 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
   auditTitleContainer: {
@@ -8,8 +11,13 @@ const styles = StyleSheet.create({
     margin: 16,
     borderColor: '#EDEEF1',
     boxShadow: '0px 2px 12px 0px rgba(10, 10, 10, 0.10)',
-    borderRadius: 6,
+    borderRadius: 12,
     fontFamily: 'Roboto',
+  },
+  assetListMainContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: hp(100),
   },
   titleTop: {
     paddingVertical: 12,
@@ -138,7 +146,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: 8,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E6E6E6',
     borderTopWidth: 1,
@@ -181,6 +190,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 8,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E6E6E6',
     alignItems: 'center',

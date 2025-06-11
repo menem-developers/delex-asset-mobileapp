@@ -159,11 +159,11 @@ const AssetListHeader = (props: AssetListHeaderProps) => {
                   </Text>
                 </View>
               )}
-              {data?.room_name?.room_name && (
+              {data?.full_name?.subroom_name && (
                 <View style={styles.auditDetail}>
                   <Text style={styles.auditField}>Area/Section</Text>
                   <Text style={styles.auditValue} numberOfLines={2}>
-                    {data?.room_name?.room_name ?? ''}
+                    {data?.full_name?.subroom_name ?? ''}
                   </Text>
                 </View>
               )}
