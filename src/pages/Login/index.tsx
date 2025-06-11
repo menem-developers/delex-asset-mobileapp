@@ -1,11 +1,13 @@
 import {login_bg} from 'assets/img';
 import EyeIcon from 'assets/img/eye.svg';
+import EyeClose from 'assets/img/eyeClose.svg';
 import {AssetImage} from 'components/AssetImage';
 import {ScreenContainer} from 'components/ScreenContainer';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -18,6 +20,14 @@ import {
 import {reset} from 'routes/utils';
 
 export const LoginScreen = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(pre => !pre);
+  };
+
   return (
     <ScreenContainer hideHeader>
       <ScrollView>
@@ -78,25 +88,13 @@ export const LoginScreen = () => {
             }}>
             Username
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              borderColor: '#E6E6E6',
-              borderWidth: 1.5,
-              borderRadius: 6,
-              marginTop: hp(1.5),
-              alignItems: 'center',
-              paddingHorizontal: wp(2),
-            }}>
+          <View style={isFocused ? style.inputViewFocused : style.inputView}>
             <TextInput
-              style={{
-                flex: 1,
-                fontSize: 16,
-                fontWeight: '400',
-                color: '#1D232F',
-              }}
+              style={style.input}
               placeholderTextColor="#848B98"
               placeholder="Enter here"
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
             />
           </View>
           <Text
@@ -109,28 +107,24 @@ export const LoginScreen = () => {
             Password
           </Text>
           <View
-            style={{
-              flexDirection: 'row',
-              borderColor: '#E6E6E6',
-              borderWidth: 1.5,
-              borderRadius: 6,
-              marginTop: hp(1.5),
-              alignItems: 'center',
-              paddingHorizontal: wp(2),
-            }}>
+            style={
+              isPasswordFocused ? style.inputViewFocused : style.inputView
+            }>
             <TextInput
-              style={{
-                flex: 1,
-                fontSize: 16,
-                fontWeight: '400',
-                color: '#1D232F',
-              }}
+              style={style.input}
               placeholderTextColor="#848B98"
               placeholder="Enter here"
+              secureTextEntry={!isPasswordVisible}
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={() => setIsPasswordFocused(false)}
             />
 
-            <TouchableOpacity>
-              <EyeIcon height={20} width={20} />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              {isPasswordVisible ? (
+                <EyeClose height={20} width={20} />
+              ) : (
+                <EyeIcon height={20} width={20} />
+              )}
             </TouchableOpacity>
           </View>
 
@@ -172,3 +166,33 @@ export const LoginScreen = () => {
     </ScreenContainer>
   );
 };
+
+const style = StyleSheet.create({
+  input: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#1D232F',
+  },
+  inputView: {
+    flexDirection: 'row',
+    borderColor: '#E6E6E6',
+    borderWidth: 1.5,
+    borderRadius: 6,
+    marginTop: hp(1.5),
+    alignItems: 'center',
+    paddingHorizontal: wp(2),
+    boxShadow: '0px 1px 2px 0px rgba(27, 32, 41, 0.05)',
+  },
+  inputViewFocused: {
+    flexDirection: 'row',
+    borderColor: '#D4E2F0',
+    borderWidth: 1.5,
+    borderRadius: 6,
+    marginTop: hp(1.5),
+    alignItems: 'center',
+    paddingHorizontal: wp(2),
+    backgroundColor: '#FFF',
+    boxShadow: '0px 0px 4px 2px rgba(212, 226, 240, 0.24)',
+  },
+});

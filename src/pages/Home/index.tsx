@@ -32,6 +32,7 @@ type IMenuItem = {
 export const HomeScreen = () => {
   const [search, setSearch] = useState<string>('');
   const [assetData, setAssetData] = useState<any[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
   const menuItemsList = useRef<Array<IMenuItem>>([
     {
       icon: <AssetImage image="register_asset_icon" size={48} />,
@@ -108,7 +109,7 @@ export const HomeScreen = () => {
             marginBottom: 24,
             backgroundColor: '#ffffff',
           }}>
-          <View style={styles.searchbar}>
+          <View style={isFocused ? styles.searchbarFocused : styles.searchbar}>
             <Search height={16} width={16} />
             <TextInput
               style={styles.search}
@@ -116,6 +117,8 @@ export const HomeScreen = () => {
               placeholderTextColor={'#B4B9C2'}
               value={search}
               onChangeText={val => setSearch(val)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
             />
           </View>
           <TouchableOpacity
@@ -300,6 +303,22 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 8,
     height: 40,
+    boxShadow: '0px 1px 2px 0px rgba(27, 32, 41, 0.05)',
+  },
+  searchbarFocused: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#D4E2F0',
+    borderWidth: 0.75,
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    padding: 4,
+    flex: 1,
+    gap: 8,
+    height: 40,
+    boxShadow: '0px 0px 4px 2px rgba(212, 226, 240, 0.24)',
   },
   searchButton: {
     backgroundColor: '#1E90FF',

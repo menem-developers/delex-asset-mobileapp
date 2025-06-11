@@ -36,6 +36,7 @@ export const AssetListScreen = ({route}: any) => {
   const [pageNo, setPageNo] = useState<number>(1);
   const [perPage] = useState<number>(10);
   const searchQuery = useDebounce(searchText, 1000);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const {execute: countExecute} = useFetchApi({
     onSuccess: res => {
@@ -170,17 +171,33 @@ export const AssetListScreen = ({route}: any) => {
       </View>
 
       <View
-        style={{
-          borderWidth: 1,
-          borderRadius: 12,
-          borderColor: '#E6E6E6',
-          alignItems: 'center',
-          flexDirection: 'row',
-          marginHorizontal: wp(5),
-          marginBottom: wp(3),
-          paddingHorizontal: wp(3),
-          gap: wp(3),
-        }}>
+        style={
+          isSearchFocused
+            ? {
+                borderWidth: 1,
+                borderRadius: 12,
+                borderColor: '#D4E2F0',
+                alignItems: 'center',
+                flexDirection: 'row',
+                marginHorizontal: wp(5),
+                marginBottom: wp(3),
+                paddingHorizontal: wp(3),
+                gap: wp(3),
+                boxShadow: '0px 0px 4px 2px rgba(212, 226, 240, 0.24)',
+              }
+            : {
+                borderWidth: 1,
+                borderRadius: 12,
+                borderColor: '#E6E6E6',
+                alignItems: 'center',
+                flexDirection: 'row',
+                marginHorizontal: wp(5),
+                marginBottom: wp(3),
+                paddingHorizontal: wp(3),
+                gap: wp(3),
+                boxShadow: '0px 1px 2px 0px rgba(27, 32, 41, 0.05)',
+              }
+        }>
         <Search width={16} height={16} />
         <TextInput
           style={{
@@ -195,6 +212,8 @@ export const AssetListScreen = ({route}: any) => {
           onChangeText={text => {
             setSearchText(text);
           }}
+          onFocus={() => setIsSearchFocused(true)}
+          onBlur={() => setIsSearchFocused(false)}
         />
       </View>
 

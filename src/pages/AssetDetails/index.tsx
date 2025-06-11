@@ -1,13 +1,4 @@
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  // Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import React, {Fragment, useState} from 'react';
 import {AssetImage, Divider, ScreenContainer} from 'components';
 import {
@@ -23,10 +14,12 @@ import {convertToLocalDateTime} from 'utlis/timefunctions';
 import LinearGradient from 'react-native-linear-gradient';
 // import {useIsFocused} from '@react-navigation/native';
 import {handlerScanSingleTag} from 'utlis/readRFID';
+import LottieView from 'lottie-react-native';
 
 export const AssetDetailsScreen = ({route}: any) => {
   const [rfid, setRFID] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [tick, setTick] = useState<boolean>(false);
   // const [tags, setTags] = useState<any[]>([]);
   const [registeredOn, setRegisteredOn] = useState<string>('');
 
@@ -36,8 +29,12 @@ export const AssetDetailsScreen = ({route}: any) => {
         console.log(res?.data);
         setRegisteredOn(res?.data?.registered_on);
         setRFID(res?.data?.rfid_reference);
+        setTick(true);
         // back();
-        setLoading(false);
+        setTimeout(() => {
+          setTick(false);
+          setLoading(false);
+        }, 2000);
       }
     },
     onError: err => {
@@ -203,6 +200,8 @@ export const AssetDetailsScreen = ({route}: any) => {
   //     deInitializeReader();
   //   };
   // }, [isFocused]);
+
+  console.log(route?.params?.rfid_reference !== '' || rfid !== '');
 
   return (
     <ScreenContainer
@@ -410,12 +409,78 @@ export const AssetDetailsScreen = ({route}: any) => {
           </Fragment>
         )}
 
-        {!route?.params?.rfid_reference ? (
-          loading ? (
+        <View style={styles.buttonContainer}>
+          {!route?.params?.rfid_reference && !rfid ? (
+            loading ? (
+              <View
+                style={{
+                  borderColor: '#f1f1f1',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                  marginTop: wp(5),
+                  padding: wp(2.5),
+                  borderWidth: 1,
+                  width: wp(90),
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  height: hp(60),
+                }}>
+                {rfid && tick ? (
+                  <AssetImage
+                    image="success_checked"
+                    size={wp(10)}
+                    style={{marginTop: 8, marginBottom: 16}}
+                  />
+                ) : (
+                  <LottieView
+                    source={require('../../assets/gif/AnimationScan.json')}
+                    autoPlay={true}
+                    loop={true}
+                    style={{width: 300, height: 300}}
+                  />
+                )}
+                <Text
+                  style={{
+                    letterSpacing: wp(0.15),
+                    color: '#3B475B',
+                    fontWeight: '400',
+                    fontSize: 14,
+                    width: wp(50),
+                    textAlign: 'center',
+                  }}>
+                  Hold the device close to the asset's RFID Tag
+                </Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                onPress={scanButttonClicked}
+                style={{
+                  alignItems: 'center',
+                  borderRadius: 8,
+                  marginTop: wp(5),
+                  flex: 1,
+                  backgroundColor: '#1e90ff',
+                  height: 40,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  minWidth: wp(40),
+                }}>
+                <Text
+                  style={{
+                    letterSpacing: wp(0.15),
+                    color: '#FAFBFF',
+                    fontWeight: '600',
+                    fontSize: wp(3.5),
+                  }}>
+                  {rfid ? 'RFID Registered Successfully' : 'Scan RFID'}
+                </Text>
+              </TouchableOpacity>
+            )
+          ) : loading ? (
             <View
               style={{
                 borderColor: '#f1f1f1',
-                marginHorizontal: wp(5),
                 alignItems: 'center',
                 borderRadius: 10,
                 marginTop: wp(5),
@@ -427,18 +492,18 @@ export const AssetDetailsScreen = ({route}: any) => {
                 justifyContent: 'center',
                 height: hp(60),
               }}>
-              {rfid ? (
+              {rfid && tick ? (
                 <AssetImage
                   image="success_checked"
                   size={wp(10)}
                   style={{marginTop: 8, marginBottom: 16}}
                 />
               ) : (
-                <Image
-                  source={require('assets/img/rfidScan.gif')}
-                  height={100}
-                  width={100}
-                  style={{marginTop: 8, marginBottom: 16}}
+                <LottieView
+                  source={require('../../assets/gif/AnimationScan.json')}
+                  autoPlay={true}
+                  loop={true}
+                  style={{width: 300, height: 300}}
                 />
               )}
               <Text
@@ -457,13 +522,15 @@ export const AssetDetailsScreen = ({route}: any) => {
             <TouchableOpacity
               onPress={scanButttonClicked}
               style={{
-                marginHorizontal: wp(5),
                 alignItems: 'center',
                 borderRadius: 8,
                 marginTop: wp(5),
-                padding: wp(2.5),
-                width: wp(90),
+                flex: 1,
                 backgroundColor: '#1e90ff',
+                height: 40,
+                display: 'flex',
+                justifyContent: 'center',
+                minWidth: wp(40),
               }}>
               <Text
                 style={{
@@ -472,89 +539,20 @@ export const AssetDetailsScreen = ({route}: any) => {
                   fontWeight: '600',
                   fontSize: wp(3.5),
                 }}>
-                {rfid ? 'RFID Registered Successfully' : 'Scan RFID'}
+                {'Re-Scan RFID'}
               </Text>
             </TouchableOpacity>
-          )
-        ) : loading ? (
-          <View
-            style={{
-              borderColor: '#f1f1f1',
-              marginHorizontal: wp(5),
-              alignItems: 'center',
-              borderRadius: 10,
-              marginTop: wp(5),
-              padding: wp(2.5),
-              borderWidth: 1,
-              width: wp(90),
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              height: hp(60),
-            }}>
-            {rfid ? (
-              <AssetImage
-                image="success_checked"
-                size={wp(10)}
-                style={{marginTop: 8, marginBottom: 16}}
-              />
-            ) : (
-              <AssetImage
-                image="success_checked"
-                size={wp(10)}
-                style={{marginTop: 8, marginBottom: 16}}
-              />
-            )}
-            <Text
-              style={{
-                letterSpacing: wp(0.15),
-                color: '#3B475B',
-                fontWeight: '400',
-                fontSize: 14,
-                width: wp(50),
-                textAlign: 'center',
-              }}>
-              Hold the device close to the asset's RFID Tag
-            </Text>
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={scanButttonClicked}
-            style={{
-              marginHorizontal: wp(5),
-              alignItems: 'center',
-              borderRadius: 8,
-              marginTop: wp(5),
-              padding: wp(2.5),
-              width: wp(90),
-              backgroundColor: '#1e90ff',
-            }}>
-            <Text
-              style={{
-                letterSpacing: wp(0.15),
-                color: '#FAFBFF',
-                fontWeight: '600',
-                fontSize: wp(3.5),
-              }}>
-              {rfid ? 'RFID Re-Registered Successfully' : 'Re-Scan RFID'}
-            </Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => {
-            // execute(`${ASSETS}/${route?.params?.id}`, {
-            //   method: HTTP.PUT,
-            //   data: payload(),
-            // });
-            back();
-          }}>
-          {loading ? (
-            <ActivityIndicator color={'#FFF'} />
-          ) : (
-            <Text style={styles.backButtonText}>Back</Text>
           )}
-        </TouchableOpacity>
+          {(route?.params?.rfid_reference !== '' || rfid !== '') && (
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => {
+                back();
+              }}>
+              <Text style={styles.backButtonText}>Back</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </ScrollView>
     </ScreenContainer>
   );

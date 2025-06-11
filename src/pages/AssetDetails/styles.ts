@@ -18,29 +18,36 @@ const styles = StyleSheet.create({
     borderColor: '#F1F1F1',
   },
   backButton: {
-    margin: wp(5),
+    marginVertical: wp(5),
     justifyContent: 'center',
     borderColor: '#8C8C8C',
     borderWidth: 1,
-    marginHorizontal: wp(5),
     alignItems: 'center',
     borderRadius: 8,
-    padding: 8,
-    width: wp(90),
+    height: 40,
+    display: 'flex',
+    flex: 1,
+    minWidth: wp(40),
   },
   backButtonText: {
     color: '#1D232F',
     fontWeight: '600',
-    fontSize: wp(4),
+    fontSize: wp(3.5),
   },
   submitButtonText: {
     color: '#FAFBFF',
     fontWeight: '600',
-    fontSize: wp(4),
+    fontSize: wp(3.5),
   },
   submitButton: {
     backgroundColor: '#1E90FF',
     borderColor: '#1E90FF',
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 12,
+    marginHorizontal: wp(5),
   },
 });
 
