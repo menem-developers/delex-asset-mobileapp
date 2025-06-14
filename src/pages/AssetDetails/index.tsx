@@ -373,7 +373,9 @@ export const AssetDetailsScreen = ({route}: any) => {
                         fontSize: wp(3.5),
                         fontWeight: '500',
                         letterSpacing: wp(0.2),
-                        color: '#323B48',
+                        color: `${
+                          el.label === 'RFID Reference' ? '#1e90ff' : '#323B48'
+                        }`,
                       }}>
                       {el.label === 'Asset No'
                         ? route?.params?.erp_asset_no ?? ''

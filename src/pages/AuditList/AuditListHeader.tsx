@@ -34,12 +34,12 @@ const AuditListHeader = ({auditCount, data, tab, setTab, loading}: Props) => {
           onPress={() => {
             setShowDetails(true);
           }}>
-          <Text style={styles.viewDetails}>View Details</Text>
+          <Text style={styles.viewDetails}>View More</Text>
           <ArrowCycleRight width={16} height={16} />
         </TouchableOpacity>
       </View>
       <View style={styles.progressContainer}>
-        <Text style={styles.progressText}>Audit Progress</Text>
+        <Text style={styles.progressText}>Scan Progress</Text>
         <View style={styles.progressDisplay}>
           <Text style={styles.progressBlue}>
             {/* {percentage(
@@ -113,7 +113,7 @@ const AuditListHeader = ({auditCount, data, tab, setTab, loading}: Props) => {
                 setTab(3);
               }
             }}>
-            <Text style={styles.progressDataTitle}>Scan Failed</Text>
+            <Text style={styles.progressDataTitle}>Unlisted</Text>
             <Text
               style={StyleSheet.compose(styles.progressDataValue, {
                 color: '#F65D5D',
@@ -131,6 +131,12 @@ const AuditListHeader = ({auditCount, data, tab, setTab, loading}: Props) => {
         <SafeAreaView edges={['bottom']} style={styles.drawerOverlay}>
           <View style={styles.drawerContainer}>
             <View style={styles.textContainer}>
+              <View style={styles.auditDetail}>
+                <Text style={styles.auditField}>Audit Id</Text>
+                <Text style={styles.auditValue} numberOfLines={2}>
+                  {data?.audit_id ?? ''}
+                </Text>
+              </View>
               <View style={styles.auditDetail}>
                 <Text style={styles.auditField}>Main</Text>
                 <Text style={styles.auditValue} numberOfLines={2}>

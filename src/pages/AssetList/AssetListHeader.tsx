@@ -23,6 +23,7 @@ const AssetListHeader = (props: AssetListHeaderProps) => {
   ) => {
     return ((100 * +openAsset) / +completeAsset).toFixed(2);
   };
+
   return (
     <LinearGradient
       start={{x: 0, y: 0.1}}
@@ -42,7 +43,7 @@ const AssetListHeader = (props: AssetListHeaderProps) => {
             onPress={() => {
               setShowDetails(true);
             }}>
-            <Text style={styles.viewDetails}>View Details</Text>
+            <Text style={styles.viewDetails}>View More</Text>
             <ArrowCycleRight width={16} height={16} />
           </TouchableOpacity>
         </View>
@@ -129,12 +130,12 @@ const AssetListHeader = (props: AssetListHeaderProps) => {
         <SafeAreaView edges={['bottom']} style={styles.drawerOverlay}>
           <View style={styles.drawerContainer}>
             <View style={styles.textContainer}>
-              <View style={styles.auditDetail}>
+              {/* <View style={styles.auditDetail}>
                 <Text style={styles.auditField}>Main</Text>
                 <Text style={styles.auditValue} numberOfLines={2}>
                   {data?.location_name?.location_name ?? ''}
                 </Text>
-              </View>
+              </View> */}
               {data?.building_name?.building_name && (
                 <View style={styles.auditDetail}>
                   <Text style={styles.auditField}>Major</Text>
@@ -159,11 +160,11 @@ const AssetListHeader = (props: AssetListHeaderProps) => {
                   </Text>
                 </View>
               )}
-              {data?.full_name?.subroom_name && (
+              {data?.subroom_name?.subroom_name && (
                 <View style={styles.auditDetail}>
-                  <Text style={styles.auditField}>Area/Section</Text>
+                  <Text style={styles.auditField}>Assigned To</Text>
                   <Text style={styles.auditValue} numberOfLines={2}>
-                    {data?.full_name?.subroom_name ?? ''}
+                    {data?.subroom_name?.subroom_name ?? ''}
                   </Text>
                 </View>
               )}

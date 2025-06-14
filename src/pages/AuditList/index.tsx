@@ -194,6 +194,7 @@ export const AuditListScreen = ({route}: Props) => {
             <RefreshControl
               refreshing={loading}
               onRefresh={() => {
+                setAuditlist([]);
                 setPageNo(1);
                 fetchData(1);
               }}
@@ -229,24 +230,6 @@ export const AuditListScreen = ({route}: Props) => {
           )}
         />
       </View>
-      {status !== 'Completed' && (
-        <View style={styles.bottomFooter}>
-          <TouchableOpacity
-            style={styles.cancelBtn}
-            onPress={() => {
-              navigate('AuditDashboard');
-            }}>
-            <Text style={styles.cancel}>Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.submitBtn}
-            onPress={() => {
-              setShowCloseDrawer(true);
-            }}>
-            <Text style={styles.submit}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      )}
       <Modal
         animationType="slide"
         transparent={true}
@@ -280,6 +263,24 @@ export const AuditListScreen = ({route}: Props) => {
           </View>
         </SafeAreaView>
       </Modal>
+      {status !== 'Completed' && (
+        <View style={styles.bottomFooter}>
+          <TouchableOpacity
+            style={styles.cancelBtn}
+            onPress={() => {
+              navigate('AuditDashboard');
+            }}>
+            <Text style={styles.cancel}>Back</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.submitBtn}
+            onPress={() => {
+              setShowCloseDrawer(true);
+            }}>
+            <Text style={styles.submit}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScreenContainer>
   );
 };

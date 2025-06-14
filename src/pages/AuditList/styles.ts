@@ -235,6 +235,9 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 16,
     boxShadow: '0px -4px 12px 0px rgba(0, 0, 0, 0.12)',
+    // position: 'absolute',
+    // bottom: 0,
+    // backgroundColor: 'white',
   },
   cancelBtn: {
     flexGrow: 1,

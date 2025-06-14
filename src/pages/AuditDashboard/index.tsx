@@ -26,6 +26,8 @@ export const AuditDashboardScreen = ({route}: any) => {
   const [auditData, setAuditData] = useState<any[]>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [perPage] = useState<number>(10);
+  const [totalPage, setTotalPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(10);
   const [selectedTab, setSelectedTab] = useState<ISelectedTab>(
     route?.params?.tab ? route?.params?.tab : 'Scheduled',
   );
@@ -37,6 +39,8 @@ export const AuditDashboardScreen = ({route}: any) => {
         setAuditData(prev =>
           pageNo === 1 ? res?.data?.items : prev.concat(res?.data?.items),
         );
+        setTotalPage(res?.data?.pages);
+        setCurrentPage(res?.data?.current_page);
       }
     },
     onError: err => {
@@ -58,6 +62,8 @@ export const AuditDashboardScreen = ({route}: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
+  console.log('Audit Data,', auditData, auditData?.length / perPage, totalPage);
+
   return (
     <ScreenContainer
       title="Audit"
@@ -73,6 +79,7 @@ export const AuditDashboardScreen = ({route}: any) => {
               key={i}
               onPress={() => {
                 setSelectedTab(item as ISelectedTab);
+                setPageNo(1);
                 fetchData(1, item as ISelectedTab);
               }}
               style={StyleSheet.compose(styles.tabButton, {
@@ -92,8 +99,8 @@ export const AuditDashboardScreen = ({route}: any) => {
         automaticallyAdjustKeyboardInsets
         onEndReached={() => {
           if (auditData?.length && !loading) {
-            if (!(auditData?.length % perPage)) {
-              setPageNo(pageNo + 1);
+            if (currentPage < totalPage) {
+              setPageNo(pre => pre + 1);
               fetchData(pageNo + 1, selectedTab);
             }
           }
@@ -117,7 +124,7 @@ export const AuditDashboardScreen = ({route}: any) => {
             No records found!
           </Text>
         }
-        data={auditData ?? []}
+        data={auditData}
         keyExtractor={(_itm, i) => i.toString()}
         renderItem={({item}) => (
           <AuditListItem item={item} listStatus={selectedTab} />
