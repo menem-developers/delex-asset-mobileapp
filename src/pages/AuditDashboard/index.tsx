@@ -26,8 +26,8 @@ export const AuditDashboardScreen = ({route}: any) => {
   const [auditData, setAuditData] = useState<any[]>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [perPage] = useState<number>(10);
-  const [totalPage, setTotalPage] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(10);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedTab, setSelectedTab] = useState<ISelectedTab>(
     route?.params?.tab ? route?.params?.tab : 'Scheduled',
   );

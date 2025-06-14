@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 8,
     flexGrow: 1,
-    height: 40,
   },
   assetItemDetail: {
     display: 'flex',

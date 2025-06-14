@@ -48,8 +48,12 @@ export const AuditListScreen = ({route}: Props) => {
   const isFocused = useIsFocused();
   const [auditList, setAuditlist] = useState<any[]>([]);
   const [auditCount, setAuditCount] = useState<any>();
-  const [pageNo, setPageNo] = useState<number>(1);
-  const [perPage] = useState<number>(10);
+  const [perPage] = useState<number>(15);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const status = route.params.status_name;
 
   const [search, setSearch] = useState<string>('');
@@ -61,12 +65,14 @@ export const AuditListScreen = ({route}: Props) => {
   const {execute, loading} = useFetchApi({
     onSuccess: res => {
       if (res?.status === 200) {
-        console.log('res?.data', res?.data);
         setAuditlist(prev =>
-          prev?.length === 0
+          res?.data?.current_page === 1
             ? res?.data?.items
             : [...prev.concat(res?.data?.items ?? [])],
         );
+        setTotalPage(res?.data?.pages);
+        setCurrentPage(res?.data?.current_page);
+        setIsLoading(false);
       }
     },
     onError: err => {
@@ -107,7 +113,6 @@ export const AuditListScreen = ({route}: Props) => {
     }&status=${
       tab === 1 ? 'Completed' : tab === 2 ? 'Not Scanned' : 'Unlisted'
     }`;
-    console.log(search);
     execute(url);
   };
   const completeAudit = () => {
@@ -123,7 +128,6 @@ export const AuditListScreen = ({route}: Props) => {
   };
   useEffect(() => {
     if (isFocused) {
-      setPageNo(1);
       fetchData(1);
       scannedCount(
         AUDIT_FORMS_COUNT.replace(
@@ -177,25 +181,35 @@ export const AuditListScreen = ({route}: Props) => {
           </View>
         </View>
         <FlatList
-          //  style={styles.assetItemList}>
+          style={styles.assetItemList}
           automaticallyAdjustKeyboardInsets
           onEndReached={() => {
+            console.log(
+              loading,
+              isLoading,
+              currentPage,
+              totalPage,
+              auditList?.length && !loading,
+              currentPage < totalPage,
+              !isLoading && !loading,
+            );
             if (auditList?.length && !loading) {
-              if (!(auditList?.length % perPage)) {
-                setPageNo(pageNo + 1);
-                fetchData(pageNo + 1);
+              if (currentPage < totalPage) {
+                if (!isLoading && !loading) {
+                  setIsLoading(true);
+                  fetchData(currentPage + 1);
+                }
               }
             }
           }}
           ListFooterComponent={
-            loading && pageNo !== 1 ? <ActivityIndicator /> : undefined
+            loading && currentPage !== 1 ? <ActivityIndicator /> : undefined
           }
           refreshControl={
             <RefreshControl
               refreshing={loading}
               onRefresh={() => {
                 setAuditlist([]);
-                setPageNo(1);
                 fetchData(1);
               }}
             />
