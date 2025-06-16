@@ -229,7 +229,12 @@ export const AuditListScreen = ({route}: Props) => {
             <View style={styles.assetDetailItem}>
               <View style={styles.assetItemDetail}>
                 <Text style={styles.assetIdText}>{item.erp_asset_no}</Text>
-                <Text style={styles.assetNameText}>{item.asset_name}</Text>
+                <Text
+                  style={styles.assetNameText}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
+                  {item.asset_name}
+                </Text>
               </View>
               <Text
                 style={StyleSheet.compose(styles.assetStatus, {
@@ -277,24 +282,24 @@ export const AuditListScreen = ({route}: Props) => {
           </View>
         </SafeAreaView>
       </Modal>
-      {status !== 'Completed' && (
-        <View style={styles.bottomFooter}>
-          <TouchableOpacity
-            style={styles.cancelBtn}
-            onPress={() => {
-              navigate('AuditDashboard');
-            }}>
-            <Text style={styles.cancel}>Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.submitBtn}
-            onPress={() => {
-              setShowCloseDrawer(true);
-            }}>
-            <Text style={styles.submit}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      {/* {status !== 'Completed' && ( */}
+      <View style={styles.bottomFooter}>
+        <TouchableOpacity
+          style={styles.cancelBtn}
+          onPress={() => {
+            navigate('AuditDashboard');
+          }}>
+          <Text style={styles.cancel}>Back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.submitBtn}
+          onPress={() => {
+            setShowCloseDrawer(true);
+          }}>
+          <Text style={styles.submit}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+      {/* )} */}
     </ScreenContainer>
   );
 };

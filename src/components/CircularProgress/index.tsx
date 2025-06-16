@@ -47,7 +47,7 @@ export const CircularProgress = ({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="lightgray"
+          stroke="#D4D2F0"
           strokeWidth={strokeWidth}
           fill="none"
         />

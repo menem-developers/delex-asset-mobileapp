@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  // heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   assetListMainContent: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: hp(100),
   },
   titleTop: {
     paddingVertical: 12,
@@ -189,8 +188,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 8,
-    paddingHorizontal: 16,
+    padding: 4,
+    paddingHorizontal: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#E6E6E6',
     alignItems: 'center',
@@ -207,21 +206,24 @@ const styles = StyleSheet.create({
   },
   assetIdText: {
     color: '#3B475B',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 700,
     letterSpacing: 0.7,
     fontFamily: 'Roboto',
   },
   assetNameText: {
     color: '#848B98',
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 400,
     letterSpacing: 0.6,
     fontFamily: 'Roboto',
+    width: 250,
   },
   assetStatus: {
     fontFamily: 'Roboto',
-    fontSize: 12,
+    fontSize: 10,
+    height: 20,
+    padding: 2,
     fontWeight: 400,
     letterSpacing: 0.18,
     paddingHorizontal: 8,
@@ -231,17 +233,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 12,
     gap: 16,
     boxShadow: '0px -4px 12px 0px rgba(0, 0, 0, 0.12)',
-    // position: 'absolute',
-    // bottom: 0,
-    // backgroundColor: 'white',
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'white',
   },
   cancelBtn: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingVertical: 8,
     borderWidth: 1,
     borderColor: '#8C8C8C',
     boxShadow: '0px 1px 2px 0px rgba(27, 32, 41, 0.05);',
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingVertical: 8,
     boxShadow: '0px 1px 2px 0px rgba(27, 32, 41, 0.05);',
     borderRadius: 8,
     display: 'flex',

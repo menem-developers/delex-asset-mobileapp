@@ -104,7 +104,18 @@ export const Header: React.FC<IHeaderProps> = props => {
         <TouchableOpacity
           style={[styles.iconButton, {paddingRight: wp(3)}]}
           onPress={onPressScanner}>
-          <Scanner height={32} width={32} />
+          <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
+            <Scanner height={16} width={16} />
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 14,
+                fontWeight: 600,
+                textDecorationLine: 'underline',
+              }}>
+              Start Scan
+            </Text>
+          </View>
         </TouchableOpacity>
       )}
     </View>

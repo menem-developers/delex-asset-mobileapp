@@ -28,8 +28,8 @@ export default function AuditListItem(props: AuditListItemProps) {
       <CircularProgress
         progress={completed_assets}
         total={total_assets}
-        strokeWidth={6}
-        size={72}
+        strokeWidth={6.5}
+        size={64}
       />
       <View style={styles.detailContents}>
         <View style={styles.auditDetail}>
@@ -102,10 +102,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   auditName: {
-    fontFamily: 'Roboto',
     fontSize: 16,
     color: '#3B475B',
-    fontWeight: 'bold',
+    fontWeight: 600,
     letterSpacing: 0.8,
     lineHeight: 22,
   },
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
   auditDateStatus: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 4,
+    gap: 8,
     alignItems: 'flex-end',
   },
   auditStatus: {
@@ -134,12 +133,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     letterSpacing: 0.165,
     paddingHorizontal: 14,
-    paddingVertical: 2,
+    paddingVertical: 3,
     borderRadius: 8,
+    height: 20,
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   auditDate: {
     color: '#848B98',
-    fontFamily: 'Roboto',
     fontSize: 14,
     letterSpacing: 0.7,
     lineHeight: 22,

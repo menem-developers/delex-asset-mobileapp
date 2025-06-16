@@ -4,10 +4,16 @@ import {View} from 'react-native';
 // import Auditor from 'assets/img/major.svg';
 import {AssetCharts} from './AssetChart';
 import styles from './styles';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AuditDashboardHeader = () => {
   return (
-    <View style={styles.auditHeader}>
+    <LinearGradient
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0.33}}
+      colors={['#94AEC8', '#E1EBF5', '#E8EFF6', '#94AEC8']}
+      locations={[0, 0.24, 0.88, 1]}
+      style={styles.auditHeader}>
       {/* <Text style={styles.auditSmallSecondary}>
         Audit Range: 20 July 2024 to 31 Dec 2024
       </Text> */}
@@ -30,7 +36,7 @@ const AuditDashboardHeader = () => {
         </View> */}
         <AssetCharts />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

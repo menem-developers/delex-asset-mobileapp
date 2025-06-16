@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   progressBlue: {
     color: '#1E90FF',
     fontFamily: 'Roboto',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     letterSpacing: 0.8,
     textTransform: 'capitalize',
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
   },
   progressDataValue: {
     fontFamily: 'Roboto',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     textAlign: 'center',
   },

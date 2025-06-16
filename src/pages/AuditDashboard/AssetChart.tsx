@@ -83,15 +83,18 @@ export const AssetCharts = () => {
       style={{
         display: 'flex',
         flexDirection: 'row',
+        gap: 40,
+        paddingVertical: 16,
+        alignItems: 'center',
       }}>
-      <View style={{padding: 20, alignItems: 'center'}}>
+      <View style={{alignItems: 'center'}}>
         <PieChart
           data={pieData}
           donut
           showGradient
-          radius={40}
-          innerRadius={32}
-          innerCircleColor={'#EAF1F7'}
+          radius={36}
+          innerRadius={28}
+          innerCircleColor={'#E6EEF6'}
           centerLabelComponent={() => (
             <CenterDisplay
               title="Total Audits"
@@ -107,26 +110,26 @@ export const AssetCharts = () => {
       <View style={styles.legendContainer}>
         <View style={styles.lengendContainer}>
           {renderDot('#B5BABE')}
+          <Text style={styles.legendText}>Not Started</Text>
           <Text style={styles.legendVal}>
             {auditHeaderCount?.overdue_count
               ? +auditHeaderCount?.overdue_count
               : 0}
           </Text>
-          <Text style={styles.legendText}>Not Started</Text>
         </View>
         <View style={styles.lengendContainer}>
           {renderDot('#E7AD00')}
-          <Text style={styles.legendVal}>{pendingAssets}</Text>
           <Text style={styles.legendText}>In Progress</Text>
+          <Text style={styles.legendVal}>{pendingAssets}</Text>
         </View>
         <View style={styles.lengendContainer}>
           {renderDot('#28A745')}
+          <Text style={styles.legendText}>Completed</Text>
           <Text style={styles.legendVal}>
             {auditHeaderCount?.completed_count
               ? +auditHeaderCount?.completed_count
               : 0}
           </Text>
-          <Text style={styles.legendText}>Completed</Text>
         </View>
       </View>
     </View>
@@ -136,37 +139,35 @@ export const AssetCharts = () => {
 const styles = StyleSheet.create({
   legendContainer: {
     flexDirection: 'column',
-    justifyContent: 'center',
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    display: 'flex',
+    gap: 8,
   },
   centerDisplayTitle: {
-    fontFamily: 'Roboto',
     fontSize: 6,
     fontWeight: 400,
     lineHeight: 13,
     letterSpacing: 0.3,
     textTransform: 'capitalize',
-    color: '#737373',
+    color: '#3B475B',
   },
   centerDisplayValue: {
-    color: '#0A0A0A',
-    fontFamily: 'Roboto',
-    fontSize: 12,
+    color: '#002b5C',
+    fontSize: 16,
     fontWeight: 500,
     letterSpacing: 0.6,
   },
   legendText: {
     color: '#3B475B',
-    fontFamily: 'Roboto',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 400,
     letterSpacing: 0.5,
     textTransform: 'capitalize',
+    minWidth: 76,
   },
   legendVal: {
-    color: '#3B475B',
-    fontFamily: 'Roboto',
-    fontSize: 12,
+    color: '#1D232F',
+    fontSize: 14,
     fontWeight: 500,
     letterSpacing: 0.6,
     textTransform: 'capitalize',
@@ -174,8 +175,6 @@ const styles = StyleSheet.create({
   lengendContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: 100,
     gap: 8,
   },
 });

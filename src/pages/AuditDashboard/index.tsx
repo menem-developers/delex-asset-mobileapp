@@ -62,8 +62,6 @@ export const AuditDashboardScreen = ({route}: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
-  console.log('Audit Data,', auditData, auditData?.length / perPage, totalPage);
-
   return (
     <ScreenContainer
       title="Audit"

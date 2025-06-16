@@ -5,8 +5,6 @@ const styles = StyleSheet.create({
   auditHeader: {
     backgroundColor: '#EAF1F7',
     // padding: 24,
-    paddingHorizontal: 24,
-    paddingVertical: 8,
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
@@ -25,9 +23,7 @@ const styles = StyleSheet.create({
   HeaderMainContent: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 24,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    padding: 0,
   },
   headerStatsList: {display: 'flex', flexDirection: 'column', gap: 2},
   headerStats: {
