@@ -70,11 +70,21 @@ export const AuditScanScreen = ({route}: Props) => {
       console.log(res.data);
       if (res?.status === 200) {
         console.log(res.data);
-        setTags(prev =>
-          prev?.length === 0
-            ? res?.data?.assets
-            : [...new Set([...prev, ...(res?.data?.assets ?? [])])],
-        );
+        // setTags(prev =>
+        //   prev?.length === 0
+        //     ? res?.data?.assets
+        //     : [...new Set([...prev, ...(res?.data?.assets ?? [])])],
+        // );
+        setTags(prev => {
+          const combined = [...prev, ...(res?.data?.assets ?? [])];
+
+          // Use a Map to remove duplicates based on a unique field
+          const uniqueAssets = Array.from(
+            new Map(combined.map(item => [item.erp_asset_no, item])).values(),
+          );
+
+          return uniqueAssets;
+        });
       }
     },
     onError: err => {
@@ -246,29 +256,33 @@ export const AuditScanScreen = ({route}: Props) => {
         stopButtonClicked();
       }}>
       <View style={[styles.assetDetailItem, {padding: 16}]}>
-        <Text style={styles.assetIdText}>Asset Scanned</Text>
-        <Text style={styles.assetNameText}>{`${tags?.length} Nos`}</Text>
+        <Text style={styles.assetCount}>Asset Scanned</Text>
+        <Text style={styles.assetCount}>{`${
+          tags?.filter((item: any) => item.error === null).length
+        } Nos`}</Text>
       </View>
       <ScrollView
         style={styles.assetItemList}
         refreshControl={<RefreshControl refreshing={loading} />}>
         {tags?.length ? (
-          tags?.map((item: any, index: number) => {
-            if (item.error === null) {
-              return (
-                <View key={index} style={styles.assetDetailItem}>
-                  <View style={styles.assetItemDetail}>
-                    <Text style={styles.assetIdText}>
-                      {item?.asset_name ?? ''}
-                    </Text>
-                    <Text style={styles.assetNameText}>
-                      Asset No: {item?.erp_asset_no ?? ''}
-                    </Text>
+          tags
+            ?.filter((item: any) => item.error === null)
+            .map((item: any, index: number) => {
+              if (item.error === null) {
+                return (
+                  <View key={index} style={styles.assetDetailItem}>
+                    <View style={styles.assetItemDetail}>
+                      <Text style={styles.assetIdText}>
+                        {index + 1}. {item?.asset_name ?? ''}
+                      </Text>
+                      <Text style={styles.assetNameText}>
+                        Asset No: {item?.erp_asset_no ?? ''}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              );
-            }
-          })
+                );
+              }
+            })
         ) : (
           <Text style={[styles.noRecord, {paddingTop: 32}]}>
             No assets Scanned! Please Start Scanning

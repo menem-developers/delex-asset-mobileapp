@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 8,
     flexGrow: 1,
+    maxHeight: 225,
   },
   assetItemDetail: {
     display: 'flex',
@@ -327,11 +328,12 @@ const styles = StyleSheet.create({
   drawerButtons: {
     flexDirection: 'column',
     padding: 16,
+    paddingVertical: 16,
     display: 'flex',
-    gap: 16,
+    gap: 8,
   },
   drawerCancel: {
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 24,
     borderRadius: 8,
     borderWidth: 1,
@@ -351,7 +353,7 @@ const styles = StyleSheet.create({
   },
   drawerSubmitText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
   },
 });

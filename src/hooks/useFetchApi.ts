@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {BASE_URL} from 'utlis/endpoints';
 import {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export enum HTTP {
   DELETE = 'delete',
@@ -20,6 +21,7 @@ const useFetchApi = (options?: UseFetchApiOptions) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const execute = async (url: string, config?: any) => {
+    const token = await AsyncStorage.getItem('key');
     onLoading?.(true);
     setLoading(true);
     console.log('url:- ', BASE_URL + url);
@@ -29,6 +31,10 @@ const useFetchApi = (options?: UseFetchApiOptions) => {
         url,
         baseURL: BASE_URL,
         method: config?.method ?? HTTP.GET,
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+          ...(config?.headers || {}),
+        },
         ...config,
       });
       onSuccess?.({data: res.data, status: res?.status, url});

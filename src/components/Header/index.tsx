@@ -101,10 +101,8 @@ export const Header: React.FC<IHeaderProps> = props => {
       //   ))} */}
 
       {!!onPressScanner && (
-        <TouchableOpacity
-          style={[styles.iconButton, {paddingRight: wp(3)}]}
-          onPress={onPressScanner}>
-          <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
+        <TouchableOpacity onPress={onPressScanner}>
+          <View style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
             <Scanner height={16} width={16} />
             <Text
               style={{

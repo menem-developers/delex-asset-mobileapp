@@ -173,12 +173,12 @@ const styles = StyleSheet.create({
   },
   drawerButtons: {
     flexDirection: 'row',
-    padding: 16,
+    padding: 8,
     display: 'flex',
-    gap: 16,
+    gap: 8,
   },
   drawerCancel: {
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 24,
     borderRadius: 8,
     borderWidth: 1,
@@ -193,14 +193,14 @@ const styles = StyleSheet.create({
   },
   drawerSubmit: {
     backgroundColor: '#1E90FF',
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 24,
     borderRadius: 8,
     flex: 1,
   },
   drawerSubmitText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
   },
   search: {
