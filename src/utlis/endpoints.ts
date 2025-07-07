@@ -1,5 +1,6 @@
 // export const BASE_URL = 'http://88.222.212.240:5000/';
 export const BASE_URL = 'https://ams.shriaura.com';
+export const LOGIN_ENDPOINT = '/api/auth/login';
 export const REGISTRATION_STATS = '/api/assets/registration-stats';
 export const ASSETS = '/api/assets';
 export const ASSETS_REGISTER = '/api/assets/register';

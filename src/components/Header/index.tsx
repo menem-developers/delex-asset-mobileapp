@@ -2,13 +2,14 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import {back} from 'routes/utils';
+import {back, reset} from 'routes/utils';
 import {AssetImage} from 'components/AssetImage';
 import Menu from 'assets/img/menu.svg';
 import Bell from 'assets/img/bell.svg';
 import Back from 'assets/img/back.svg';
 import Scanner from 'assets/img/scanner.svg';
 import Logout from 'assets/img/logout.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface IHeaderProps {
   title?: string;
@@ -34,6 +35,11 @@ export const Header: React.FC<IHeaderProps> = props => {
     onBack,
     showLogout,
   } = props;
+
+  const logout = () => {
+    AsyncStorage.removeItem('key');
+    reset([{name: 'Login'}]);
+  };
 
   return (
     <View style={styles.container}>
@@ -72,7 +78,7 @@ export const Header: React.FC<IHeaderProps> = props => {
           </TouchableOpacity>
         )}
         {showLogout && (
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={logout}>
             <Logout width={20} height={20} />
           </TouchableOpacity>
         )}

@@ -2,6 +2,8 @@ import axios from 'axios';
 import {BASE_URL} from 'utlis/endpoints';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ToastAndroid} from 'react-native';
+import {reset} from 'routes/utils';
 
 export enum HTTP {
   DELETE = 'delete',
@@ -42,6 +44,14 @@ const useFetchApi = (options?: UseFetchApiOptions) => {
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
+      if (
+        error.response?.status === 401 &&
+        error.response?.data.error === 'Token has expired. Please login again.'
+      ) {
+        ToastAndroid.show(error.response?.data.error, ToastAndroid.SHORT);
+        AsyncStorage.removeItem('key');
+        reset([{name: 'Login'}]);
+      }
       onLoading?.(false);
       onError?.(error.response);
     }

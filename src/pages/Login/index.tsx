@@ -1,15 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {login_bg} from 'assets/img';
 import EyeIcon from 'assets/img/eye.svg';
 import EyeClose from 'assets/img/eyeClose.svg';
 import {AssetImage} from 'components/AssetImage';
 import {ScreenContainer} from 'components/ScreenContainer';
-import React, {useState} from 'react';
+import useFetchApi, {HTTP} from 'hooks/useFetchApi';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -18,15 +21,57 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {reset} from 'routes/utils';
+import {LOGIN_ENDPOINT} from 'utlis/endpoints';
 
 export const LoginScreen = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
+  const [userName, setUserName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const {execute: loginExecute} = useFetchApi({
+    onSuccess: res => {
+      if (res?.status === 200) {
+        console.log(res);
+        AsyncStorage.setItem('key', res?.data.token);
+        reset([{name: 'Home'}]);
+      }
+    },
+    onError: err => {
+      console.log('err', JSON.stringify(err?.data));
+      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+    },
+  });
+
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(pre => !pre);
   };
+
+  function login() {
+    if (userName.length !== 0 && password.length !== 0) {
+      const url = LOGIN_ENDPOINT;
+      loginExecute(url, {
+        method: HTTP.POST,
+        data: {
+          username: userName,
+          password: password,
+        },
+      });
+    }
+  }
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem('key');
+      if (token) {
+        reset([{name: 'Home'}]);
+      }
+    };
+
+    checkToken();
+  }, []);
 
   return (
     <ScreenContainer hideHeader>
@@ -95,6 +140,10 @@ export const LoginScreen = () => {
               placeholder="Enter here"
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
+              value={userName}
+              onChangeText={val => {
+                setUserName(val);
+              }}
             />
           </View>
           <Text
@@ -117,6 +166,10 @@ export const LoginScreen = () => {
               secureTextEntry={!isPasswordVisible}
               onFocus={() => setIsPasswordFocused(true)}
               onBlur={() => setIsPasswordFocused(false)}
+              value={password}
+              onChangeText={val => {
+                setPassword(val);
+              }}
             />
 
             <TouchableOpacity onPress={togglePasswordVisibility}>
@@ -142,14 +195,16 @@ export const LoginScreen = () => {
         </Text> */}
 
           <TouchableOpacity
-            onPress={() => {
-              reset([{name: 'Home'}]);
-            }}
+            onPress={login}
+            disabled={userName.length === 0 && password.length === 0}
             style={{
               marginTop: 40,
               padding: wp(3),
               borderRadius: 8,
-              backgroundColor: '#1E90FF',
+              backgroundColor:
+                userName.length === 0 && password.length === 0
+                  ? '#1E90FF50'
+                  : '#1E90FF',
               alignItems: 'center',
             }}>
             <Text
