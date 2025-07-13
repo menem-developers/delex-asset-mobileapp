@@ -110,7 +110,8 @@ export const LoginScreen = () => {
               style={{
                 fontWeight: '400',
                 color: '#FAFBFF',
-                fontSize: wp(4),
+                fontSize: 14,
+                textAlign: 'center',
               }}>
               Enter your username and password to login.
             </Text>

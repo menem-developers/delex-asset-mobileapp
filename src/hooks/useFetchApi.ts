@@ -24,25 +24,46 @@ const useFetchApi = (options?: UseFetchApiOptions) => {
 
   const execute = async (url: string, config?: any) => {
     const token = await AsyncStorage.getItem('key');
+
+    const requestConfig = {
+      url,
+      baseURL: BASE_URL,
+      method: config?.method ?? HTTP.GET,
+      headers: {
+        Authorization: token ? `Bearer ${token}` : undefined,
+        ...(config?.headers || {}),
+      },
+      ...config,
+    };
+
+    // 🔍 LOG THE EXACT HEADERS BEING SENT
+    console.log(
+      '📡 HEADERS BEING SENT:',
+      JSON.stringify(requestConfig.headers, null, 2),
+      BASE_URL + url,
+    );
+    console.log(
+      '📡 FULL REQUEST CONFIG:',
+      JSON.stringify(requestConfig, null, 2),
+      BASE_URL + url,
+    );
+
     onLoading?.(true);
     setLoading(true);
-    console.log('url:- ', BASE_URL + url);
-    console.log('config:- ', JSON.stringify(config));
+
     try {
-      const res = await axios({
-        url,
-        baseURL: BASE_URL,
-        method: config?.method ?? HTTP.GET,
-        headers: {
-          Authorization: token ? `Bearer ${token}` : undefined,
-          ...(config?.headers || {}),
-        },
-        ...config,
-      });
+      const res = await axios(requestConfig);
+      console.log('✅ RESPONSE STATUS:', res.status);
+      console.log('✅ RESPONSE HEADERS:', res.headers);
+
       onSuccess?.({data: res.data, status: res?.status, url});
       onLoading?.(false);
       setLoading(false);
     } catch (error: any) {
+      console.log('❌ ERROR STATUS:', error.response?.status);
+      console.log('❌ ERROR RESPONSE:', error.response?.data);
+      console.log('❌ ERROR HEADERS:', error.response?.headers);
+
       setLoading(false);
       if (
         error.response?.status === 401 &&

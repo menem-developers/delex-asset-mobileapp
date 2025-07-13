@@ -74,17 +74,53 @@ export const AssetListScreen = ({route}: any) => {
     isCompleted: boolean,
     search?: string,
   ) => {
-    const url = `${ASSETS}?page=${pageNumber}&per_page=${perPage}&global_search=${
-      search ?? ''
-    }&asset_location_id=${route?.params?.location_name?.id ?? ''}&building_id=${
-      route?.params?.building_name?.id ?? ''
-    }&floor_id=${route?.params?.floor_name?.id ?? ''}&room_id=${
-      route?.params?.room_name?.id ?? ''
-    }&subroom_id=${route?.params?.subroom_name?.id ?? ''}&category_id=${
-      route?.params?.category_name?.id ?? ''
-    }&rfid_reference=${isCompleted ? 1 : ''}&rfid_reference_required=${
-      isCompleted ? true : false
-    }`;
+    // const url = `${ASSETS}?page=${pageNumber}&per_page=${perPage}&global_search=${
+    //   search ?? ''
+    // }&asset_location_id=${route?.params?.location_name?.id ?? ''}&building_id=${
+    //   route?.params?.building_name?.id ?? ''
+    // }&floor_id=${route?.params?.floor_name?.id ?? ''}&room_id=${
+    //   route?.params?.room_name?.id ?? ''
+    // }&subroom_id=${route?.params?.subroom_name?.id ?? ''}&category_id=${
+    //   route?.params?.category_name?.id ?? ''
+    // }&rfid_reference=${isCompleted ? 1 : ''}&rfid_reference_required=${
+    //   isCompleted ? true : false
+    // }`;
+
+    const params = new URLSearchParams();
+    params.append('page', pageNumber.toString());
+    params.append('per_page', perPage.toString());
+
+    if (search) {
+      params.append('global_search', search);
+    }
+    if (route?.params?.location_name?.id) {
+      params.append(
+        'asset_location_id',
+        route.params.location_name.id.toString(),
+      );
+    }
+    if (route?.params?.building_name?.id) {
+      params.append('building_id', route.params.building_name.id.toString());
+    }
+    if (route?.params?.floor_name?.id) {
+      params.append('floor_id', route.params.floor_name.id.toString());
+    }
+    if (route?.params?.room_name?.id) {
+      params.append('room_id', route.params.room_name.id.toString());
+    }
+    if (route?.params?.subroom_name?.id) {
+      params.append('subroom_id', route.params.subroom_name.id.toString());
+    }
+    if (route?.params?.category_name?.id) {
+      params.append('category_id', route.params.category_name.id.toString());
+    }
+    if (isCompleted) {
+      params.append('rfid_reference', '1');
+    }
+    params.append('rfid_reference_required', 'true');
+
+    const url = `${ASSETS}/?${params.toString()}`;
+    console.log(url);
     execute(url);
   };
 
