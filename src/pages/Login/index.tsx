@@ -41,7 +41,11 @@ export const LoginScreen = () => {
     },
     onError: err => {
       console.log('err', JSON.stringify(err?.data));
-      ToastAndroid.show(err?.data?.message ?? '', ToastAndroid.SHORT);
+      ToastAndroid.show(
+        err?.data?.message ??
+          'Username or Password Incorrect. Please Try Again',
+        ToastAndroid.SHORT,
+      );
     },
   });
 

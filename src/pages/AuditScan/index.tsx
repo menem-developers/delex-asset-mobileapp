@@ -52,6 +52,8 @@ export const AuditScanScreen = ({route}: Props) => {
   const isScanningRef = useRef(false);
   const [showStopScanDrawer, setShowStopScanDrawer] = useState<boolean>(false);
 
+  const [currentTagList, setCurrentTagList] = useState<string[]>([]);
+
   // const isFocused = useIsFocused();
 
   // useEffect(() => {
@@ -98,18 +100,21 @@ export const AuditScanScreen = ({route}: Props) => {
       'multiscantag',
       data => {
         console.log(data);
-        executeAudit(
-          `${AUDIT_FORMS_SCAN_RFID.replace(
-            '{audit_form_id}',
-            route?.params?.id ? route?.params?.id?.toString() : '',
-          )}`,
-          {
-            method: HTTP.POST,
-            data: {
-              rfid_references: [data.tag],
+        if (!currentTagList.includes(data.tag)) {
+          executeAudit(
+            `${AUDIT_FORMS_SCAN_RFID.replace(
+              '{audit_form_id}',
+              route?.params?.id ? route?.params?.id?.toString() : '',
+            )}`,
+            {
+              method: HTTP.POST,
+              data: {
+                rfid_references: [data.tag],
+              },
             },
-          },
-        );
+          );
+          setCurrentTagList(prev => [...prev, data.tag]);
+        }
       },
     );
 
