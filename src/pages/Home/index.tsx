@@ -62,7 +62,7 @@ export const HomeScreen = () => {
   });
 
   const fetchData = (pageNumber: number) => {
-    const url = `${ASSETS}?page=${pageNumber}&per_page=10&global_search=${
+    const url = `${ASSETS}/?page=${pageNumber}&per_page=10&global_search=${
       search ?? ''
     }`;
     execute(url);
