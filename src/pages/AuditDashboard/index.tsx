@@ -35,9 +35,11 @@ export const AuditDashboardScreen = ({route}: any) => {
   const {execute, loading} = useFetchApi({
     onSuccess: res => {
       if (res?.status === 200) {
-        console.log(res?.data);
+        console.log(res?.data, pageNo);
         setAuditData(prev =>
-          pageNo === 1 ? res?.data?.items : prev.concat(res?.data?.items),
+          res?.data?.current_page === 1
+            ? res?.data?.items
+            : prev.concat(res?.data?.items),
         );
         setTotalPage(res?.data?.pages);
         setCurrentPage(res?.data?.current_page);
@@ -76,9 +78,10 @@ export const AuditDashboardScreen = ({route}: any) => {
             <TouchableOpacity
               key={i}
               onPress={() => {
+                const firstPage = 1;
                 setSelectedTab(item as ISelectedTab);
-                setPageNo(1);
-                fetchData(1, item as ISelectedTab);
+                setPageNo(firstPage);
+                fetchData(firstPage, item as ISelectedTab);
               }}
               style={StyleSheet.compose(styles.tabButton, {
                 backgroundColor: selectedTab === item ? '#1E90FF' : '#F4F4F4',
@@ -98,8 +101,9 @@ export const AuditDashboardScreen = ({route}: any) => {
         onEndReached={() => {
           if (auditData?.length && !loading) {
             if (currentPage < totalPage) {
-              setPageNo(pre => pre + 1);
-              fetchData(pageNo + 1, selectedTab);
+              const nextPage = pageNo + 1;
+              setPageNo(nextPage);
+              fetchData(nextPage, selectedTab);
             }
           }
         }}
@@ -110,8 +114,9 @@ export const AuditDashboardScreen = ({route}: any) => {
           <RefreshControl
             refreshing={loading}
             onRefresh={() => {
-              setPageNo(1);
-              fetchData(1, selectedTab);
+              const firstPage = 1;
+              setPageNo(firstPage);
+              fetchData(firstPage, selectedTab);
             }}
           />
         }

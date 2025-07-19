@@ -36,12 +36,6 @@ export const AssetCharts = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
-  console.log('auditHeaderCount', auditHeaderCount?.asc, {
-    total_audit_forms: 11,
-    scheduled_count: 4,
-    overdue_count: 7,
-    completed_count: 0,
-  });
 
   const pendingAssets =
     (auditHeaderCount?.total_audit_forms
@@ -110,17 +104,21 @@ export const AssetCharts = () => {
       <View style={styles.legendContainer}>
         <View style={styles.lengendContainer}>
           {renderDot('#B5BABE')}
-          <Text style={styles.legendText}>Not Started</Text>
+          <Text style={styles.legendText}>Scheduled</Text>
           <Text style={styles.legendVal}>
-            {auditHeaderCount?.overdue_count
-              ? +auditHeaderCount?.overdue_count
+            {auditHeaderCount?.scheduled_count
+              ? +auditHeaderCount?.scheduled_count
               : 0}
           </Text>
         </View>
         <View style={styles.lengendContainer}>
           {renderDot('#E7AD00')}
-          <Text style={styles.legendText}>In Progress</Text>
-          <Text style={styles.legendVal}>{pendingAssets}</Text>
+          <Text style={styles.legendText}>Overdue</Text>
+          <Text style={styles.legendVal}>
+            {auditHeaderCount?.overdue_count
+              ? +auditHeaderCount?.overdue_count
+              : 0}
+          </Text>
         </View>
         <View style={styles.lengendContainer}>
           {renderDot('#28A745')}

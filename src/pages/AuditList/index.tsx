@@ -55,6 +55,11 @@ export const AuditListScreen = ({route}: Props) => {
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const status = route.params.status_name;
+  const startDate = new Date(route.params.start_date);
+  const now = new Date();
+
+  startDate.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
 
   const [search, setSearch] = useState<string>('');
 
@@ -151,7 +156,7 @@ export const AuditListScreen = ({route}: Props) => {
       showBack
       onBack={() => navigate('AuditDashboard', route?.params)}
       onPressScanner={
-        status !== 'Completed'
+        status !== 'Completed' && now >= startDate
           ? () => navigate('AuditScan', route?.params)
           : undefined
       }>
