@@ -117,7 +117,7 @@ export const AssetListScreen = ({route}: any) => {
     if (isCompleted) {
       params.append('rfid_reference', '1');
     }
-    params.append('rfid_reference_required', 'true');
+    params.append('rfid_reference_required', isCompleted ? 'true' : 'false');
 
     const url = `${ASSETS}/?${params.toString()}`;
     console.log(url);

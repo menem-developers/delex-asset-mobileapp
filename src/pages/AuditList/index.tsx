@@ -145,6 +145,16 @@ export const AuditListScreen = ({route}: Props) => {
   }, [isFocused]);
 
   useEffect(() => {
+    scannedCount(
+      AUDIT_FORMS_COUNT.replace(
+        '{audit_form_id}',
+        route?.params?.id ? route?.params?.id?.toString() : '',
+      ),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route?.params?.id]);
+
+  useEffect(() => {
     setAuditlist([]);
     fetchData(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -203,6 +213,12 @@ export const AuditListScreen = ({route}: Props) => {
                 if (!isLoading && !loading) {
                   setIsLoading(true);
                   fetchData(currentPage + 1);
+                  scannedCount(
+                    AUDIT_FORMS_COUNT.replace(
+                      '{audit_form_id}',
+                      route?.params?.id ? route?.params?.id?.toString() : '',
+                    ),
+                  );
                 }
               }
             }
@@ -216,6 +232,12 @@ export const AuditListScreen = ({route}: Props) => {
               onRefresh={() => {
                 setAuditlist([]);
                 fetchData(1);
+                scannedCount(
+                  AUDIT_FORMS_COUNT.replace(
+                    '{audit_form_id}',
+                    route?.params?.id ? route?.params?.id?.toString() : '',
+                  ),
+                );
               }}
             />
           }
