@@ -16,8 +16,8 @@ import {
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import {navigate} from 'routes/utils';
-import Simplification from 'assets/img/simplification.svg';
-import Submitted from 'assets/img/submitted.svg';
+// import Simplification from 'assets/img/simplification.svg';
+// import Submitted from 'assets/img/submitted.svg';
 import {home_bg} from 'assets/img';
 import Search from 'assets/img/search.svg';
 import useFetchApi from 'hooks/useFetchApi';
@@ -113,7 +113,7 @@ export const HomeScreen = () => {
             <Search height={16} width={16} />
             <TextInput
               style={styles.search}
-              placeholder="Search"
+              placeholder="Search by ERP Asset No"
               placeholderTextColor={'#B4B9C2'}
               value={search}
               onChangeText={val => setSearch(val)}
@@ -181,7 +181,7 @@ export const HomeScreen = () => {
             );
           })}
         </View>
-        <View
+        {/* <View
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -253,7 +253,7 @@ export const HomeScreen = () => {
               </Text>
             </View>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
 
       <Text

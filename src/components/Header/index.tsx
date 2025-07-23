@@ -5,7 +5,7 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {back, reset} from 'routes/utils';
 import {AssetImage} from 'components/AssetImage';
 import Menu from 'assets/img/menu.svg';
-import Bell from 'assets/img/bell.svg';
+// import Bell from 'assets/img/bell.svg';
 import Back from 'assets/img/back.svg';
 import Scanner from 'assets/img/scanner.svg';
 import Logout from 'assets/img/logout.svg';
@@ -29,7 +29,6 @@ export const Header: React.FC<IHeaderProps> = props => {
     showLogo,
     showBack,
     renderRight,
-    showNotify,
     showDrawer,
     onPressScanner,
     onBack,
@@ -72,11 +71,11 @@ export const Header: React.FC<IHeaderProps> = props => {
       {renderRight}
 
       <View style={{display: 'flex', flexDirection: 'row', gap: 5}}>
-        {showNotify && (
+        {/* {showNotify && (
           <TouchableOpacity style={styles.iconButton}>
             <Bell width={20} height={20} />
           </TouchableOpacity>
-        )}
+        )} */}
         {showLogout && (
           <TouchableOpacity style={styles.iconButton} onPress={logout}>
             <Logout width={20} height={20} />

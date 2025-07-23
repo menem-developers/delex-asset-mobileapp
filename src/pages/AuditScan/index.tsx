@@ -101,6 +101,7 @@ export const AuditScanScreen = ({route}: Props) => {
       data => {
         console.log(data);
         if (!currentTagList.includes(data.tag)) {
+          setCurrentTagList(prev => [...prev, data.tag]);
           executeAudit(
             `${AUDIT_FORMS_SCAN_RFID.replace(
               '{audit_form_id}',
@@ -113,7 +114,6 @@ export const AuditScanScreen = ({route}: Props) => {
               },
             },
           );
-          setCurrentTagList(prev => [...prev, data.tag]);
         }
       },
     );
